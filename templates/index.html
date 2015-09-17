@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <style>
+
+        .node {
+          stroke: #fff;
+          stroke-width: 1px;
+        }
+
+        .link {
+          stroke: #666;
+          stroke-opacity: .4;
+        }
+
+        .node.selected {
+            stroke-width: 3px;
+        }
+
+        </style>
+    <title> Ver 0.3 </title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+        $(document).ready(function(){
+
+            namespace = '/test'; // change to an empty string to use the global namespace
+
+            // the socket.io documentation recommends sending an explicit package upon connection
+            // this is specially important when using the global namespace
+            var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+
+            socket.on('connect', function() {
+            });
+
+            // event handler for server sent data
+            // the data is displayed in the "Received" section of the page
+            socket.on('my response', function(data) {
+                initialize(JSON.parse(data.data));
+                // console.log(JSON.parse(data.data))
+            });
+            
+            var width = 1000,
+                height = 1000;
+
+            var ocol = d3.scale.category20();
+                
+            var force = d3.layout.force()
+                .charge(-170)
+                .linkDistance(70)
+                .size([width, height]);
+
+            var svg = d3.select("body").append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            function initialize(graph) {
+
+              force
+                .nodes(graph.nodes)
+                .links(graph.links)
+                .start();
+
+              var link = svg.selectAll(".link")
+                .data(graph.links)
+                .enter().append("line")
+                  .attr("class", "link")
+                  .style("stroke-width", function(d) { return Math.sqrt(d.value); });
+
+              var node = svg.selectAll(".node")
+                  .data(graph.nodes)
+                  .enter().append("circle")
+                  .attr("class", "node")
+                  .attr("r", function(d) { return d.degree/20+4; })
+                  .style("fill", function(d) { return ocol(d.group); })
+                  .on("click", function(d) {
+                    d3.selectAll(".node").attr("class","node");
+                    d3.select(this).attr("class","node selected");
+                    socket.emit("startRun", 1, 2) // parameters
+                  })
+                  .call(force.drag);
+
+              node.append("title")
+                  .text(function(d) { return d.name; });
+
+              force.on("tick", function() {
+                link.attr("x1", function(d) { return d.source.x; })
+                    .attr("y1", function(d) { return d.source.y; })
+                    .attr("x2", function(d) { return d.target.x; })
+                    .attr("y2", function(d) { return d.target.y; });
+
+                node.attr("cx", function(d) { return d.x; })
+                    .attr("cy", function(d) { return d.y; });
+
+              });
+
+              // ms
+              var framerate = 20;
+
+              function update(arr) {
+
+                for (var i=0; i<graph.nodes.length; i++) {
+                  graph.nodes[i].voltage = arr[i]
+                }
+                
+                svg.selectAll(".node")
+                  .data(graph.nodes)
+                  .transition()
+                  .duration(framerate)
+                  .attr("r", function(d) {
+                    return Math.round(15*(Math.pow(d.voltage,2)/(1+Math.pow(d.voltage,2))));
+                })
+                  .style("opacity", function(d) {
+                    return Math.abs(d.voltage) / 2.5;
+                })
+                  .style("stroke", function(d) {
+                    return Math.abs(d.voltage) / 2.5;
+                })
+              
+              } 
+
+              socket.on('new data', function(data) {
+                timesteps.push(data);
+              });
+
+              var timesteps = [];
+
+              setInterval(function() {
+
+                if (timesteps.length > 0) {
+                    var timestep = timesteps.shift();
+                    update(timestep);
+                } 
+
+               }, framerate);
+
+            }
+
+        });
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
