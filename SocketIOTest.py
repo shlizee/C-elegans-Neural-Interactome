@@ -2,16 +2,14 @@ from gevent import monkey
 monkey.patch_all()
 
 import time
-import random
-import CElegansFull as CE
+import CElegansFull_Notebook as CE
 import numpy as np
 from threading import Thread
 from flask import Flask, render_template, session, request
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
     
-(t, data, t_comp) = CE.run_Network(CE.Neuron, 0, 32.0, 0.01, 'PLM', 21000, 1e-3)
-data = data.transpose()
-simData = np.subtract(data, np.tile(CE.Vth, (CE.nsteps, 1)).transpose())
+(t, data, t_comp) = CE.run_Network(CE.Neuron, 0, 32.0, 0.01, 'ALM', 90000, 1e-3)
+simData = np.subtract(data, np.tile(CE.Vth, (CE.nsteps, 1)))
 
 app = Flask(__name__)
 app.debug = True
@@ -19,9 +17,9 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 thread = None
 
-def send_simData(a,b):
+def send_Data(a,b):
     for i in range(100,3200):
-        emit('new data', simData[:,i].tolist())
+        emit('new data', simData[i,:].tolist())
 
 def background_thread():
     """Example of how to send server generated events to clients."""
@@ -52,7 +50,7 @@ def test_disconnect():
 
 @socketio.on('startRun', namespace='/test')
 def start_run(a,b):
-    send_simData(a,b)
+    send_Data(a,b)
 
 if __name__ == '__main__':
     socketio.run(app)

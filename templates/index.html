@@ -18,9 +18,9 @@
         }
 
         </style>
-    <title> Ver 0.3 </title>
+    <title> Ver 0.3.2 </title>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
     <script type="text/javascript" charset="utf-8">
 
@@ -78,7 +78,7 @@
                   .on("click", function(d) {
                     d3.selectAll(".node").attr("class","node");
                     d3.select(this).attr("class","node selected");
-                    socket.emit("startRun", 1, 2) // parameters
+                    socket.emit("startRun", 0, 8.0, 0.01, 'PLM', 21000, 1e-3) // parameters
                   })
                   .call(force.drag);
 
@@ -120,8 +120,9 @@
                 })
               
               } 
-
+                
               socket.on('new data', function(data) {
+                console.log(0)  
                 timesteps.push(data);
               });
 
