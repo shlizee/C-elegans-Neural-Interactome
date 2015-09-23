@@ -204,7 +204,7 @@ def run_Network(t_Start, t_Final, t_Delta, input_Mask, input_Magnitude, atol):
                  
         data = np.subtract(r.y[:N], Vth)
         emit('new data', data.tolist())
-        time.sleep(1e-6)
+        time.sleep(0.001)
         k += 1
 
 
