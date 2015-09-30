@@ -3,6 +3,10 @@
 <head>
     <style>
 
+        body {
+          background-color: #DDD;
+        }
+
         .node {
           stroke: #fff;
           stroke-width: 1px;
@@ -17,8 +21,12 @@
             stroke-width: 3px;
         }
 
+        #timer {
+          width: 100%;
+        }
+
         </style>
-    <title> Ver 0.3.2 </title>
+    <title> Ver 0.4-Alpha </title>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
@@ -39,7 +47,6 @@
             // the data is displayed in the "Received" section of the page
             socket.on('my response', function(data) {
                 initialize(JSON.parse(data.data));
-                // console.log(JSON.parse(data.data))
             });
             
             var width = 1000,
@@ -55,6 +62,8 @@
             var svg = d3.select("body").append("svg")
                 .attr("width", width)
                 .attr("height", height);
+
+            var stopRun = true;
 
             function initialize(graph) {
 
@@ -76,9 +85,13 @@
                   .attr("r", function(d) { return d.degree/20+4; })
                   .style("fill", function(d) { return ocol(d.group); })
                   .on("click", function(d) {
-                    d3.selectAll(".node").attr("class","node");
-                    d3.select(this).attr("class","node selected");
-                    socket.emit("startRun", 0, 8.0, 0.01, 'PLM', 21000, 1e-3) // parameters
+                    var curClass = d3.select(this).attr("class");
+                    if (curClass.indexOf("selected") > -1) {
+                      d3.select(this).attr("class","node");
+                    } else {
+                      d3.select(this).attr("class","node selected");
+                    }
+                    socket.emit("update", d.ind) // parameters
                   })
                   .call(force.drag);
 
@@ -95,9 +108,18 @@
                     .attr("cy", function(d) { return d.y; });
 
               });
+                
+             document.addEventListener("keydown", function(e) {
+                if (e.keyCode === 13) {
+                  stopRun = false;
+                  socket.emit("startRun", 0.01, 21000, 1e-3);
+                } else if (e.keyCode === 27) {
+                  stopRun = true;
+                }
+             });
 
               // ms
-              var framerate = 25;
+              var framerate = 15;
 
               function update(arr) {
 
@@ -122,8 +144,13 @@
               } 
                 
               socket.on('new data', function(data) {
-                console.log(0)  
                 timesteps.push(data);
+                console.log(0);
+                var pause = timesteps.length > 100 ? 90 : 0
+                setTimeout(function() {
+                  if (!stopRun) socket.emit("continue run");
+                }, pause);
+                  
               });
 
               var timesteps = [];
@@ -144,6 +171,10 @@
     </script>
 </head>
 <body>
+
+  <div id="timer">
+    Ver0.4-Alpha
+  </div>
 
 </body>
 </html>

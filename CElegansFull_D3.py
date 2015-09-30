@@ -19,7 +19,7 @@ from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room
 
 WrittenBy = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '0.3.2'
+Version = '0.4-Alpha'
 
 # In[2]:
 
@@ -54,7 +54,9 @@ EMat = np.tile(np.reshape(E, N), (N, 1))
 ar = 1.0 # Synaptic activity's rise time
 ad = 5.0 # Synaptic activity's decay time
 B = 0.125 # Width of the sigmoid (mv^-1)
-
+# ----------------------------------------------------------------------------------------------------------------------
+# Input_Mask
+InMask = np.zeros(N)
 
 # In[3]:
 
@@ -136,7 +138,7 @@ def Neuron(t, y):
     
     # Input Mask
     
-    Input = np.multiply(Iext, InMask_row)
+    Input = np.multiply(Iext, InMask)
     
     # dV and dS and merge them back to dydt
     
@@ -145,69 +147,45 @@ def Neuron(t, y):
     
     return np.concatenate((dV, dS))
 
-
-def run_Network(t_Start, t_Final, t_Delta, input_Mask, input_Magnitude, atol):
+def update_Mask(ind):
     
-    # Time Range of Simulation
-    t0 = t_Start
-    tf = t_Final #2.0 #4.0 #8.0 #16 #32 #64
+    if InMask[ind] == 1:
+        InMask[ind] = 0
+        
+    elif InMask[ind] == 0:
+        InMask[ind] = 1
+
+    print InMask
+
+
+def run_Network(t_Delta, input_Magnitude, atol):
+    
     dt = t_Delta
-
-    #tVec = np.arange(t0, 2*tf, dt/10)
-    global nsteps
-    nsteps = np.floor((tf - t0)/dt) + 1
-
-    # Configuring the input mask
-    if input_Mask == 'PLM':
-
-        InMask = np.zeros((N, 1))
-        InMask[276] = 1
-        InMask[278] = 1
-    
-    elif input_Mask == 'ALM':
-        
-        InMask = sio.loadmat('ExtMask3.mat')
-        InMask = InMask['Ext3']
-        
-    elif input_Mask == 'RMD':
-        
-        InMask = sio.loadmat('ExtMask2.mat')
-        InMask = InMask['Ext2']
-        
-    else:
-        
-        InMask = input_Mask
     
     # Input signal magnitude
     global Iext 
     Iext = input_Magnitude
-    #Iext = 1000*signal.square(np.pi*tVec)+1000
     
-    #Calculate V_threshold
-    #VthMat = VthFinder(Iext).transpose()
-    global Vth 
-    Vth = np.reshape(VthFinder(Iext, InMask), N)
-    global InMask_row 
-    InMask_row = np.reshape(InMask, N)
+    global Vth
+    Vth = np.reshape(VthFinder(Iext, np.reshape(InMask, (N,1))), N)
     
     InitCond = 10**(-4)*np.random.normal(0, 0.94, 2*N)   
          
     # Configuring the ODE Solver
     r = integrate.ode(Neuron).set_integrator('vode', atol = atol, min_step = dt*1e-6, method = 'bdf', with_jacobian = True)
-    r.set_initial_value(InitCond, t0)
-   
-    k = 1
-    
-    while r.successful() and k < nsteps:
+    r.set_initial_value(InitCond, 0)
                  
+    r.integrate(r.t + dt)
+    data = np.subtract(r.y[:N], Vth)
+
+    @socketio.on("continue run", namespace='/test')
+    def continueRun():
         r.integrate(r.t + dt)
-                 
         data = np.subtract(r.y[:N], Vth)
         emit('new data', data.tolist())
-        time.sleep(0.001)
-        k += 1
 
-
+    emit('new data', data.tolist())
+        
 # In[5]:
 
 app = Flask(__name__)
@@ -217,14 +195,8 @@ socketio = SocketIO(app)
 thread = None
     
 def background_thread():
-    """Example of how to send server generated events to clients."""
-    count = 0
     while True:
         time.sleep(10)
-        count += 1
-        socketio.emit('my response',
-                      {'data': 'Server generated event', 'count': count},
-                      namespace='/test')
 
 @app.route('/')
 def index():
@@ -241,11 +213,20 @@ def test_connect():
 
 @socketio.on('disconnect', namespace='/test')
 def test_disconnect():
+    InMask = np.zeros(N)
     print('Client disconnected')
 
 @socketio.on('startRun', namespace='/test')
-def startRun(t_Start, t_Final, t_Delta, input_Mask, input_Magnitude, atol):
-    run_Network(t_Start, t_Final, t_Delta, input_Mask, input_Magnitude, atol)
+def startRun(t_Delta, input_Magnitude, atol):
+    run_Network(t_Delta, input_Magnitude, atol)
+    
+@socketio.on('update', namespace='/test')
+def update(ind):
+    update_Mask(ind)
+
+@socketio.on("stop", namespace="/test")
+def stopit():
+    stopit = True
 
 if __name__ == '__main__':
     socketio.run(app)
