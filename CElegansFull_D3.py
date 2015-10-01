@@ -19,7 +19,7 @@ from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room
 
 WrittenBy = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '0.4-Alpha'
+Version = '0.4-Beta'
 
 # In[2]:
 
@@ -57,8 +57,23 @@ B = 0.125 # Width of the sigmoid (mv^-1)
 # ----------------------------------------------------------------------------------------------------------------------
 # Input_Mask
 InMask = np.zeros(N)
+Iext = 21000
 
 # In[3]:
+
+def update_Mask(ind):
+    
+    global Vth
+    
+    if InMask[ind] == 1:
+        InMask[ind] = 0
+        Vth = np.reshape(VthFinder(Iext, np.reshape(InMask, (N,1))), N)
+            
+    elif InMask[ind] == 0:
+        InMask[ind] = 1
+        Vth = np.reshape(VthFinder(Iext, np.reshape(InMask, (N,1))), N)
+          
+    print InMask
 
 def VthFinder(Iext, InMask):
 
@@ -147,27 +162,10 @@ def Neuron(t, y):
     
     return np.concatenate((dV, dS))
 
-def update_Mask(ind):
-    
-    if InMask[ind] == 1:
-        InMask[ind] = 0
-        
-    elif InMask[ind] == 0:
-        InMask[ind] = 1
 
-    print InMask
-
-
-def run_Network(t_Delta, input_Magnitude, atol):
+def run_Network(t_Delta, atol):
     
     dt = t_Delta
-    
-    # Input signal magnitude
-    global Iext 
-    Iext = input_Magnitude
-    
-    global Vth
-    Vth = np.reshape(VthFinder(Iext, np.reshape(InMask, (N,1))), N)
     
     InitCond = 10**(-4)*np.random.normal(0, 0.94, 2*N)   
          
@@ -180,6 +178,7 @@ def run_Network(t_Delta, input_Magnitude, atol):
 
     @socketio.on("continue run", namespace='/test')
     def continueRun():
+  
         r.integrate(r.t + dt)
         data = np.subtract(r.y[:N], Vth)
         emit('new data', data.tolist())
@@ -217,8 +216,8 @@ def test_disconnect():
     print('Client disconnected')
 
 @socketio.on('startRun', namespace='/test')
-def startRun(t_Delta, input_Magnitude, atol):
-    run_Network(t_Delta, input_Magnitude, atol)
+def startRun(t_Delta, atol):
+    run_Network(t_Delta, atol)
     
 @socketio.on('update', namespace='/test')
 def update(ind):

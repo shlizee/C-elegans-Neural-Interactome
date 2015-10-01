@@ -26,7 +26,7 @@
         }
 
         </style>
-    <title> Ver 0.4-Alpha </title>
+    <title> Ver 0.4-Beta </title>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
@@ -112,14 +112,14 @@
              document.addEventListener("keydown", function(e) {
                 if (e.keyCode === 13) {
                   stopRun = false;
-                  socket.emit("startRun", 0.01, 21000, 1e-3);
+                  socket.emit("startRun", 0.01, 1e-3);
                 } else if (e.keyCode === 27) {
                   stopRun = true;
                 }
              });
 
               // ms
-              var framerate = 15;
+              var framerate = 30;
 
               function update(arr) {
 
@@ -145,7 +145,6 @@
                 
               socket.on('new data', function(data) {
                 timesteps.push(data);
-                console.log(0);
                 var pause = timesteps.length > 100 ? 90 : 0
                 setTimeout(function() {
                   if (!stopRun) socket.emit("continue run");
@@ -173,7 +172,7 @@
 <body>
 
   <div id="timer">
-    Ver0.4-Alpha
+    Ver0.4-Beta
   </div>
 
 </body>
