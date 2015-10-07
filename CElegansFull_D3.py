@@ -11,7 +11,7 @@ import time
 from gevent import monkey
 monkey.patch_all()
 
-from scipy import integrate, signal
+from scipy import integrate, signal, sparse, linalg
 from threading import Thread
 from flask import Flask, render_template, session, request
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
@@ -19,7 +19,7 @@ from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room
 
 WrittenBy = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '0.4-Beta'
+Version = '0.5.0'
 
 # In[2]:
 
@@ -67,61 +67,56 @@ def update_Mask(ind):
     
     if InMask[ind] == 1:
         InMask[ind] = 0
-        Vth = np.reshape(VthFinder(Iext, np.reshape(InMask, (N,1))), N)
+        Vth = np.reshape(EffVth_rhs(Iext, np.reshape(InMask, (N,1))), N)
             
     elif InMask[ind] == 0:
         InMask[ind] = 1
-        Vth = np.reshape(VthFinder(Iext, np.reshape(InMask, (N,1))), N)
+        Vth = np.reshape(EffVth_rhs(Iext, np.reshape(InMask, (N,1))), N)
           
     print InMask
 
-def VthFinder(Iext, InMask):
+def EffVth():
 
-    Gcmat = np.zeros((N, N))
-    np.fill_diagonal(Gcmat, Gc)
-
-    Ecvec = np.zeros((N,1))
-    Ecvec.fill(Ec)
+    Gcmat = np.multiply(Gc, np.eye(N))
+    EcVec = np.multiply(Ec, np.ones((N, 1)))
 
     M1 = -Gcmat
-    b1 = Gc * Ecvec
+    b1 = np.multiply(Gc, EcVec)
 
-    Ggij = np.multiply(ggap, Gg)
-    gdiag = np.zeros((N, N))
-    np.fill_diagonal(gdiag, np.diagonal(Ggij))
-    GgapSubDiag = np.subtract(Ggij, gdiag)
-    GgapSum = GgapSubDiag.sum(axis = 1)
-    GgapSumMat = np.zeros((N, N))
-    np.fill_diagonal(GgapSumMat, GgapSum)
+    Ggap = np.multiply(ggap, Gg)
+    Ggapdiag = np.subtract(Ggap, np.diag(np.diag(Ggap)))
+    Ggapsum = Ggapdiag.sum(axis = 1) 
+    Ggapsummat = sparse.spdiags(Ggapsum, 0, N, N).toarray()
+    M2 = -np.subtract(Ggapsummat, Ggapdiag)
 
-    M2 = -(np.subtract(GgapSumMat, GgapSubDiag))
+    Gs_ij = np.multiply(gsyn, Gs)
+    s_eq = round((ar/(ar + 2 * ad)), 4)
+    sjmat = np.multiply(s_eq, np.ones((N, N)))
+    S_eq = np.multiply(s_eq, np.ones((N, 1)))
+    Gsyn = np.multiply(sjmat, Gs_ij)
+    Gsyndiag = np.subtract(Gsyn, np.diag(np.diag(Gsyn)))
+    Gsynsum = Gsyndiag.sum(axis = 1)
+    M3 = -sparse.spdiags(Gsynsum, 0, N, N).toarray()
 
-    Gsij = np.multiply(gsyn, Gs)
-    Seq = round((ar/(ar + 2 * ad)), 4)
-    S_eq = np.zeros((N, 1))
-    S_eq.fill(Seq)
-    Sjmat = np.zeros((N, N))
-    Sjmat.fill(Seq)
-    GSyn = np.multiply(Sjmat, Gsij)
-    sdiag = np.zeros((N, N))
-    np.fill_diagonal(sdiag, np.diagonal(GSyn))
-    GSynSubDiag = np.subtract(GSyn, sdiag)
-    GSynSum = GSynSubDiag.sum(axis = 1)
-    GSynSumMat = np.zeros((N, N))
-    np.fill_diagonal(GSynSumMat, GSynSum)
+    b3 = np.dot(Gs_ij, np.multiply(s_eq, E))
 
-    M3 = -GSynSumMat
-    b2 = np.dot(Gsij, np.multiply(S_eq, E))
+    M = M1 + M2 + M3 
+    
+    global LL
+    global UU
+    global bb
 
-    InputMask = Iext * InMask
+    (P, LL, UU) = linalg.lu(M)
+    bb = -b1 - b3
 
-    M = M1 + M2 + M3
-    b = -(b1 + b2 + InputMask)
-
-    Vth = np.linalg.solve(M, b)
+def EffVth_rhs(Iext, InMask):
+    
+    InputMask = np.multiply(Iext, InMask)
+    b = np.subtract(bb, InputMask)
+    
+    Vth = linalg.solve(UU, linalg.solve(LL, b))
     
     return Vth
-
 
 # In[1]:
 
@@ -184,6 +179,8 @@ def run_Network(t_Delta, atol):
         emit('new data', data.tolist())
 
     emit('new data', data.tolist())
+    
+EffVth()
         
 # In[5]:
 

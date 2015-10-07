@@ -8,11 +8,11 @@ import numpy as np
 import scipy.io as sio
 import time
 
-from scipy import integrate, signal
+from scipy import integrate, signal, sparse, linalg
 
 WrittenBy = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '0.3'
+Version = '0.5.0'
 
 # In[2]:
 
@@ -48,56 +48,53 @@ ar = 1.0 # Synaptic activity's rise time
 ad = 5.0 # Synaptic activity's decay time
 B = 0.125 # Width of the sigmoid (mv^-1)
 
-
 # In[3]:
 
-def VthFinder(Iext, InMask):
+def EffVth():
 
-    Gcmat = np.zeros((N, N))
-    np.fill_diagonal(Gcmat, Gc)
-
-    Ecvec = np.zeros((N,1))
-    Ecvec.fill(Ec)
+    Gcmat = np.multiply(Gc, np.eye(N))
+    EcVec = np.multiply(Ec, np.ones((N, 1)))
 
     M1 = -Gcmat
-    b1 = Gc * Ecvec
+    b1 = np.multiply(Gc, EcVec)
 
-    Ggij = np.multiply(ggap, Gg)
-    gdiag = np.zeros((N, N))
-    np.fill_diagonal(gdiag, np.diagonal(Ggij))
-    GgapSubDiag = np.subtract(Ggij, gdiag)
-    GgapSum = GgapSubDiag.sum(axis = 1)
-    GgapSumMat = np.zeros((N, N))
-    np.fill_diagonal(GgapSumMat, GgapSum)
+    Ggap = np.multiply(ggap, Gg)
+    Ggapdiag = np.subtract(Ggap, np.diag(np.diag(Ggap)))
+    Ggapsum = Ggapdiag.sum(axis = 1) 
+    Ggapsummat = sparse.spdiags(Ggapsum, 0, N, N).toarray()
+    M2 = -np.subtract(Ggapsummat, Ggapdiag)
 
-    M2 = -(np.subtract(GgapSumMat, GgapSubDiag))
+    Gs_ij = np.multiply(gsyn, Gs)
+    s_eq = round((ar/(ar + 2 * ad)), 4)
+    sjmat = np.multiply(s_eq, np.ones((N, N)))
+    S_eq = np.multiply(s_eq, np.ones((N, 1)))
+    Gsyn = np.multiply(sjmat, Gs_ij)
+    Gsyndiag = np.subtract(Gsyn, np.diag(np.diag(Gsyn)))
+    Gsynsum = Gsyndiag.sum(axis = 1)
+    M3 = -sparse.spdiags(Gsynsum, 0, N, N).toarray()
 
-    Gsij = np.multiply(gsyn, Gs)
-    Seq = round((ar/(ar + 2 * ad)), 4)
-    S_eq = np.zeros((N, 1))
-    S_eq.fill(Seq)
-    Sjmat = np.zeros((N, N))
-    Sjmat.fill(Seq)
-    GSyn = np.multiply(Sjmat, Gsij)
-    sdiag = np.zeros((N, N))
-    np.fill_diagonal(sdiag, np.diagonal(GSyn))
-    GSynSubDiag = np.subtract(GSyn, sdiag)
-    GSynSum = GSynSubDiag.sum(axis = 1)
-    GSynSumMat = np.zeros((N, N))
-    np.fill_diagonal(GSynSumMat, GSynSum)
+    b3 = np.dot(Gs_ij, np.multiply(s_eq, E))
 
-    M3 = -GSynSumMat
-    b2 = np.dot(Gsij, np.multiply(S_eq, E))
+    M = M1 + M2 + M3 
+    
+    global LL
+    global UU
+    global bb
 
-    InputMask = Iext * InMask
+    (P, LL, UU) = linalg.lu(M)
+    bb = -b1 - b3
 
-    M = M1 + M2 + M3
-    b = -(b1 + b2 + InputMask)
-
-    Vth = np.linalg.solve(M, b)
+def EffVth_rhs(Iext, InMask):
+    
+    InputMask = np.multiply(Iext, InMask)
+    b = np.subtract(bb, InputMask)
+    
+    global Vth
+    Vth = linalg.solve(UU, linalg.solve(LL, b))
     
     return Vth
 
+EffVth()
 
 # In[1]:
 
@@ -183,7 +180,7 @@ def run_Network(rhs, t_Start, t_Final, t_Delta, input_Mask, input_Magnitude, ato
     #Calculate V_threshold
     #VthMat = VthFinder(Iext).transpose()
     global Vth 
-    Vth = np.reshape(VthFinder(Iext, InMask), N)
+    Vth = np.reshape(EffVth_rhs(Iext, InMask), N)
     global InMask_row 
     InMask_row = np.reshape(InMask, N)
     
@@ -266,7 +263,7 @@ def plot_Colormap(Traj):
     plt.xlabel('Time (10 ms)', fontsize = 12.5)
     plt.ylabel('Neuron Index Number', fontsize = 12.5)
     plt.title('C.Elegans Neurons Voltage Dynamics', fontsize = 15)
-    plt.savefig('CElegansWhole')
+    #plt.savefig('CElegansWhole')
 
     fig = plt.figure(figsize=(15,10))
     plt.pcolor(Motor_Vth, cmap='RdBu')
@@ -276,7 +273,7 @@ def plot_Colormap(Traj):
     plt.xlabel('Time (10 ms)', fontsize = 12.5)
     plt.ylabel('Motor Neuron Index Number', fontsize = 12.5)
     plt.title('C.Elegans Motor Neurons Voltage Dynamics', fontsize = 15)
-    plt.savefig('CElegansMotor')
+    #plt.savefig('CElegansMotor')
 
 
 # In[7]:
@@ -312,13 +309,13 @@ def plot_DominantModes(Traj, t):
     plt.title('Motor Neurons: First Two Dominant Modes Dynamics', fontsize = 10)
     plt.xlabel('Time (Seconds)')
     plt.show
-    plt.savefig('MotorNeurons')
+    #plt.savefig('MotorNeurons')
 
     fig = plt.figure(figsize=(9,6))
     plt.scatter(U[:,0], U[:,1])
     plt.title('Phase Space of Two Modes', fontsize = 10)
     plt.show
-    plt.savefig('PhaseSpace')
+    #plt.savefig('PhaseSpace')
     
     #plt.scatter(U1, U2)
     #plt.show
