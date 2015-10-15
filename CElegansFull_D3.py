@@ -19,7 +19,7 @@ from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room
 
 WrittenBy = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '0.5.0'
+Version = '0.6.0-Alpha'
 
 # In[2]:
 
@@ -56,25 +56,39 @@ ad = 5.0 # Synaptic activity's decay time
 B = 0.125 # Width of the sigmoid (mv^-1)
 # ----------------------------------------------------------------------------------------------------------------------
 # Input_Mask
-InMask = np.zeros(N)
+transit_Mat = np.zeros((2,N))
+t_Tracker = 0
 Iext = 21000
+
+rate = 0.03
 
 # In[3]:
 
-def update_Mask(ind):
+def transit_Mask(ind):
     
-    global Vth
+    global t_Switch
+    global oldMask
+    global newMask
     
-    if InMask[ind] == 1:
-        InMask[ind] = 0
-        Vth = np.reshape(EffVth_rhs(Iext, np.reshape(InMask, (N,1))), N)
+    transit_Mat[0,:] = transit_Mat[1,:]
+    
+    t_Switch = t_Tracker
+    
+    if transit_Mat[0,ind] == 1:
+        transit_Mat[1,ind] = 0
             
-    elif InMask[ind] == 0:
-        InMask[ind] = 1
-        Vth = np.reshape(EffVth_rhs(Iext, np.reshape(InMask, (N,1))), N)
+    elif transit_Mat[0,ind] == 0:
+        transit_Mat[1,ind] = 1
+        
+    oldMask = transit_Mat[0,:]
+    newMask = transit_Mat[1,:]
           
-    print InMask
-
+    print oldMask, newMask, t_Switch
+    
+def update_Mask(old, new, t, tSwitch):
+    
+    return np.multiply(old, 0.5-0.5*np.tanh((t-tSwitch)/rate)) + np.multiply(new, 0.5+0.5*np.tanh((t-tSwitch)/rate))
+        
 def EffVth():
 
     Gcmat = np.multiply(Gc, np.eye(N))
@@ -139,8 +153,7 @@ def Neuron(t, y):
     VsubEj = np.subtract(np.transpose(Vrep), EMat)
     SynapCon = np.multiply(np.multiply(Gs, np.tile(SVec, (N, 1))), VsubEj).sum(axis = 1)
     
-    # ar*(1-Si)*Sigmoid Computation
-      
+    # ar*(1-Si)*Sigmoid Computation 
     SynRise = np.multiply(np.multiply(ar, (np.subtract(1.0, SVec))), 
                           np.reciprocal(1.0 + np.exp(-B*(np.subtract(Vvec, Vth)))))
     
@@ -167,17 +180,33 @@ def run_Network(t_Delta, atol):
     # Configuring the ODE Solver
     r = integrate.ode(Neuron).set_integrator('vode', atol = atol, min_step = dt*1e-6, method = 'bdf', with_jacobian = True)
     r.set_initial_value(InitCond, 0)
-                 
+    
+    global InMask
+    global Vth
+    global oldMask
+    
+    oldMask = np.zeros(N)    
+    InMask = update_Mask(oldMask, newMask, r.t, t_Switch + 0.1).round(3)
+    Vth = np.reshape(EffVth_rhs(Iext, np.reshape(InMask, (N,1))), N)
+    
     r.integrate(r.t + dt)
     data = np.subtract(r.y[:N], Vth)
 
     @socketio.on("continue run", namespace='/test')
     def continueRun():
-  
+        
+        global InMask
+        global Vth
+        global t_Tracker
+        
+        InMask = update_Mask(oldMask, newMask, r.t, t_Switch + 0.1).round(3)
+        Vth = np.reshape(EffVth_rhs(Iext, np.reshape(InMask, (N,1))), N)
+        
         r.integrate(r.t + dt)
         data = np.subtract(r.y[:N], Vth)
         emit('new data', data.tolist())
-
+        t_Tracker = r.t
+        
     emit('new data', data.tolist())
     
 EffVth()
@@ -218,7 +247,7 @@ def startRun(t_Delta, atol):
     
 @socketio.on('update', namespace='/test')
 def update(ind):
-    update_Mask(ind)
+    transit_Mask(ind)
 
 @socketio.on("stop", namespace="/test")
 def stopit():

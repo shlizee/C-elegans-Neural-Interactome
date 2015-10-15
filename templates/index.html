@@ -3,8 +3,31 @@
 <head>
     <style>
 
+        html {
+          height: 100%;
+          padding: 0;
+          margin: 0;
+          font-family: helvetica, sans-serif;
+        }
+
         body {
-          background-color: #DDD;
+          background-color: rgb(230,230,230);
+          padding: 0;
+          margin: 0;
+          height: 100%;
+          color: #444;
+        }
+
+        div {
+          box-sizing: border-box;
+        }
+
+        h1 {
+          /*font-family: georgia, serif;*/
+          font-style: italic;
+          font-size: 24px;
+          /*font-weight: 300;*/
+          margin: 10px 0 10px;
         }
 
         .node {
@@ -25,14 +48,55 @@
           width: 100%;
         }
 
+        .vis-wrapper {
+          height: 100%;
+          min-height: 800px;
+          margin-left: 300px;
+        }
+
+        .vis-cover {
+          z-index: 500;
+          position: fixed;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background-color: rgba(0,0,0,0.2);
+          margin-left: 300px;
+          pointer-events: none;
+        }
+
+        #vis {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          min-height: 800px;
+        }
+
+        .sidebar {
+          position: fixed;
+          width: 300px;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          background-color: rgb(240,240,240);
+          -webkit-box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.1);
+          -moz-box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.1);
+          box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.1);
+          padding: 15px;
+        }
+
         </style>
-    <title> Ver 0.5.0 </title>
+    <title> Ver 0.6.0-Alpha </title>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
     <script type="text/javascript" charset="utf-8">
 
         $(document).ready(function(){
+
+            // Global dataset object
+            var _dataset;
 
             namespace = '/test'; // change to an empty string to use the global namespace
 
@@ -46,11 +110,15 @@
             // event handler for server sent data
             // the data is displayed in the "Received" section of the page
             socket.on('my response', function(data) {
-                initialize(JSON.parse(data.data));
+                _dataset = JSON.parse(data.data);
+                console.log(_dataset);
+                initialize(_dataset);
+                addNodesToMenu(_dataset.nodes);
+                for (var i=0; i<100; i++) force.tick();
             });
             
-            var width = 1000,
-                height = 1000;
+            var width = $("#vis").width();
+                height = $("#vis").height();
 
             var ocol = d3.scale.category20();
                 
@@ -59,7 +127,7 @@
                 .linkDistance(70)
                 .size([width, height]);
 
-            var svg = d3.select("body").append("svg")
+            var svg = d3.select("#vis").append("svg")
                 .attr("width", width)
                 .attr("height", height);
 
@@ -107,10 +175,15 @@
                 node.attr("cx", function(d) { return d.x; })
                     .attr("cy", function(d) { return d.y; });
 
+              // force.start();
+              // force.tick();
+
+
               });
                 
              document.addEventListener("keydown", function(e) {
                 if (e.keyCode === 13) {
+                  force.stop()
                   stopRun = false;
                   socket.emit("startRun", 0.01, 1e-3);
                 } else if (e.keyCode === 27) {
@@ -119,7 +192,7 @@
              });
 
               // ms
-              var framerate = 30;
+              var framerate = 100;
 
               function update(arr) {
 
@@ -134,18 +207,19 @@
                   .attr("r", function(d) {
                     return Math.round(15*(Math.pow(d.voltage,2)/(1+Math.pow(d.voltage,2))));
                 })
-                  .style("opacity", function(d) {
-                    return Math.abs(d.voltage) / 2.5;
-                })
-                  .style("stroke", function(d) {
-                    return Math.abs(d.voltage) / 2.5;
-                })
+                //   .style("opacity", function(d) {
+                //     return Math.abs(d.voltage) / 2.5;
+                // })
+                //   .style("stroke", function(d) {
+                //     return Math.abs(d.voltage) / 2.5;
+                // })
               
               } 
                 
               socket.on('new data', function(data) {
                 timesteps.push(data);
-                var pause = timesteps.length > 100 ? 90 : 0
+                console.log(0)
+                var pause = timesteps.length > 15 ? 100 : 0
                 setTimeout(function() {
                   if (!stopRun) socket.emit("continue run");
                 }, pause);
@@ -156,6 +230,17 @@
 
               setInterval(function() {
 
+                var str = "Buffer: " + timesteps.length + " ";
+
+                if (!stopRun && timesteps.length < 1) {
+                  str += "buffering";
+                  $(".vis-cover").show()
+                } else {
+                  $(".vis-cover").hide()
+                }
+
+                $("#buffer").html(str);
+
                 if (timesteps.length > 0) {
                     var timestep = timesteps.shift();
                     update(timestep);
@@ -165,15 +250,30 @@
 
             }
 
+            function addNodesToMenu(nodes) {
+              console.log(nodes);
+            }
+
         });
 
     </script>
 </head>
 <body>
 
-  <div id="timer">
-    Ver_0.5.0
+<!--   <div id="timer">
+    Ver0.4-Beta
+  </div> -->
+
+  <div class="vis-wrapper">
+    <div id="vis"></div>
   </div>
+
+  <div class="sidebar">
+    <h1>C.Elegens Dynome Ver 0.6.0-Alpha</h1>
+    <span id="buffer"></span>
+  </div>
+
+  <div class="vis-cover"></div>
 
 </body>
 </html>
