@@ -87,7 +87,7 @@
         }
 
         </style>
-    <title> Ver 0.6.0-Alpha </title>
+    <title> Ver 0.6.0-Beta </title>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
@@ -175,10 +175,6 @@
                 node.attr("cx", function(d) { return d.x; })
                     .attr("cy", function(d) { return d.y; });
 
-              // force.start();
-              // force.tick();
-
-
               });
                 
              document.addEventListener("keydown", function(e) {
@@ -208,19 +204,13 @@
                   .attr("r", function(d) {
                     return Math.round(15*(Math.pow(d.voltage,2)/(1+Math.pow(d.voltage,2))));
                 })
-                //   .style("opacity", function(d) {
-                //     return Math.abs(d.voltage) / 2.5;
-                // })
-                //   .style("stroke", function(d) {
-                //     return Math.abs(d.voltage) / 2.5;
-                // })
-              
+                
               } 
                 
               socket.on('new data', function(data) {
                 timesteps.push(data);
                 console.log(0)
-                var pause = timesteps.length > 15 ? 100 : 0
+                var pause = timesteps.length > 18 ? 100 : 0
                 setTimeout(function() {
                   if (!stopRun) socket.emit("continue run");
                 }, pause);
@@ -271,7 +261,7 @@
 
   <div class="sidebar">
 
-    <h1>C.Elegens Dynome Ver 0.6.0-Alpha</h1>
+    <h1>C.Elegens Dynome Ver 0.6.0-Beta</h1>
 
     <span id="buffer"></span>
   </div>

@@ -19,7 +19,7 @@ from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room
 
 WrittenBy = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '0.6.0-Alpha'
+Version = '0.6.0-Beta'
 
 # In[2]:
 
@@ -55,12 +55,13 @@ ar = 1.0 # Synaptic activity's rise time
 ad = 5.0 # Synaptic activity's decay time
 B = 0.125 # Width of the sigmoid (mv^-1)
 # ----------------------------------------------------------------------------------------------------------------------
-# Input_Mask
+# Input_Mask/Smooth Transtion
 transit_Mat = np.zeros((2,N))
 t_Tracker = 0
 Iext = 21000
 
 rate = 0.03
+offset = 0.2
 
 # In[3]:
 
@@ -153,6 +154,12 @@ def Neuron(t, y):
     VsubEj = np.subtract(np.transpose(Vrep), EMat)
     SynapCon = np.multiply(np.multiply(Gs, np.tile(SVec, (N, 1))), VsubEj).sum(axis = 1)
     
+    global InMask
+    global Vth
+    
+    InMask = update_Mask(oldMask, newMask, t, t_Switch + offset)
+    Vth = np.reshape(EffVth_rhs(Iext, np.reshape(InMask, (N,1))), N)
+    
     # ar*(1-Si)*Sigmoid Computation 
     SynRise = np.multiply(np.multiply(ar, (np.subtract(1.0, SVec))), 
                           np.reciprocal(1.0 + np.exp(-B*(np.subtract(Vvec, Vth)))))
@@ -174,6 +181,7 @@ def Neuron(t, y):
 def run_Network(t_Delta, atol):
     
     dt = t_Delta
+    dt_0 = 0.28
     
     InitCond = 10**(-4)*np.random.normal(0, 0.94, 2*N)   
          
@@ -181,28 +189,25 @@ def run_Network(t_Delta, atol):
     r = integrate.ode(Neuron).set_integrator('vode', atol = atol, min_step = dt*1e-6, method = 'bdf', with_jacobian = True)
     r.set_initial_value(InitCond, 0)
     
-    global InMask
-    global Vth
     global oldMask
-    
     oldMask = np.zeros(N)    
-    InMask = update_Mask(oldMask, newMask, r.t, t_Switch + 0.1).round(3)
-    Vth = np.reshape(EffVth_rhs(Iext, np.reshape(InMask, (N,1))), N)
-    
-    r.integrate(r.t + dt)
+  
+    r.integrate(r.t + dt_0)
     data = np.subtract(r.y[:N], Vth)
 
     @socketio.on("continue run", namespace='/test')
     def continueRun():
         
-        global InMask
-        global Vth
         global t_Tracker
         
-        InMask = update_Mask(oldMask, newMask, r.t, t_Switch + 0.1).round(3)
-        Vth = np.reshape(EffVth_rhs(Iext, np.reshape(InMask, (N,1))), N)
-        
-        r.integrate(r.t + dt)
+        if r.t == t_Switch:
+            
+            r.integrate(r.t + dt_0)
+            
+        else:
+            
+            r.integrate(r.t + dt)
+            
         data = np.subtract(r.y[:N], Vth)
         emit('new data', data.tolist())
         t_Tracker = r.t
@@ -238,7 +243,10 @@ def test_connect():
 
 @socketio.on('disconnect', namespace='/test')
 def test_disconnect():
+    global InMask
+    global t_Switch
     InMask = np.zeros(N)
+    t_Switch = 0
     print('Client disconnected')
 
 @socketio.on('startRun', namespace='/test')
