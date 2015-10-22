@@ -181,7 +181,7 @@ def Neuron(t, y):
 def run_Network(t_Delta, atol):
     
     dt = t_Delta
-    dt_0 = 0.28
+    dt_0 = 0.05
     
     InitCond = 10**(-4)*np.random.normal(0, 0.94, 2*N)   
          
