@@ -122,7 +122,8 @@ def EffVth():
     global bb
 
     (P, LL, UU) = linalg.lu(M)
-    bb = -b1 - b3
+    bbb = -b1 - b3
+    bb = np.reshape(bbb, N)
 
 def EffVth_rhs(Iext, InMask):
     
@@ -158,7 +159,7 @@ def Neuron(t, y):
     global Vth
     
     InMask = update_Mask(oldMask, newMask, t, t_Switch + offset)
-    Vth = np.reshape(EffVth_rhs(Iext, np.reshape(InMask, (N,1))), N)
+    Vth = EffVth_rhs(Iext, InMask)
     
     # ar*(1-Si)*Sigmoid Computation 
     SynRise = np.multiply(np.multiply(ar, (np.subtract(1.0, SVec))), 
