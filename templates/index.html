@@ -275,7 +275,7 @@
                 
               socket.on('new data', function(data) {
                 timesteps.push(data);
-                var pause = timesteps.length > 18 ? 100 : 0
+                var pause = timesteps.length > 25 ? 100 : 0
                 setTimeout(function() {
                   if (!stopRun) socket.emit("continue run");
                 }, pause);

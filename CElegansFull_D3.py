@@ -8,8 +8,8 @@ import numpy as np
 import scipy.io as sio
 import time
 
-from gevent import monkey
-monkey.patch_all()
+import eventlet
+eventlet.monkey_patch() 
 
 from scipy import integrate, signal, sparse, linalg
 from threading import Thread
