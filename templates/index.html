@@ -134,7 +134,7 @@
         }
 
         .node-li.g3 {
-          color: rgb(174,199,232);
+          color: rgb(156,158,222);
         }
 
         .node-li.selected {
@@ -184,7 +184,9 @@
             var width = $("#vis").width();
                 height = $("#vis").height();
 
-            var ocol = d3.scale.category20();
+            var ocol = d3.scale.ordinal()
+                .domain([1, 2, 3])
+                .range(["1f77b4", "ff7f0e", "9c9ede"])
                 
             var force = d3.layout.force()
                 .charge(-170)
