@@ -19,7 +19,7 @@ from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room
 
 WrittenBy = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '0.6.0-Beta'
+Version = '0.7.0-Alpha'
 
 # In[2]:
 
@@ -60,8 +60,8 @@ transit_Mat = np.zeros((2,N))
 t_Tracker = 0
 Iext = 21000
 
-rate = 0.03
-offset = 0.2
+rate = 0.045
+offset = 0.27
 
 # In[3]:
 
@@ -136,7 +136,7 @@ def EffVth_rhs(Iext, InMask):
 
 # In[1]:
 
-def Neuron(t, y):
+def Jimin_RHS(t, y):
     
     # Split the incoming values
     
@@ -182,18 +182,17 @@ def Neuron(t, y):
 def run_Network(t_Delta, atol):
     
     dt = t_Delta
-    dt_0 = 0.05
     
     InitCond = 10**(-4)*np.random.normal(0, 0.94, 2*N)   
          
     # Configuring the ODE Solver
-    r = integrate.ode(Neuron).set_integrator('vode', atol = atol, min_step = dt*1e-6, method = 'bdf', with_jacobian = True)
+    r = integrate.ode(Jimin_RHS).set_integrator('vode', atol = atol, min_step = dt*1e-6, method = 'bdf', with_jacobian = True)
     r.set_initial_value(InitCond, 0)
     
     global oldMask
     oldMask = np.zeros(N)    
   
-    r.integrate(r.t + dt_0)
+    r.integrate(r.t + dt)
     data = np.subtract(r.y[:N], Vth)
 
     @socketio.on("continue run", namespace='/test')
@@ -201,13 +200,7 @@ def run_Network(t_Delta, atol):
         
         global t_Tracker
         
-        if r.t == t_Switch:
-            
-            r.integrate(r.t + dt_0)
-            
-        else:
-            
-            r.integrate(r.t + dt)
+        r.integrate(r.t + dt)
             
         data = np.subtract(r.y[:N], Vth)
         emit('new data', data.tolist())
@@ -244,9 +237,9 @@ def test_connect():
 
 @socketio.on('disconnect', namespace='/test')
 def test_disconnect():
-    global InMask
+    global transit_Mat 
     global t_Switch
-    InMask = np.zeros(N)
+    transit_Mat = np.zeros((2,N))
     t_Switch = 0
     print('Client disconnected')
 
