@@ -238,9 +238,9 @@ def test_connect():
 @socketio.on('disconnect', namespace='/test')
 def test_disconnect():
     global transit_Mat 
-    global t_Switch
+    global t_Tracker
     transit_Mat = np.zeros((2,N))
-    t_Switch = 0
+    t_Tracker = 0
     print('Client disconnected')
 
 @socketio.on('startRun', namespace='/test')
