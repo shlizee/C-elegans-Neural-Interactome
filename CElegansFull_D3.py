@@ -19,7 +19,7 @@ from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room
 
 WrittenBy = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '0.7.0-Alpha'
+Version = '0.7.0-Beta'
 
 # In[2]:
 
@@ -190,7 +190,9 @@ def run_Network(t_Delta, atol):
     r.set_initial_value(InitCond, 0)
     
     global oldMask
-    oldMask = np.zeros(N)    
+    global t_Switch
+    oldMask = np.zeros(N)
+    t_Switch = 0
   
     r.integrate(r.t + dt)
     data = np.subtract(r.y[:N], Vth)
@@ -253,7 +255,10 @@ def update(ind):
 
 @socketio.on("stop", namespace="/test")
 def stopit():
-    stopit = True
+    #stopit = True
+    global t_Tracker
+    t_Tracker = 0
+    print('Simulation stopped')
 
 if __name__ == '__main__':
     socketio.run(app)
