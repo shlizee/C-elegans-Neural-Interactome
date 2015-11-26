@@ -16,10 +16,9 @@ from threading import Thread
 from flask import Flask, render_template, session, request
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
 
-
 WrittenBy = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '0.7.0-Beta'
+Version = '0.8.0-Alpha'
 
 # In[2]:
 
@@ -62,6 +61,9 @@ Iext = 21000
 
 rate = 0.045
 offset = 0.27
+
+stack_Size = 5
+data_Mat = np.zeros((stack_Size,N))
 
 # In[3]:
 
@@ -139,15 +141,12 @@ def EffVth_rhs(Iext, InMask):
 def Jimin_RHS(t, y):
     
     # Split the incoming values
-    
     Vvec, SVec = np.split(y, 2)
     
     # Gc(Vi - Ec)
-    
     VsubEc = np.multiply(Gc, (Vvec - Ec))
     
     # Gg(Vi - Vj) Computation
-    
     Vrep = np.tile(Vvec, (N, 1))
     GapCon = np.multiply(Gg, np.subtract(np.transpose(Vrep), Vrep)).sum(axis = 1)
     
@@ -168,11 +167,9 @@ def Jimin_RHS(t, y):
     SynDrop = np.multiply(ad, SVec)    
     
     # Input Mask
-    
     Input = np.multiply(Iext, InMask)
     
     # dV and dS and merge them back to dydt
-    
     dV = (-(VsubEc + GapCon + SynapCon) + Input)/C
     dS = np.subtract(SynRise, SynDrop)
     
@@ -189,26 +186,41 @@ def run_Network(t_Delta, atol):
     r = integrate.ode(Jimin_RHS).set_integrator('vode', atol = atol, min_step = dt*1e-6, method = 'bdf', with_jacobian = True)
     r.set_initial_value(InitCond, 0)
     
+    data_Mat[0, :] = InitCond[:N]
+    
     global oldMask
     global t_Switch
+    global t_Tracker
+    
     oldMask = np.zeros(N)
     t_Switch = 0
-  
-    r.integrate(r.t + dt)
-    data = np.subtract(r.y[:N], Vth)
+    k = 1
+    
+    while k < stack_Size:
+        
+        r.integrate(r.t + dt)
+        data = np.subtract(r.y[:N], Vth)
+        data_Mat[k, :] = data
+        t_Tracker = r.t
+        k += 1
 
     @socketio.on("continue run", namespace='/test')
     def continueRun():
         
         global t_Tracker
+        k = 0
         
-        r.integrate(r.t + dt)
+        while k < stack_Size:
             
-        data = np.subtract(r.y[:N], Vth)
-        emit('new data', data.tolist())
-        t_Tracker = r.t
+            r.integrate(r.t + dt)
+            data = np.subtract(r.y[:N], Vth)
+            data_Mat[k, :] = data
+            t_Tracker = r.t
+            k += 1
         
-    emit('new data', data.tolist())
+        emit('new data', data_Mat.tolist())  
+        
+    emit('new data', data_Mat.tolist())
     
 EffVth()
         
