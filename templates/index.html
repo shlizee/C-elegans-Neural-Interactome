@@ -146,7 +146,7 @@
         }
 
         </style>
-    <title> Ver 0.7.0-Beta </title>
+    <title> Ver 0.8.0-Alpha </title>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
@@ -274,8 +274,8 @@
               } 
                 
               socket.on('new data', function(data) {
-                timesteps.push(data);
-                var pause = timesteps.length > 24 ? 100 : 0
+                timesteps = timesteps.concat(data);
+                var pause = timesteps.length > 30 ? 500 : 0
                 setTimeout(function() {
                   if (!stopRun) socket.emit("continue run");
                 }, pause);
@@ -405,7 +405,7 @@
 
   <div class="sidebar">
 
-    <h1>C.Elegens Dynome Ver 0.7.0-Beta</h1>
+    <h1>C.Elegens Dynome Ver 0.8.0-Alpha</h1>
     <span id="buffer"></span>
 
     <button id="start">Start</button>
