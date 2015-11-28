@@ -1,14 +1,401 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <style>
 
-    <title> Ver 0.7.0-Beta </title>
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+        html {
+          height: 100%;
+          padding: 0;
+          margin: 0;
+          font-family: helvetica, sans-serif;
+        }
+
+        body {
+          background-color: rgb(230,230,230);
+          padding: 0;
+          margin: 0;
+          height: 100%;
+          color: #444;
+        }
+
+        div {
+          box-sizing: border-box;
+        }
+
+        h1 {
+          /*font-family: georgia, serif;*/
+          font-style: italic;
+          font-size: 24px;
+          /*font-weight: 300;*/
+          margin: 10px 0 10px;
+        }
+
+        .node {
+          stroke: rgb(230,230,230);
+          stroke-width: 1px;
+        }
+
+        .node:hover {
+          stroke-width: 3px;
+        }
+
+        .link {
+          stroke: #BBB;
+          stroke-opacity: 0.3;
+        }
+
+        .link.highlighted {
+          stroke: #555;
+          stroke-opacity: 0.6;
+        }
+
+        .link.hidden {
+          /*stroke-opacity: 0.1;*/
+        }
+
+        .node.selected {
+          stroke: #fff;
+          stroke-width: 3px;
+        }
+
+        #timer {
+          width: 100%;
+        }
+
+        .vis-wrapper {
+          height: 100%;
+          min-height: 800px;
+          margin-left: 300px;
+        }
+
+        .vis-cover {
+          z-index: 500;
+          position: fixed;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background-color: rgba(0,0,0,0.2);
+          margin-left: 300px;
+          pointer-events: none;
+        }
+
+        #vis {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          min-height: 800px;
+        }
+
+        .sidebar {
+          position: fixed;
+          width: 300px;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          background-color: rgb(240,240,240);
+          -webkit-box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.1);
+          -moz-box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.1);
+          box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.1);
+          padding: 15px;
+        }
+
+        .node-list-wrapper {
+          height: 450px;
+          overflow-y: scroll;
+          background-color: rgb(245,245,245);
+          border: 1px solid #DDD;
+        }
+
+        .node-ul {
+          box-sizing: border-box;
+          padding: 0 5px;
+          list-style: none;
+          width: 30%;
+          float: left;
+          font-size: 12px;
+        }
+
+        .node-li {
+          cursor: pointer;
+          padding: 2px;
+        }
+
+        .node-li:hover {
+          background-color: rgb(235,235,235);
+        }
+
+        .node-li.g1 {
+          color: rgb(31,119,180);
+        }
+
+        .node-li.g2 {
+          color: rgb(255,127,14);
+        }
+
+        .node-li.g3 {
+          color: rgb(156,158,222);
+        }
+
+        .node-li.selected {
+          background-color: rgb(230,230,230);
+        }
+
+        .node-li.selected:hover {
+          background-color: rgb(220,220,220);
+        }
+
+        </style>
+    <title> Ver 0.8.0-Beta </title>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
-    <script src="{{ url_for('static',filename='script.js') }}"></script>
+    <script type="text/javascript" charset="utf-8">
 
+        $(document).ready(function(){
+
+            // Global dataset object
+            var _dataset;
+            var initD = [];
+
+            namespace = '/test'; // change to an empty string to use the global namespace
+
+            // the socket.io documentation recommends sending an explicit package upon connection
+            // this is specially important when using the global namespace
+            var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+
+            socket.on('connect', function() {});
+
+            // event handler for server sent data
+            // the data is displayed in the "Received" section of the page
+            socket.on('my response', function(data) {
+                _dataset = JSON.parse(data.data);
+                console.log(_dataset)
+                $.each(_dataset.nodes, function(i,d) {
+                  initD.push(d.degree);
+                });
+                addNodesToMenu(_dataset.nodes);
+                initialize(_dataset);
+                addNodesToMenu(_dataset.nodes);
+                for (var i=0; i<100; i++) force.tick();
+                // force.stop();
+            });
+            
+            var width = $("#vis").width();
+                height = $("#vis").height();
+
+            var ocol = d3.scale.ordinal()
+                .domain([1, 2, 3])
+                .range(["1f77b4", "ff7f0e", "9c9ede"])
+                
+            var force = d3.layout.force()
+                .charge(-170)
+                .linkDistance(70)
+                .size([width, height]);
+
+            var svg = d3.select("#vis").append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            var stopRun = true;
+
+            function initialize(graph) {
+
+              force
+                .nodes(graph.nodes)
+                .links(graph.links)
+                .start();
+
+              var link = svg.selectAll(".link")
+                .data(graph.links)
+                .enter().append("line")
+                  .attr("class", "link")
+                  .style("stroke-width", function(d) { return Math.sqrt(d.value); });
+
+              var node = svg.selectAll(".node")
+                  .data(graph.nodes)
+                  .enter().append("circle")
+                  .attr("class", "node")
+                  .attr("r", function(d) { return d.degree/20+4; })
+                  .style("fill", function(d) { return ocol(d.group); })
+                  .on("mouseover", function(d,i) {
+                    d3.selectAll(".link")
+                      .attr("class", function(d1) {
+                        if (d1.source.ind === i || d1.target.ind === i) return "link highlighted";
+                        return "link hidden";
+                      })
+                  })
+                  .on("mouseout", function(d,i) {
+                    d3.selectAll(".link")
+                      .attr("class", "link");
+                  })
+                  .on("click", function(d,i) {
+                    selectNode(d,i);
+                  });
+                  // .call(force.drag);
+
+              node.append("title")
+                  .text(function(d) { return d.name; });
+
+              force.on("tick", function() {
+                link.attr("x1", function(d) { return d.source.x; })
+                    .attr("y1", function(d) { return d.source.y; })
+                    .attr("x2", function(d) { return d.target.x; })
+                    .attr("y2", function(d) { return d.target.y; });
+
+                node.attr("cx", function(d) { return d.x; })
+                    .attr("cy", function(d) { return d.y; });
+
+              // force.start();
+              // force.tick();
+
+              });
+                
+              // ms
+
+              var timesteps = [];
+              var minBufferSize = 0;
+              var framerate = 100
+
+              function update(arr) {
+
+                for (var i=0; i<graph.nodes.length; i++) {
+                  graph.nodes[i].voltage = arr[i]
+                }
+                  
+                svg.selectAll(".node")
+                  .data(graph.nodes)
+                  .transition()
+                  .duration(framerate)
+                  .attr("r", function(d) {
+                    return Math.round(15*(Math.pow(d.voltage,2)/(1+Math.pow(d.voltage,2))));
+                });
+              
+              } 
+                
+              socket.on('new data', function(data) {
+                timesteps = timesteps.concat(data);
+                var pause = timesteps.length > 25 ? 500 : 0
+                setTimeout(function() {
+                  if (!stopRun) socket.emit("continue run");
+                }, pause);
+                  
+              });
+
+              setInterval(run, framerate);
+
+              function run() {
+                var str = "Buffer: " + timesteps.length + " ";
+
+                if (!stopRun && timesteps.length < 1) {
+                  str += "buffering";
+                  $(".vis-cover").show()
+                } else {
+                  $(".vis-cover").hide()
+                }
+
+                $("#buffer").html(str);
+
+                if (timesteps.length === 0) {
+                  minBufferSize = 10;
+                } else if (timesteps.length > 10) {
+                  minBufferSize = 0;
+                }
+
+                if (timesteps.length > minBufferSize) {
+                  var timestep = timesteps.shift();
+                  update(timestep);
+                } 
+              }
+
+
+            }
+
+
+             function selectNode(d,i) {
+
+                var node, li;
+
+                var nodes = d3.selectAll(".node")[0];
+                var lis = d3.selectAll(".node-li")[0];
+
+                socket.emit("update", d.ind)
+
+                nodes.forEach(function(n) {
+                  n = d3.select(n);
+                  if (n.datum().ind === d.ind) node = n;
+                })
+
+                lis.forEach(function(n) {
+                   n = d3.select(n);
+                   if (n.datum().ind === d.ind) li = n;
+                })
+
+                var nodeClass = node.attr("class");
+                var liClass = li.attr("class");
+
+                if (nodeClass.indexOf("selected") > -1) {
+                  node.attr("class","node");
+                  li.attr("class","node-li g" + d.group);
+                } else {
+                  node.attr("class","node selected");
+                  li.attr("class","node-li selected g" + d.group);
+                }
+
+             }
+
+            function addNodesToMenu(nodes) {
+
+              var test = d3.nest()
+                .key(function(d) {
+                  return d.group;
+                })
+                .entries(nodes);
+
+              var groupList = d3.select(".node-list-wrapper")
+                .selectAll(".node-ul")
+                .data(test)
+                .enter()
+                .append("ul")
+                .attr("class", "node-ul");
+
+              groupList.selectAll(".node-li")
+                .data(function(d) { return d.values; })
+                .enter()
+                .append("li")
+                .attr("class", function(d) {
+                  return "node-li g" + d.group; 
+                })
+                .html(function(d) {
+                  return d.name;
+                })
+                .on("click", selectNode);
+
+            }
+
+            function start() {
+              stopRun = false;
+              force.stop();
+              socket.emit("startRun", 0.01, 1e-3);
+            }
+
+            function stop() {
+              stopRun = true;
+              socket.emit("stop");
+            }
+
+            function reset() {
+              timesteps = [];
+              update(initD);
+            }
+
+            $("#start").click(start);
+            $("#reset").click(reset);
+            $("#stop").click(stop);
+
+        });
+
+    </script>
 </head>
 <body>
 
@@ -18,7 +405,7 @@
 
   <div class="sidebar">
 
-    <h1>C.Elegens Dynome Ver 0.7.0-Beta</h1>
+    <h1>C.Elegens Dynome Ver 0.8.0-Beta</h1>
     <span id="buffer"></span>
 
     <button id="start">Start</button>
@@ -32,8 +419,7 @@
 
   </div>
 
-  <div class="vis-cover">
-  </div>
+  <div class="vis-cover"></div>
 
 </body>
 </html>

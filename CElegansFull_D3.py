@@ -18,7 +18,7 @@ from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room
 
 WrittenBy = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '0.8.0-Alpha'
+Version = '0.8.0-Beta'
 
 # In[2]:
 
@@ -72,6 +72,8 @@ def transit_Mask(ind):
     global t_Switch
     global oldMask
     global newMask
+    global transit_End
+    global Vth_Static
     
     transit_Mat[0,:] = transit_Mat[1,:]
     
@@ -85,8 +87,11 @@ def transit_Mask(ind):
         
     oldMask = transit_Mat[0,:]
     newMask = transit_Mat[1,:]
+    
+    Vth_Static = EffVth_rhs(Iext, newMask)
+    transit_End = t_Switch + 0.5
           
-    print oldMask, newMask, t_Switch
+    print oldMask, newMask, t_Switch, transit_End
     
 def update_Mask(old, new, t, tSwitch):
     
@@ -157,8 +162,15 @@ def Jimin_RHS(t, y):
     global InMask
     global Vth
     
-    InMask = update_Mask(oldMask, newMask, t, t_Switch + offset)
-    Vth = EffVth_rhs(Iext, InMask)
+    if t <= transit_End:
+        
+        InMask = update_Mask(oldMask, newMask, t, t_Switch + offset)
+        Vth = EffVth_rhs(Iext, InMask)
+        
+    else:
+        
+        InMask = newMask
+        Vth = Vth_Static
     
     # ar*(1-Si)*Sigmoid Computation 
     SynRise = np.multiply(np.multiply(ar, (np.subtract(1.0, SVec))), 
@@ -191,9 +203,11 @@ def run_Network(t_Delta, atol):
     global oldMask
     global t_Switch
     global t_Tracker
+    global transit_End
     
     oldMask = np.zeros(N)
     t_Switch = 0
+    transit_End = 0.5
     k = 1
     
     while k < stack_Size:
