@@ -59,8 +59,8 @@ transit_Mat = np.zeros((2,N))
 t_Tracker = 0
 Iext = 21000
 
-rate = 0.045
-offset = 0.27
+rate = 0.025
+offset = 0.15
 
 stack_Size = 5
 data_Mat = np.zeros((stack_Size,N))
@@ -89,7 +89,7 @@ def transit_Mask(ind):
     newMask = transit_Mat[1,:]
     
     Vth_Static = EffVth_rhs(Iext, newMask)
-    transit_End = t_Switch + 0.5
+    transit_End = t_Switch + 0.3
           
     print oldMask, newMask, t_Switch, transit_End
     
@@ -207,7 +207,7 @@ def run_Network(t_Delta, atol):
     
     oldMask = np.zeros(N)
     t_Switch = 0
-    transit_End = 0.5
+    transit_End = 0.3
     k = 1
     
     while k < stack_Size:
