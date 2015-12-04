@@ -18,7 +18,7 @@ from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room
 
 WrittenBy = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '0.8.0-Beta'
+Version = '0.9.0-PreAlpha'
 
 # In[2]:
 
@@ -63,6 +63,7 @@ rate = 0.025
 offset = 0.15
 
 stack_Size = 5
+init_data_Mat = np.zeros((stack_Size + 10,N))
 data_Mat = np.zeros((stack_Size,N))
 
 # In[3]:
@@ -210,11 +211,11 @@ def run_Network(t_Delta, atol):
     transit_End = 0.3
     k = 1
     
-    while k < stack_Size:
+    while k < stack_Size + 10:
         
         r.integrate(r.t + dt)
         data = np.subtract(r.y[:N], Vth)
-        data_Mat[k, :] = data
+        init_data_Mat[k, :] = data
         t_Tracker = r.t
         k += 1
 
@@ -234,7 +235,7 @@ def run_Network(t_Delta, atol):
         
         emit('new data', data_Mat.tolist())  
         
-    emit('new data', data_Mat.tolist())
+    emit('new data', init_data_Mat.tolist())
     
 EffVth()
         
