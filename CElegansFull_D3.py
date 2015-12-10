@@ -18,7 +18,7 @@ from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room
 
 WrittenBy = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '0.9.0-PreAlpha'
+Version = '0.9.5-Alpha'
 
 # In[2]:
 
@@ -57,7 +57,7 @@ B = 0.125 # Width of the sigmoid (mv^-1)
 # Input_Mask/Smooth Transtion
 transit_Mat = np.zeros((2,N))
 t_Tracker = 0
-Iext = 21000
+Iext = 100000
 
 rate = 0.025
 offset = 0.15
@@ -68,7 +68,7 @@ data_Mat = np.zeros((stack_Size,N))
 
 # In[3]:
 
-def transit_Mask(ind):
+def transit_Mask(ind, percentage):
     
     global t_Switch
     global oldMask
@@ -80,11 +80,7 @@ def transit_Mask(ind):
     
     t_Switch = t_Tracker
     
-    if transit_Mat[0,ind] == 1:
-        transit_Mat[1,ind] = 0
-            
-    elif transit_Mat[0,ind] == 0:
-        transit_Mat[1,ind] = 1
+    transit_Mat[1,ind] = np.round(percentage, 2)
         
     oldMask = transit_Mat[0,:]
     newMask = transit_Mat[1,:]
@@ -277,8 +273,8 @@ def startRun(t_Delta, atol):
     run_Network(t_Delta, atol)
     
 @socketio.on('update', namespace='/test')
-def update(ind):
-    transit_Mask(ind)
+def update(ind, percentage):
+    transit_Mask(ind, percentage)
 
 @socketio.on("stop", namespace="/test")
 def stopit():
@@ -286,6 +282,20 @@ def stopit():
     global t_Tracker
     t_Tracker = 0
     print('Simulation stopped')
+    
+@socketio.on("reset", namespace="/test")
+def resetit():
+    #stopit = True
+    global t_Tracker
+    global oldMask
+    global newMask
+    global transit_Mat
+    t_Tracker = 0
+    oldMask = np.zeros(N)
+    newMask = np.zeros(N)
+    transit_Mat = np.zeros((2,N))
+    
+    print('Simulation Resetted')
 
 if __name__ == '__main__':
     socketio.run(app)

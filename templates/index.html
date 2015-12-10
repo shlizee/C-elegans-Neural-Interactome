@@ -215,7 +215,7 @@ h1 {
 
 
         </style>
-    <title> Ver 0.9.0-PreAlpha </title>
+    <title> Ver 0.9.5-Alpha </title>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
@@ -242,7 +242,7 @@ h1 {
 
     // Set voltage to default, 0.2
     _dataset.nodes.forEach(function(d) {
-      d.voltage = 0.2;
+      d.inputCurrent = 0.05;
     });
 
     initDegree = _dataset.nodes.map(function(d) {
@@ -273,15 +273,26 @@ h1 {
     .attr("height", height);
 
   var timescale = d3.scale.linear().domain([0,1]).range([20,width-20]);
-  timeaxis = d3.svg.axis().scale(timescale);
-  svg.append("g").call(timeaxis).attr("transform","translate(0,10)")
+  var timeaxis = d3.svg.axis().scale(timescale);
+  var timelabel = svg.append("svg:foreignObject")
+    .attr("x", 25)
+    .attr("y", height-50)
+    .attr("width", 200)
+    .text("↓ 0.0 seconds")
+    .style("font-weight", "bold")
+    .style("font-size", 12)
+
+  svg.append("g").call(timeaxis).attr("transform","translate(10," + (height-25) + ")")
     .attr("class", "x axis");
 
   var stopRun = true;
-  var slowCountdown = 0;
-  var timesteps = [];
+  var slowCountdown = 0; // How many frames are there left that should be
+                         // renderered at a slower framerate
+  var buffer = []; // The buffer of voltage arrays from python
   var framerate = 100;
-  var visTime = 0;
+  var visTime = 0; // The cumulative visualization time
+
+  var animationFrame = false;
 
   function initialize(graph) {
 
@@ -309,7 +320,7 @@ h1 {
         return ocol(d.group);
       })
       .on("mouseover", function(d, i) {
-        onHover(d);
+        onNodeHover(d);
         d3.selectAll(".link")
           .attr("class", function(d1) {
             if (d1.source.ind === i || d1.target.ind === i) return "link highlighted";
@@ -317,12 +328,12 @@ h1 {
           })
       })
       .on("mouseout", function(d, i) {
-        onHover(false);
+        onNodeHover(false);
         d3.selectAll(".link")
           .attr("class", "link");
       })
       .on("click", function(d, i) {
-        selectNode(d, i);
+        toggleNode(d, i);
       });
     // .call(force.drag);
 
@@ -347,6 +358,8 @@ h1 {
         .attr("cy", function(d) {
           return d.y;
         });
+
+      $(".vis-cover").hide();
 
       // force.start();
       // force.tick();
@@ -376,6 +389,9 @@ h1 {
     }
 
     function updateAxis(t, transitionDur) {
+
+      timelabel.text("↓ " +  (Math.round(t*100) / 100).toFixed(2) + " seconds")
+
       timescale.domain([t,t+1]);
       timeaxis.scale(timescale);
 
@@ -385,50 +401,48 @@ h1 {
         .call(timeaxis);
     }
 
-    function reset() {
 
-    }
 
     socket.on('new data', function(data) {
       
-      if (stopRun) return;
+      if (!animationFrame) return;
 
-      timesteps = timesteps.concat(data);
-      var pause = timesteps.length > 25 ? 700 : 0
+      buffer = buffer.concat(data);
+      var pause = buffer.length > 15 ? 700 : 0
       setTimeout(function() {
-        if (!stopRun) socket.emit("continue run");
+        if (animationFrame) socket.emit("continue run");
       }, pause);
 
     });
 
-    setTimeout(run, framerate);
+    function renderBuffer() {
+      var str = "Buffer: " + buffer.length + " ";
+
+      if (animationFrame && buffer.length < 1) {
+        str += "buffering";
+        $(".vis-cover").show();
+        $(".buffer-message").show();
+      } else {
+        $(".vis-cover").hide();
+        $(".buffer-message").hide();
+      }
+
+      // Update the buffer with the current count
+      $("#buffer").html(str);
+    }
 
     function run() {
-      var str = "Buffer: " + timesteps.length + " ";
-
-      if (!stopRun && timesteps.length < 1) {
-        str += "buffering";
-        $(".vis-cover").show()
-      } else {
-        $(".vis-cover").hide()
-      }
-
-      $("#buffer").html(str);
-
-      if (timesteps.length === 0) {
-        minBufferSize = 10;
-      } else if (timesteps.length > 10) {
-        minBufferSize = 0;
-      }
+      
+      renderBuffer();
 
       var slowdown = 0;
 
-      if (timesteps.length > 0) {
+      if (buffer.length > 0) {
 
-        slowdown = (slowCountdown < 1 || slowCountdown > 40) ? 0 : 120;
+        slowdown = (slowCountdown < 1 || slowCountdown > 20) ? 0 : 150;
         if (slowCountdown > 0) slowCountdown = slowCountdown - 1;
 
-        var timestep = timesteps.shift();
+        var timestep = buffer.shift();
         visTime = Math.round((visTime + 0.01)*100)/100;
         updateAxis(visTime, framerate + slowdown);
 
@@ -436,96 +450,134 @@ h1 {
 
       }
 
-      setTimeout(run, framerate + slowdown);
+      // Run the next frame
+      animationFrame = setTimeout(run, framerate + slowdown);
 
     }
 
     function start() {
-      stopRun = false;
+      animationFrame = setTimeout(run, framerate);
       force.stop();
       socket.emit("startRun", 0.01, 1e-3);
     }
 
     function stop() {
-      stopRun = true;
+      console.log("STOPPING");
+      clearTimeout(animationFrame);
+      animationFrame = false;
       socket.emit("stop");
-      timesteps = [];
+      buffer = [];
+      renderBuffer();
       visTime = 0;
       updateAxis(visTime, 0);
       setTimeout(function() {
-        timesteps = [];
         svg.selectAll(".node")
+          .transition()
+          .duration(1000)
           .attr("r", function(d) {
             return d.degree / 20 + 4;
           });
       }, 10);
+      $(".vis-cover").hide();
+    }
+
+    function reset() {
+      // deselect all nodes
+      d3.selectAll(".node.selected")
+        .attr("class", "node");
+      $(".node-li.selected").each(function() {
+        removeSlider(d3.select(this));
+      });
+      $(".node-li.selected").removeClass("selected")
+      stop();
+      socket.emit("reset");
     }
 
 
     $("#start").click(start);
     $("#stop").click(stop);
+    $("#reset").click(reset);
 
   }
 
+  // When a node or list item is clicked, the corresponding node
+  // and list item are either selected or deselected. If the animation
+  // is running, the slowCountdown will be set.
+  function toggleNode(d, i) {
 
-  function selectNode(d, i) {
-
+    // The node and list element selections
     var node, li;
 
     var nodes = d3.selectAll(".node")[0];
     var lis = d3.selectAll(".node-li")[0];
 
-    socket.emit("update", d.ind);
-    slowCountdown = 30 + timesteps.length;
-    // socket.emit("update", d.ind, d.voltage);
+    // TODO move this DOWN
+    
+    if (animationFrame) slowCountdown = 20 + buffer.length;
 
+    // Loop through and find the NODE by index
     nodes.forEach(function(n) {
       n = d3.select(n);
       if (n.datum().ind === d.ind) node = n;
     })
 
+    // Loop through and find the LIST ITEM by index
     lis.forEach(function(n) {
       n = d3.select(n);
       if (n.datum().ind === d.ind) li = n;
     })
 
+    // Current selection classes
     var nodeClass = node.attr("class");
     var liClass = li.attr("class");
 
+    // IF ELEMENT WILL NO LONGER BE SELECTED
     if (nodeClass.indexOf("selected") > -1) {
-      node.attr("class", "node");
-      li.attr("class", "node-li g" + d.group);
-      li.select(".slider-wrapper")
-        .remove();
-      li.select(".voltage-label")
-        .remove();
-      
-    } else {
-      node.attr("class", "node selected");
-      li.attr("class", "node-li selected g" + d.group);
-      addSlider(li, i);  
+
+      node.classed("selected",false);
+      li.classed("selected",false);
+      d.inputCurrent = 0.05;
+      socket.emit("update", d.ind, 0);
+      // socket.emit("update", d.ind);
+      removeSlider(li);
+
+    } 
+
+    // IF ELEMENT WILL NOW BE SELECTED
+    else {
+
+      node.classed("selected",true);
+      li.classed("selected",true);
+      socket.emit("update", d.ind, d.inputCurrent);
+      // socket.emit("update", d.ind);
+      addSlider(li);
+
     }
 
-    // How many frames should slow down while things are transitioning
-    if (!stopRun) slowFrames = 30 + timesteps.length;
 
   }
 
+
+  // Initialize the node menu with deselected nodes
   function addNodesToMenu(nodes) {
 
-    var test = d3.nest()
+    // Nest nodes by group
+    var nested = d3.nest()
       .key(function(d) {
         return d.group;
       })
       .entries(nodes);
 
+    // Select the list wrapper and bind the nodes groupings
+    // to unordered lists
     var groupList = d3.select(".node-list-wrapper")
       .selectAll(".node-ul")
-      .data(test)
+      .data(nested)
       .enter()
       .append("ul")
       .attr("class", "node-ul");
 
+    // For each grouping, bind the nodes to list items
     groupList.selectAll(".node-li")
       .data(function(d) {
         return d.values;
@@ -538,18 +590,29 @@ h1 {
       .html(function(d) {
         return d.name;
       })
-      .on("click", selectNode);
+      .on("click", toggleNode);
 
   }
 
 
-  function addSlider(li, i) {
+
+
+  // Remove the slider from a given element
+  function removeSlider(ele) {
+    ele.select(".slider-wrapper")
+      .remove();
+    ele.select(".voltage-label")
+      .remove();
+  }
+
+
+  // Add a slider to the given element
+  function addSlider(li) {
 
     var voltageLabel = li.append("span")
       .attr("class", "voltage-label")
       .html(function(d) {
-        console.log(d)
-        return Math.round(d.voltage * 100) + "k";
+        return Math.round(d.inputCurrent * 100) + "k";
       });
 
     var width = li.node().getBoundingClientRect().width - 7;
@@ -581,7 +644,7 @@ h1 {
 
     var rect = slider.append("rect")
       .attr("x", function(d) {
-        return xScale(d.voltage);
+        return xScale(d.inputCurrent);
       })
       .attr("y", height/2 - 2)
       .attr("width", 10)
@@ -595,23 +658,23 @@ h1 {
       mouseIsDown = true;
       var x = getX(d3.event);
       rect.attr("x", x -5);
-      d.voltage = xScale.invert(x);
-      setLabelText(d.voltage);
+      d.inputCurrent = xScale.invert(x);
+      setLabelText(d.inputCurrent);
     })
     .on("mousemove", function(d) {
       var x = getX(d3.event);
       if (mouseIsDown) {
         rect.attr("x", x -5);
-        d.voltage = xScale.invert(x);
-        setLabelText(d.voltage);
+        d.inputCurrent = xScale.invert(x);
+        setLabelText(d.inputCurrent);
       }
     })
     .on("mouseup", function(d) {
       mouseIsDown = false;
       var x = getX(d3.event);
-      socket.emit("update", d.ind);
-      slowCountdown = 30 + timesteps.length;
-      // socket.emit("update", d.ind, d.voltage);
+      socket.emit("update", d.ind, d.inputCurrent);
+      // socket.emit("update", d.ind);
+      slowCountdown = 20 + buffer.length;
     })
     .on("mouseleave", function() {
       mouseIsDown = false;
@@ -633,7 +696,7 @@ h1 {
   }
 
 
-  function onHover(d) {
+  function onNodeHover(d) {
 
     if (!d) {
       $("#hovered").empty();
@@ -674,7 +737,7 @@ h1 {
 
   <div class="sidebar">
 
-    <h1>C.Elegens Dynome Ver 0.9.0-PreAlpha</h1>
+    <h1>C.Elegens Dynome Ver 0.9.5-Alpha</h1>
     <span id="buffer"></span>
 
     <button id="start">Start</button>
