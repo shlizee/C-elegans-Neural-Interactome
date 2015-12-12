@@ -439,7 +439,7 @@ h1 {
 
       if (buffer.length > 0) {
 
-        slowdown = (slowCountdown < 1 || slowCountdown > 20) ? 0 : 150;
+        slowdown = (slowCountdown < 1 || slowCountdown > 30) ? 0 : 150;
         if (slowCountdown > 0) slowCountdown = slowCountdown - 1;
 
         var timestep = buffer.shift();
