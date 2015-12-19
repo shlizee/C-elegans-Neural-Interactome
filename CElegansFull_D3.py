@@ -18,7 +18,7 @@ from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room
 
 WrittenBy = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '0.9.5-Alpha'
+Version = '1.0.0-Alpha'
 
 # In[2]:
 
@@ -55,7 +55,7 @@ ad = 5.0 # Synaptic activity's decay time
 B = 0.125 # Width of the sigmoid (mv^-1)
 # ----------------------------------------------------------------------------------------------------------------------
 # Input_Mask/Smooth Transtion
-transit_Mat = np.zeros((2,N))
+transit_Mat = np.zeros((2, N))
 t_Tracker = 0
 Iext = 100000
 
@@ -63,8 +63,8 @@ rate = 0.025
 offset = 0.15
 
 stack_Size = 5
-init_data_Mat = np.zeros((stack_Size + 10,N))
-data_Mat = np.zeros((stack_Size,N))
+init_data_Mat = np.zeros((stack_Size + 15, N))
+data_Mat = np.zeros((stack_Size, N))
 
 # In[3]:
 
@@ -207,7 +207,7 @@ def run_Network(t_Delta, atol):
     transit_End = 0.3
     k = 1
     
-    while k < stack_Size + 10:
+    while r.successful() and k < stack_Size + 15:
         
         r.integrate(r.t + dt)
         data = np.subtract(r.y[:N], Vth)
@@ -221,7 +221,7 @@ def run_Network(t_Delta, atol):
         global t_Tracker
         k = 0
         
-        while k < stack_Size:
+        while r.successful() and k < stack_Size:
             
             r.integrate(r.t + dt)
             data = np.subtract(r.y[:N], Vth)
@@ -264,7 +264,7 @@ def test_connect():
 def test_disconnect():
     global transit_Mat 
     global t_Tracker
-    transit_Mat = np.zeros((2,N))
+    transit_Mat = np.zeros((2, N))
     t_Tracker = 0
     print('Client disconnected')
 
@@ -287,13 +287,9 @@ def stopit():
 def resetit():
     #stopit = True
     global t_Tracker
-    global oldMask
-    global newMask
     global transit_Mat
     t_Tracker = 0
-    oldMask = np.zeros(N)
-    newMask = np.zeros(N)
-    transit_Mat = np.zeros((2,N))
+    transit_Mat = np.zeros((2, N))
     
     print('Simulation Resetted')
 

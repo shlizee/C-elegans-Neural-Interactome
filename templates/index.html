@@ -12,7 +12,7 @@ html {
 }
 
 body {
-  background-color: rgb(230,230,230);
+  background-color: rgb(233,233,233);
   padding: 0;
   margin: 0;
   height: 100%;
@@ -62,7 +62,7 @@ h1 {
 
 .node.selected {
   stroke: #fff;
-  stroke-width: 3px;
+  stroke-width: 4px;
 }
 
 .slider-bar {
@@ -106,7 +106,7 @@ h1 {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(0,0,0,0.2);
+  /*background-color: rgba(0,0,0,0.2);*/
   margin-left: 350px;
   pointer-events: none;
 }
@@ -213,9 +213,8 @@ h1 {
   background-color: rgb(220,220,220);
 }
 
-
         </style>
-    <title> Ver 0.9.5-Alpha </title>
+    <title> Ver 1.0.0-Alpha </title>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
@@ -251,8 +250,29 @@ h1 {
     addNodesToMenu(_dataset.nodes);
     initialize(_dataset);
     addNodesToMenu(_dataset.nodes);
-    for (var i = 0; i < 100; i++) force.tick();
-    // force.stop();
+    force.alpha(0.05); // how rapidly it changes when loaded
+    force.tick(); // let it tick once so it adopts the positions
+    window.setTimeout(force.stop, 2000); // stop after 2 seconds
+
+    // TO GENERATE A NEW PERMANENT LAYOUT
+    // comment out window.setTimeout(force.stop, 2000);
+    // keep refreshing page until you see a layout you like
+    // open up the console
+    // paste in the follow command: 
+
+    // JSON.stringify(
+    //   d3.selectAll(".node").data().map(function(d) {
+    //     delete d.px;
+    //     delete d.py;
+    //     delete d.weight;
+    //     d.x = Math.round(+d.x);
+    //     d.y = Math.round(+d.y);
+    //     return d;
+    //   })
+    // );
+    
+    // in "chem.json" replace the node array with the output from the command above
+    // uncomment the stop function
 
   });
 
@@ -490,6 +510,10 @@ h1 {
       });
       $(".node-li.selected").removeClass("selected")
       stop();
+      // reset the input currents
+      _dataset.nodes.forEach(function(d) {
+        d.inputCurrent = 0.05;
+      });
       socket.emit("reset");
     }
 
@@ -567,6 +591,15 @@ h1 {
         return d.group;
       })
       .entries(nodes);
+     
+     // Alphabetize each group divided list of nodes
+     nested.forEach(function(level) {
+       level.values.sort(function(a,b) {
+         if (a.name < b.name) return -1;
+         if (a.name > b.name) return 1;
+         return 0;
+       });
+     });
 
     // Select the list wrapper and bind the nodes groupings
     // to unordered lists
@@ -737,8 +770,8 @@ h1 {
 
   <div class="sidebar">
 
-    <h1>C.Elegens Dynome Ver 0.9.5-Alpha</h1>
-    <span id="buffer"></span>
+    <h1>C.Elegens Dynome-Alpha</h1>
+    <!--<span id="buffer"></span>-->
 
     <button id="start">Start</button>
     <button id="stop">Stop</button>
