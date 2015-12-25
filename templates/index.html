@@ -12,7 +12,7 @@ html {
 }
 
 body {
-  background-color: rgb(233,233,233);
+  background-color: rgb(245,245,245);
   padding: 0;
   margin: 0;
   height: 100%;
@@ -31,24 +31,39 @@ h1 {
   margin: 10px 0 10px;
 }
 
-.voltage-label {
-  float: right;
-  color: #666;
-  font-style: italic;
+button {
+  border-radius: 0;
+  border: none;
+  background-color: white;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #DDD;
 }
+
+button:hover {
+  background-color: #EEE;
+}
+
+
 
 .node {
   stroke: rgb(230,230,230);
-  stroke-width: 1px;
+  stroke-width: 0.7px;
 }
 
 .node:hover {
   stroke-width: 3px;
 }
 
+.node.hidden {
+  fill-opacity: 0.2;
+}
+
 .link {
   stroke: #BBB;
   stroke-opacity: 0.3;
+  transition: stroke-opacity 0.3s ease;
 }
 
 .link.highlighted {
@@ -57,23 +72,13 @@ h1 {
 }
 
 .link.hidden {
-  /*stroke-opacity: 0.1;*/
+  stroke-opacity: 0.2;
 }
 
-.node.selected {
-  stroke: #fff;
-  stroke-width: 4px;
+.timesvg {
+  position: fixed;
 }
 
-.slider-bar {
-  fill: #AAA;
-}
-
-.slider-rect {
-  fill: rgb(245,245,245);
-  /*stroke: rgb(230,230,230);*/
-  /*stroke-width: 1px;*/
-}
 
 .axis {
   font: 10px sans-serif;
@@ -86,8 +91,14 @@ h1 {
   shape-rendering: crispEdges;
 }
 
-.x.axis path {
-  display: none;
+.x.axis .domain {
+  stroke-width: 3;
+  stroke: #333;
+}
+
+.axis .tick line {
+    stroke-width: 3;
+  stroke: #333;
 }
 
 #timer {
@@ -120,13 +131,13 @@ h1 {
   right: 0;
   margin-left: 350px;
   pointer-events: none;
-  margin-top: 15px;
+  margin-top: 0;
   font-size: 18px;
   padding: 10px;
 }
 
 .info-panel h3 {
-  margin-bottom: 5px;
+  margin: 0;
 }
 
 .info-panel ul {
@@ -146,75 +157,172 @@ h1 {
   height: 100%;
 }
 
+/***********************/
+/* sidebar content */
+/***********************/
+
 .sidebar {
   position: fixed;
   width: 350px;
   top: 0;
   bottom: 0;
   left: 0;
-  background-color: rgb(240,240,240);
-  -webkit-box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.1);
+  background-color: rgb(250,250,250);
+  border-right: 1px solid #CCC;
+  /*-webkit-box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.1);
   -moz-box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.1);
-  box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.1);
+  box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.1);*/
   padding: 15px;
 }
 
-.node-list-wrapper {
-  overflow-y: scroll;
-  background-color: rgb(245,245,245);
-  border: 1px solid #DDD;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin-top: 160px;
-  border-top: 2px solid #AAA;
-  border-bottom: 2px solid white;
+  /***********************/
+  /* node list */
+  /***********************/
+  
+  .node-list-wrapper {
+    overflow-y: scroll;
+    background-color: rgb(245,245,245);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-top: 160px;
+    border-top: 1px solid #CCC;
+    border-bottom: 2px solid white;
+  }
+  
+  .node-ul {
+    box-sizing: border-box;
+    padding: 0 5px;
+    list-style: none;
+    width: 33.3%;
+    float: left;
+    font-size: 12px;
+  }
+  
+  .node-li {
+    cursor: pointer;
+    padding: 4px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-top: 1px solid rgb(232,232,232);
+    border-bottom: 1px solid rgb(232,232,232);
+    margin-bottom: -1px;
+  }
+  
+  .node-li:hover {
+    background-color: rgb(235,235,235);
+  }
+  
+  /*group 1 style*/
+  .node-li.g1 {
+    color: rgb(31,119,180);
+  }
+  
+  /*group 2 style*/
+  .node-li.g2 {
+    color: rgb(255,127,14);
+  }
+  
+  /*group 3 style*/
+  .node-li.g3 {
+    color: rgb(156,158,222);
+  }
+  
+  .node-li.selected {
+    color: white;
+  }
+  
+  .node-li.g1.selected {
+    background-color: #8CC3DB;
+    border-top: 2px solid #2179B3;
+    border-bottom: 2px solid white;
+  }
+  
+  .node-li.g2.selected {
+    background-color: #ED9E6E;
+    border-top: 2px solid #D26331;
+    border-bottom: 2px solid white;
+  }
+  
+  .node-li.g3.selected {
+    background-color: #B4B4D8;
+    border-top: 2px solid #7D7FBA;
+    border-bottom: 2px solid white;
+  }
+  
+  .node.selected {
+    stroke: #333333;
+    stroke-width: 4px;
+  }
+  
+  .slider-bar {
+    fill: #AAA;
+  }
+  
+  /*slider bars*/
+  
+  .node-li.g1 rect.slider-bar {
+    fill: #2179B3;
+  }
+  
+  .node-l1.g1 rect.slider-rect {
+    fill: white;
+  }
+  
+  .node-li.g2 rect.slider-bar {
+    fill: #D26331;
+  }
+  
+  .node-l1.g2 rect.slider-rect {
+    fill: #DBDBED;
+  }
+  
+  .node-li.g3 rect.slider-bar {
+    fill: #7D7FBA;
+  }
+  
+  .node-l1.g3 rect.slider-rect {
+    fill: #CFE8F0;
+  }
+  
+  
+  
+  
+  .voltage-label {
+    float: right;
+    /*color: #666;*/
+    font-style: italic;
+  }
+
+  
+  .node-li.selected:hover {
+    background-color: default;
+  }
+
+/***********************/
+/* connection list */
+/***********************/
+
+ul.connections {
+  max-height: 80%;
+  -moz-column-count: 2;
+  -webkit-column-count: 2;
+  column-count: 2;
+  width: 80px;
 }
 
-.node-ul {
-  box-sizing: border-box;
-  padding: 0 5px;
-  list-style: none;
-  width: 33.3%;
-  float: left;
-  font-size: 12px;
+ul.connections li {
+  font-size: 10px;
 }
 
-.node-li {
-  cursor: pointer;
-  padding: 3px;
-}
-
-.node-li:hover {
-  background-color: rgb(235,235,235);
-}
-
-.node-li.g1 {
-  color: rgb(31,119,180);
-}
-
-.node-li.g2 {
-  color: rgb(255,127,14);
-}
-
-.node-li.g3 {
-  color: rgb(156,158,222);
-}
-
-.node-li.selected {
-  background-color: rgb(230,230,230);
-  border-top: 2px solid #BBB;
-  border-bottom: 2px solid white;
-}
-
-.node-li.selected:hover {
-  background-color: rgb(220,220,220);
-}
-
-        </style>
-    <title> Ver 1.0.0-Alpha </title>
+</style>
+    <title> Ver 1.0.0-Beta </title>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
@@ -277,24 +385,63 @@ h1 {
   });
 
   var width = $("#vis").width();
-  height = $("#vis").height();
+  var height = $("#vis").height();
 
   var ocol = d3.scale.ordinal()
     .domain([1, 2, 3])
-    .range(["1f77b4", "ff7f0e", "9c9ede"])
+    .range(["1f77b4", "ff7f0e", "9c9ede"]);
 
   var force = d3.layout.force()
     .charge(-170)
     .linkDistance(70)
     .size([width, height]);
-
-  var svg = d3.select("#vis").append("svg")
+    
+  var timesvg = d3.select("#vis")
+    .append("svg")
+    .attr("class", "timesvg")
     .attr("width", width)
-    .attr("height", height);
+    .attr("height", height)
+    .attr("pointer-events", "none");
 
-  var timescale = d3.scale.linear().domain([0,1]).range([20,width-20]);
+  var outer = d3.select("#vis")
+    .append("svg:svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("pointer-events", "all");
+    
+  var svg = outer
+      .append('svg:g')
+      .call(d3.behavior.zoom()
+        .scaleExtent([0.8, 1.8])
+        .on("zoom", rescale)
+      )
+      .on("dblclick.zoom", null)
+      .append('svg:g');
+      
+  
+  svg.append('svg:rect')
+    .attr('width', width * 2)
+    .attr('height', height * 2)
+    .attr('x', -width/2)
+    .attr('y', -height/2)
+    .attr('fill', 'transparent');
+      
+  function rescale() {
+    trans=d3.event.translate;
+    scale=d3.event.scale;
+    svg.attr("transform",
+        "translate(" + trans + ")"
+        + " scale(" + scale + ")");
+  }
+
+
+  // var svg = d3.select("#vis").append("svg")
+  //   .attr("width", width)
+  //   .attr("height", height);
+
+  var timescale = d3.scale.linear().domain([0,1]).range([20,width-40]);
   var timeaxis = d3.svg.axis().scale(timescale);
-  var timelabel = svg.append("svg:foreignObject")
+  var timelabel = timesvg.append("svg:foreignObject")
     .attr("x", 25)
     .attr("y", height-50)
     .attr("width", 200)
@@ -302,7 +449,7 @@ h1 {
     .style("font-weight", "bold")
     .style("font-size", 12)
 
-  svg.append("g").call(timeaxis).attr("transform","translate(10," + (height-25) + ")")
+  timesvg.append("g").call(timeaxis).attr("transform","translate(10," + (height-25) + ")")
     .attr("class", "x axis");
 
   var stopRun = true;
@@ -343,9 +490,11 @@ h1 {
         onNodeHover(d);
         d3.selectAll(".link")
           .attr("class", function(d1) {
-            if (d1.source.ind === i || d1.target.ind === i) return "link highlighted";
+            if (d1.source.ind === i || d1.target.ind === i) {
+              return "link highlighted";
+            }
             return "link hidden";
-          })
+          });
       })
       .on("mouseout", function(d, i) {
         onNodeHover(false);
@@ -410,7 +559,7 @@ h1 {
 
     function updateAxis(t, transitionDur) {
 
-      timelabel.text("↓ " +  (Math.round(t*100) / 100).toFixed(2) + " seconds")
+      timelabel.text("↓ " +  (Math.round(t*100) / 100).toFixed(2) + " seconds");
 
       timescale.domain([t,t+1]);
       timeaxis.scale(timescale);
@@ -679,10 +828,11 @@ h1 {
       .attr("x", function(d) {
         return xScale(d.inputCurrent);
       })
-      .attr("y", height/2 - 2)
+      .attr("y", height/2 - 4)
       .attr("width", 10)
-      .attr("height", 10)
+      .attr("height", 16)
       .attr("class", "slider-rect")
+      .attr("fill", "white")
 
     //////////////////////////////
     // Drag behavior for rectangle
@@ -770,7 +920,8 @@ h1 {
 
   <div class="sidebar">
 
-    <h1>C.Elegens Dynome-Alpha</h1>
+    <h1>C.Elegens Dynome</h1>
+    <h3>V1.0.0-Beta</h3>
     <!--<span id="buffer"></span>-->
 
     <button id="start">Start</button>
@@ -786,7 +937,7 @@ h1 {
 
   <div class="info-panel">
     <h3 id="hovered"></h3>
-    <ul id="hovered-connections">
+    <ul id="hovered-connections" class="connections">
     </ul>
   </div>
 

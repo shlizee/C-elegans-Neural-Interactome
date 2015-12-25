@@ -12,7 +12,7 @@ from scipy import integrate, signal, sparse, linalg
 
 WrittenBy = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '0.5.0'
+Version = '0.6.0'
 
 # In[2]:
 
@@ -82,14 +82,14 @@ def EffVth():
     global bb
 
     (P, LL, UU) = linalg.lu(M)
-    bb = -b1 - b3
+    bbb = -b1 - b3
+    bb = np.reshape(bbb, N)
 
 def EffVth_rhs(Iext, InMask):
     
     InputMask = np.multiply(Iext, InMask)
     b = np.subtract(bb, InputMask)
     
-    global Vth
     Vth = linalg.solve(UU, linalg.solve(LL, b))
     
     return Vth
@@ -119,8 +119,6 @@ def Neuron(t, y):
     
     # ar*(1-Si)*Sigmoid Computation
       
-    #SynRise = np.multiply(np.multiply(ar, (1.0 - SVec)), 
-                          #np.reciprocal(1.0 + np.exp(-B*(np.subtract(Vvec, VthMat[t*1e3,:])))))
     SynRise = np.multiply(np.multiply(ar, (np.subtract(1.0, SVec))), 
                           np.reciprocal(1.0 + np.exp(-B*(np.subtract(Vvec, Vth)))))
     
@@ -128,7 +126,7 @@ def Neuron(t, y):
     
     # Input Mask
     
-    Input = np.multiply(Iext, InMask_row)
+    Input = np.multiply(Iext, InMask)
     
     # dV and dS and merge them back to dydt
     
@@ -146,27 +144,27 @@ def run_Network(rhs, t_Start, t_Final, t_Delta, input_Mask, input_Magnitude, ato
     t0 = t_Start
     tf = t_Final #2.0 #4.0 #8.0 #16 #32 #64
     dt = t_Delta
-
-    #tVec = np.arange(t0, 2*tf, dt/10)
+    
     global nsteps
+    global InMask
     nsteps = np.floor((tf - t0)/dt) + 1
 
     # Configuring the input mask
     if input_Mask == 'PLM':
 
-        InMask = np.zeros((N, 1))
+        InMask = np.zeros(N)
         InMask[276] = 1
         InMask[278] = 1
     
     elif input_Mask == 'ALM':
         
         InMask = sio.loadmat('ExtMask3.mat')
-        InMask = InMask['Ext3']
+        InMask = np.reshape(InMask['Ext3'], N)
         
     elif input_Mask == 'RMD':
         
         InMask = sio.loadmat('ExtMask2.mat')
-        InMask = InMask['Ext2']
+        InMask = np.reshape(InMask['Ext2'], N)
         
     else:
         
@@ -175,14 +173,10 @@ def run_Network(rhs, t_Start, t_Final, t_Delta, input_Mask, input_Magnitude, ato
     # Input signal magnitude
     global Iext 
     Iext = input_Magnitude
-    #Iext = 1000*signal.square(np.pi*tVec)+1000
     
     #Calculate V_threshold
-    #VthMat = VthFinder(Iext).transpose()
     global Vth 
-    Vth = np.reshape(EffVth_rhs(Iext, InMask), N)
-    global InMask_row 
-    InMask_row = np.reshape(InMask, N)
+    Vth = EffVth_rhs(Iext, InMask)
     
     InitCond = 10**(-4)*np.random.normal(0, 0.94, 2*N)   
          
@@ -191,7 +185,7 @@ def run_Network(rhs, t_Start, t_Final, t_Delta, input_Mask, input_Magnitude, ato
     r.set_initial_value(InitCond, t0)
     
     # Additional Python step to store the trajectories
-    t = np.zeros((nsteps, 1))
+    t = np.zeros(nsteps)
     Traj = np.zeros((nsteps, N))
     
     t[0] = t0
@@ -221,11 +215,7 @@ def run_Network(rhs, t_Start, t_Final, t_Delta, input_Mask, input_Magnitude, ato
 
 def plot_Colormap(Traj):
 
-    Traj = Traj.transpose()
-    #VthMatH = VthMat[:8001]
-
-    VsubVth = np.subtract(Traj, np.tile(Vth, (nsteps, 1)).transpose())
-    #VsubVth = np.subtract(Traj, VthMatH[::10,:].transpose())
+    VsubVth = np.subtract(Traj, np.tile(Vth, (nsteps, 1))).transpose()
 
     # Motor Neurons 
     Nplot = np.array([165, 153, 173, 189, 204, 219, 236, 164, 182, 196, 215, 
@@ -237,54 +227,33 @@ def plot_Colormap(Traj):
     Nplot = np.subtract(Nplot, 1)
 
     Motor_Vth = VsubVth[Nplot, 100:]
-    #Motor_VthT = Motor_Vth.transpose()
-    #Motor_Pure = Traj[Nplot, :]
-
-    # Perform SVD 
-    #U, s, Z = np.linalg.svd(Motor_VthT, full_matrices=True)
-
-    #MM = (np.mat(U[:,0][:,np.newaxis]) * np.mat(Z[:,0]) * s[0]) + (np.mat(U[:,1][:,np.newaxis]) * np.mat(Z[:,1]) * s[1])
-
-    #ZPLM1 = sio.loadmat('ZPLM1.mat')
-    #ZPLM1 = ZPLM1['ZPLM1']
-
-    #ZPLM2 = sio.loadmat('ZPLM2.mat')
-    #ZPLM2 = ZPLM2['ZPLM2']
-
-    # First two dominant modes of motor neurons
-    #U1 = np.matrix(Motor_VthT) * np.matrix(ZPLM1)
-    #U2 = np.matrix(Motor_VthT) * np.matrix(ZPLM2)
     
     fig = plt.figure(figsize=(15,10))
     plt.pcolor(VsubVth[:, 100:], cmap='RdBu')
     plt.colorbar()
     plt.xlim(0, nsteps - 100)
     plt.ylim(0,N)
-    plt.xlabel('Time (10 ms)', fontsize = 12.5)
-    plt.ylabel('Neuron Index Number', fontsize = 12.5)
-    plt.title('C.Elegans Neurons Voltage Dynamics', fontsize = 15)
-    #plt.savefig('CElegansWhole')
+    plt.xlabel('Time (10 ms)', fontsize = 15)
+    plt.ylabel('Neuron Index Number', fontsize = 15)
+    plt.title('C.Elegans Neurons Voltage Dynamics', fontsize = 25)
+    plt.savefig('CElegansWhole')
 
     fig = plt.figure(figsize=(15,10))
     plt.pcolor(Motor_Vth, cmap='RdBu')
     plt.colorbar()
     plt.xlim(0, nsteps - 100)
     plt.ylim(0,len(Nplot))
-    plt.xlabel('Time (10 ms)', fontsize = 12.5)
-    plt.ylabel('Motor Neuron Index Number', fontsize = 12.5)
-    plt.title('C.Elegans Motor Neurons Voltage Dynamics', fontsize = 15)
-    #plt.savefig('CElegansMotor')
+    plt.xlabel('Time (10 ms)', fontsize = 15)
+    plt.ylabel('Motor Neuron Index Number', fontsize = 15)
+    plt.title('C.Elegans Motor Neurons Voltage Dynamics', fontsize = 25)
+    plt.savefig('CElegansMotor')
 
 
 # In[7]:
 
 def plot_DominantModes(Traj, t):
 
-    Traj = Traj.transpose()
-    #VthMatH = VthMat[:8001]
-
-    VsubVth = np.subtract(Traj, np.tile(Vth, (nsteps, 1)).transpose())
-    #VsubVth = np.subtract(Traj, VthMatH[::10,:].transpose())
+    VsubVth = np.subtract(Traj, np.tile(Vth, (nsteps, 1)))
 
     # Motor Neurons 
     Nplot = np.array([165, 153, 173, 189, 204, 219, 236, 164, 182, 196, 215, 
@@ -295,33 +264,21 @@ def plot_DominantModes(Traj, t):
     # Subtract 1 since python matrices have 0 index
     Nplot = np.subtract(Nplot, 1)
 
-    Motor_Vth = VsubVth[Nplot, 100:]
-    Motor_VthT = Motor_Vth.transpose()
-
-    # Non-modified voltage output
-    #Motor_Pure = Traj[Nplot, :]
+    Motor_Vth = VsubVth[100:, Nplot]
 
     # Perform SVD 
-    U, s, Z = np.linalg.svd(Motor_VthT, full_matrices=True)
+    U, s, Z = np.linalg.svd(Motor_Vth, full_matrices=True)
 
     fig = plt.figure(figsize=(9,6))
     plt.plot(t[100:], U[:,0], t[100:], U[:,1], lw = 2)
-    plt.title('Motor Neurons: First Two Dominant Modes Dynamics', fontsize = 10)
+    plt.title('Motor Neurons: First Two Dominant Modes Dynamics', fontsize = 15)
     plt.xlabel('Time (Seconds)')
     plt.show
-    #plt.savefig('MotorNeurons')
+    plt.savefig('MotorNeurons')
 
     fig = plt.figure(figsize=(9,6))
     plt.scatter(U[:,0], U[:,1])
-    plt.title('Phase Space of Two Modes', fontsize = 10)
+    plt.title('Phase Space of Two Modes', fontsize = 15)
     plt.show
-    #plt.savefig('PhaseSpace')
-    
-    #plt.scatter(U1, U2)
-    #plt.show
-    #plt.savefig('PhaseSpace')
-
-    #plt.plot(t[100:], U1, t[100:], U2, lw = 2)
-    #plt.show
-    #plt.savefig('MotorNeurons')
+    plt.savefig('PhaseSpace')
 
