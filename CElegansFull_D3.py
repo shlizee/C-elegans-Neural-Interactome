@@ -16,9 +16,9 @@ from threading import Thread
 from flask import Flask, render_template, session, request
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
 
-WrittenBy = 'Jimin Kim'
+Author = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '1.0.0-Beta'
+Version = '1.0.1-Alpha'
 
 # In[2]:
 
@@ -34,12 +34,12 @@ C = 0.01
 # Gap Junctions (Electrical, 279*279)
 ggap = 1.0
 G = sio.loadmat('Gg.mat')
-Gg = G['Gg']
+Gg_Static = G['Gg']
 # -----------------------------------------------------------------------------------------------------------------------
 # Synaptic connections (Chemical, 279*279)
 gsyn = 1.0
 S = sio.loadmat('Gs.mat')
-Gs = S['Gs']
+Gs_Static = S['Gs']
 # ----------------------------------------------------------------------------------------------------------------------
 # Leakage potential (mV)
 Ec = -35.0 
@@ -54,7 +54,7 @@ ar = 1.0 # Synaptic activity's rise time
 ad = 5.0 # Synaptic activity's decay time
 B = 0.125 # Width of the sigmoid (mv^-1)
 # ----------------------------------------------------------------------------------------------------------------------
-# Input_Mask/Smooth Transtion
+# Input_Mask/Continuous Transtion
 transit_Mat = np.zeros((2, N))
 t_Tracker = 0
 Iext = 100000
@@ -62,12 +62,22 @@ Iext = 100000
 rate = 0.025
 offset = 0.15
 
+# Connectome 3D-array
+connectome_Array = np.zeros((N, N, 2))
+connectome_Array[:, :, 0] = Gg_Static
+connectome_Array[:, :, 1] = Gs_Static
+
+Gg_Dynamic = connectome_Array[:, :, 0]
+Gs_Dynamic = connectome_Array[:, :, 1]
+
+# Data matrix stack size
 stack_Size = 5
 init_data_Mat = np.zeros((stack_Size + 10, N))
 data_Mat = np.zeros((stack_Size, N))
 
 # In[3]:
 
+# Mask transition
 def transit_Mask(ind, percentage):
     
     global t_Switch
@@ -93,8 +103,74 @@ def transit_Mask(ind, percentage):
 def update_Mask(old, new, t, tSwitch):
     
     return np.multiply(old, 0.5-0.5*np.tanh((t-tSwitch)/rate)) + np.multiply(new, 0.5+0.5*np.tanh((t-tSwitch)/rate))
+
+# Ablation
+def modify_Connectome(ind):
+    
+    global Gg_Dynamic
+    global Gs_Dynamic
+    global Vth_Static
+    
+    connectome_Array[:, ind, 0] = 0
+    connectome_Array[ind, :, 0] = 0
+    
+    connectome_Array[:, ind, 1] = 0
+    connectome_Array[ind, :, 1] = 0
+    
+    Gg_Dynamic = connectome_Array[:, :, 0]
+    Gs_Dynamic = connectome_Array[:, :, 1]
+    
+    try:
+        newMask
+    
+    except NameError:
         
-def EffVth():
+        EffVth(Gg_Dynamic, Gs_Dynamic)
+        print "Neuron %s Deactivated" % ind
+        print "EffVth Recalculated"
+        
+    else:
+        
+        EffVth(Gg_Dynamic, Gs_Dynamic)
+        Vth_Static = EffVth_rhs(Iext, newMask)
+        print "Neuron %s Deactivated" % ind
+        print "EffVth Recalculated"
+        print "Vth Recalculated"
+    
+def recover_Connectome(ind):
+    
+    global Gg_Dynamic
+    global Gs_Dynamic
+    global Vth_Static
+    
+    connectome_Array[:, ind, 0] = Gg_Static[:, ind]
+    connectome_Array[ind, :, 0] = Gg_Static[ind, :]
+    
+    connectome_Array[:, ind, 1] = Gs_Static[:, ind]
+    connectome_Array[ind, :, 1] = Gs_Static[ind, :]
+    
+    Gg_Dynamic = connectome_Array[:, :, 0]
+    Gs_Dynamic = connectome_Array[:, :, 1]
+    
+    try:
+        newMask
+    
+    except NameError:
+        
+        EffVth(Gg_Dynamic, Gs_Dynamic)
+        print "Neuron %s Activated" % ind
+        print "EffVth Recalculated"
+        
+    else:
+        
+        EffVth(Gg_Dynamic, Gs_Dynamic)
+        Vth_Static = EffVth_rhs(Iext, newMask)
+        print "Neuron %s Activated" % ind
+        print "EffVth Recalculated"
+        print "Vth Recalculated"
+
+# Efficient V-threshold computation    
+def EffVth(Gg, Gs):
 
     Gcmat = np.multiply(Gc, np.eye(N))
     EcVec = np.multiply(Ec, np.ones((N, 1)))
@@ -138,8 +214,7 @@ def EffVth_rhs(Iext, InMask):
     
     return Vth
 
-# In[1]:
-
+# Right hand side
 def Jimin_RHS(t, y):
     
     # Split the incoming values
@@ -150,11 +225,11 @@ def Jimin_RHS(t, y):
     
     # Gg(Vi - Vj) Computation
     Vrep = np.tile(Vvec, (N, 1))
-    GapCon = np.multiply(Gg, np.subtract(np.transpose(Vrep), Vrep)).sum(axis = 1)
+    GapCon = np.multiply(Gg_Dynamic, np.subtract(np.transpose(Vrep), Vrep)).sum(axis = 1)
     
     # Gs*S*(Vi - Ej) Computation
     VsubEj = np.subtract(np.transpose(Vrep), EMat)
-    SynapCon = np.multiply(np.multiply(Gs, np.tile(SVec, (N, 1))), VsubEj).sum(axis = 1)
+    SynapCon = np.multiply(np.multiply(Gs_Dynamic, np.tile(SVec, (N, 1))), VsubEj).sum(axis = 1)
     
     global InMask
     global Vth
@@ -184,7 +259,7 @@ def Jimin_RHS(t, y):
     
     return np.concatenate((dV, dS))
 
-
+# Simulation initiator
 def run_Network(t_Delta, atol):
     
     dt = t_Delta
@@ -233,7 +308,7 @@ def run_Network(t_Delta, atol):
         
     emit('new data', init_data_Mat.tolist())
     
-EffVth()
+EffVth(Gg_Static, Gs_Static)
         
 # In[5]:
 
@@ -275,6 +350,14 @@ def startRun(t_Delta, atol):
 @socketio.on('update', namespace='/test')
 def update(ind, percentage):
     transit_Mask(ind, percentage)
+    
+@socketio.on('activate', namespace='/test')
+def activate(ind):
+    recover_Connectome(ind)
+    
+@socketio.on('deactivate', namespace='/test')
+def deactivate(ind):
+    modify_Connectome(ind)
 
 @socketio.on("stop", namespace="/test")
 def stopit():
