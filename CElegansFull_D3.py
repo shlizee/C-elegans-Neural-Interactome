@@ -18,7 +18,7 @@ from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room
 
 Author = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '1.0.1-Alpha'
+Version = '1.0.1'
 
 # In[2]:
 
@@ -332,7 +332,7 @@ def index():
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
-    emit('my response', {'data': open("chem.json").read(), 'count': 0})
+    emit('data loaded', {'data': open("chem.json").read(), 'count': 0})
 
 
 @socketio.on('disconnect', namespace='/test')
@@ -364,17 +364,30 @@ def stopit():
     #stopit = True
     global t_Tracker
     t_Tracker = 0
-    print('Simulation stopped')
+    print "Simulation stopped"
     
 @socketio.on("reset", namespace="/test")
 def resetit():
     #stopit = True
     global t_Tracker
     global transit_Mat
+    global Gg_Dynamic
+    global Gs_Dynamic
+    global Vth_Static
+    
     t_Tracker = 0
     transit_Mat = np.zeros((2, N))
     
-    print('Simulation Resetted')
+    connectome_Array[:, :, 0] = Gg_Static
+    connectome_Array[:, :, 1] = Gs_Static
+
+    Gg_Dynamic = connectome_Array[:, :, 0]
+    Gs_Dynamic = connectome_Array[:, :, 1]
+    
+    EffVth(Gg_Dynamic, Gs_Dynamic)
+    
+    print "EffVth Recalculated"
+    print "Simulation Resetted"
 
 if __name__ == '__main__':
     socketio.run(app)
