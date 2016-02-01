@@ -270,7 +270,7 @@ def run_Network(t_Delta, atol):
     r = integrate.ode(Jimin_RHS).set_integrator('vode', atol = atol, min_step = dt*1e-6, method = 'bdf', with_jacobian = True)
     r.set_initial_value(InitCond, 0)
     
-    data_Mat[0, :] = InitCond[:N]
+    init_data_Mat[0, :] = InitCond[:N]
     
     global oldMask
     global t_Switch
