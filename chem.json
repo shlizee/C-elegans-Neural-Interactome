@@ -268,7 +268,7 @@
 {"name":"ALNR","group":1,"degree":2,"ind":266,"voltage":0,"inputCurrent":0.05,"index":266,"x":983,"y":558},
 {"name":"PVCR","group":3,"degree":83,"ind":267,"voltage":0,"inputCurrent":0.05,"index":267,"x":734,"y":493},
 {"name":"PQR","group":1,"degree":5,"ind":268,"voltage":0,"inputCurrent":0.05,"index":268,"x":664,"y":553},
-{"name":"PVR","group":1,"degree":14,"ind":269,"voltage":0,"inputCurrent":0.05,"index":269,"x":811,"y":471},
+{"name":"PVR","group":3,"degree":14,"ind":269,"voltage":0,"inputCurrent":0.05,"index":269,"x":811,"y":471},
 {"name":"PVWL","group":3,"degree":6,"ind":270,"voltage":0,"inputCurrent":0.05,"index":270,"x":647,"y":566},
 {"name":"PVWR","group":3,"degree":2,"ind":271,"voltage":0,"inputCurrent":0.05,"index":271,"x":695,"y":455},
 {"name":"PLNL","group":1,"degree":1,"ind":272,"voltage":0,"inputCurrent":0.05,"index":272,"x":1036,"y":666},

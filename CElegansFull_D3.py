@@ -80,11 +80,7 @@ data_Mat = np.zeros((stack_Size, N))
 # Mask transition
 def transit_Mask(ind, percentage):
     
-    global t_Switch
-    global oldMask
-    global newMask
-    global transit_End
-    global Vth_Static
+    global t_Switch, oldMask, newMask, transit_End, Vth_Static
     
     transit_Mat[0,:] = transit_Mat[1,:]
     
@@ -107,9 +103,7 @@ def update_Mask(old, new, t, tSwitch):
 # Ablation
 def modify_Connectome(ind):
     
-    global Gg_Dynamic
-    global Gs_Dynamic
-    global Vth_Static
+    global Gg_Dynamic, Gs_Dynamic, Vth_Static
     
     connectome_Array[:, ind, 0] = 0
     connectome_Array[ind, :, 0] = 0
@@ -139,9 +133,7 @@ def modify_Connectome(ind):
     
 def recover_Connectome(ind):
     
-    global Gg_Dynamic
-    global Gs_Dynamic
-    global Vth_Static
+    global Gg_Dynamic, Gs_Dynamic, Vth_Static
     
     connectome_Array[:, ind, 0] = Gg_Static[:, ind]
     connectome_Array[ind, :, 0] = Gg_Static[ind, :]
@@ -197,9 +189,7 @@ def EffVth(Gg, Gs):
 
     M = M1 + M2 + M3 
     
-    global LL
-    global UU
-    global bb
+    global LL, UU, bb
 
     (P, LL, UU) = linalg.lu(M)
     bbb = -b1 - b3
@@ -231,8 +221,7 @@ def Jimin_RHS(t, y):
     VsubEj = np.subtract(np.transpose(Vrep), EMat)
     SynapCon = np.multiply(np.multiply(Gs_Dynamic, np.tile(SVec, (N, 1))), VsubEj).sum(axis = 1)
     
-    global InMask
-    global Vth
+    global InMask, Vth
     
     if t <= transit_End:
         
@@ -272,10 +261,7 @@ def run_Network(t_Delta, atol):
     
     init_data_Mat[0, :] = InitCond[:N]
     
-    global oldMask
-    global t_Switch
-    global t_Tracker
-    global transit_End
+    global oldMask, t_Switch, t_Tracker, transit_End
     
     oldMask = np.zeros(N)
     t_Switch = 0
@@ -337,8 +323,7 @@ def test_connect():
 
 @socketio.on('disconnect', namespace='/test')
 def test_disconnect():
-    global transit_Mat 
-    global t_Tracker
+    global transit_Mat, t_Tracker
     transit_Mat = np.zeros((2, N))
     t_Tracker = 0
     print('Client disconnected')
@@ -361,19 +346,13 @@ def deactivate(ind):
 
 @socketio.on("stop", namespace="/test")
 def stopit():
-    #stopit = True
     global t_Tracker
     t_Tracker = 0
     print "Simulation stopped"
     
 @socketio.on("reset", namespace="/test")
 def resetit():
-    #stopit = True
-    global t_Tracker
-    global transit_Mat
-    global Gg_Dynamic
-    global Gs_Dynamic
-    global Vth_Static
+    global t_Tracker, transit_Mat, Gg_Dynamic, Gs_Dynamic, Vth_Static
     
     t_Tracker = 0
     transit_Mat = np.zeros((2, N))
