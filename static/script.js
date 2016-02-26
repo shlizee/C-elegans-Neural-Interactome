@@ -250,6 +250,11 @@
           return Math.round(15 * (Math.pow(d.voltage, 2) / (1 + Math.pow(d.voltage, 2))));
         });
 
+      svg.selectAll(".node")
+        .classed("negative", function(d) {
+          return d.voltage < 0;
+        });
+
     }
 
     function updateAxis(t, transitionDur) {
@@ -377,6 +382,7 @@
     function reset() {
       // deselect all nodes
       node.classed("selected",false);
+      node.classed("negative",false);
       node.classed("deactivated",false);
       $(".node-li.selected").each(function() {
         removeSlider(d3.select(this));

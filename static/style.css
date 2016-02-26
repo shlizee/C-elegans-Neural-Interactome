@@ -70,6 +70,32 @@ button:hover {
   fill: rgb(156,158,222);
 }
 
+.node.g1.negative {
+  fill: rgb(199,21,133);
+  stroke: rgb(31,119,180);
+  stroke-width: 1.7;
+}
+
+.node.g2.negative {
+  fill: rgb(255,215,0);
+  stroke: rgb(255,127,14);
+  stroke-width: 1.7;
+}
+
+.node.g3.negative {
+  fill: rgb(192,192,192);
+  stroke: rgb(156,158,222);
+  stroke-width: 1.7;
+}
+
+.node.g1.negative.selected,
+.node.g2.negative.selected,
+.node.g3.negative.selected {
+  fill: #404;
+}
+
+
+
 .link {
   stroke: #BBB;
   stroke-opacity: 0.3;
