@@ -90,7 +90,7 @@ def EffVth_rhs(Iext, InMask):
     InputMask = np.multiply(Iext, InMask)
     b = np.subtract(bb, InputMask)
     
-    Vth = linalg.solve(UU, linalg.solve(LL, b))
+    Vth = linalg.solve_triangular(UU, linalg.solve_triangular(LL, b, lower = True, check_finite=False), check_finite=False)
     
     return Vth
 

@@ -88,13 +88,23 @@ button:hover {
   stroke-width: 1.7;
 }
 
-.node.g1.negative.selected,
-.node.g2.negative.selected,
-.node.g3.negative.selected {
-  fill: #404;
+.node.g1.negative.selected {
+  fill: rgb(199,21,133);
+  stroke: #404;
+  stroke-width: 4;
 }
 
+.node.g2.negative.selected {
+    fill: rgb(255,215,0);
+  stroke: #404;
+  stroke-width: 4;
+}
 
+.node.g3.negative.selected {
+  fill: rgb(192,192,192);
+  stroke: #404;
+  stroke-width: 4;
+}
 
 .link {
   stroke: #BBB;

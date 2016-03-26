@@ -3,11 +3,10 @@
 
 # In[1]:
 
-import matplotlib.pyplot as plt
 import numpy as np
 import scipy.io as sio
-import time
 
+import time
 import eventlet
 eventlet.monkey_patch() 
 
@@ -200,7 +199,8 @@ def EffVth_rhs(Iext, InMask):
     InputMask = np.multiply(Iext, InMask)
     b = np.subtract(bb, InputMask)
     
-    Vth = linalg.solve(UU, linalg.solve(LL, b))
+    #Vth = linalg.solve(UU, linalg.solve(LL, b))
+    Vth = linalg.solve_triangular(UU, linalg.solve_triangular(LL, b, lower = True, check_finite=False), check_finite=False)
     
     return Vth
 
