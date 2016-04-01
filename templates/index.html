@@ -2,37 +2,114 @@
 <html>
 <head>
 
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href='https://fonts.googleapis.com/css?family=Raleway:300,500,500italic,700,700italic,300italic|Roboto+Condensed:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
 
-  <title> Ver 1.0.1 </title>
-  <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+  <link rel="stylesheet" href="%% url_for('static', filename='style.css') %%">
+
+
+
+  <title> C.Elegans Interactom </title>
+  <!-- // <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-animate.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
-  <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.6.1/lodash.min.js"></script>
 
-  <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
+  <script type="text/javascript" src="%% url_for('static', filename='app.js') %%"></script>
+  <script type="text/javascript" src="%% url_for('static', filename='networkService.js') %%"></script>
+  <script type="text/javascript" src="%% url_for('static', filename='animationService.js') %%"></script>
+  <script type="text/javascript" src="%% url_for('static', filename='menuController.js') %%"></script>
+  <script type="text/javascript" src="%% url_for('static', filename='navController.js') %%"></script>
+  <script type="text/javascript" src="%% url_for('static', filename='slider.js') %%"></script>
+  <script type="text/javascript" src="%% url_for('static', filename='forceDiagram.js') %%"></script>
+  <script type="text/javascript" src="%% url_for('static', filename='timeline.js') %%"></script>
+  <!-- // <script type="text/javascript" src="%% url_for('static', filename='script.js') %%"></script> -->
 
 </head>
-<body>
+<body ng-app="App">
 
-  <div class="vis-wrapper">
-    <div id="vis"></div>
+  <div class="vis-wrapper" force-diagram>
+    <!-- <canvas class="vis" force-diagram></canvas> -->
   </div>
 
-  <div class="sidebar">
+  <navbar class="navbar" ng-controller="navController">
+    <h3>C.Elegens Interactom <small>V2.0.0</small></h3>
+    <ul class="controls" >
+      <li ng-click="start()" ng-hide="isPaused() || isRunning()">
+        <img src="%% url_for('static', filename='images/ic_play_arrow_black_24px.svg') %%"/></li>
+      <li ng-click="resume()" ng-hide="!isPaused()">
+        <img src="%% url_for('static', filename='images/ic_play_arrow_black_24px.svg') %%"/></li>
+      <li ng-click="pause()" ng-show="isRunning() && !isPaused()">
+        <img src="%% url_for('static', filename='images/ic_pause_black_24px.svg') %%"/></li>
+      <li ng-click="stop()">
+        <img src="%% url_for('static', filename='images/ic_stop_black_24px.svg') %%"/></li>
+      <li ng-click="reset()">
+        <img src="%% url_for('static', filename='images/ic_replay_black_24px.svg') %%"/></li>
+    </ul>
+    <ul class="menu">
+      <li>View Legend</li>
+      <li>User Guide</li>
+      <li>About</li>
+    </ul>
+  </navbar>
 
-    <h1>C.Elegens Dynome</h1>
-    <h3>V1.0.1</h3>
-    
-
-    <button id="start">Start</button>
-    <button id="stop">Stop</button>
-    <!-- <button id="resume">Resume</button> -->
-    <button id="reset">Reset</button>
-    <span id="buffer"></span>
+  <div class="sidebar" ng-controller="menuController">
+<!-- 
+    <button ng-click="start()">Start</button>
+    <button ng-click="stop()">Stop</button>
+    <button id="resume">Resume</button>
+    <button ng-click="reset()">Reset</button>
+    <span id="buffer">{{bufferSize()}}</span>
+ -->
 
     <div class="node-list-wrapper">
-
+      <ul class="node-ul"
+        ng-repeat="nodeGroup in nodeGroups() | orderBy:reorderGroup">
+        <li class="node-li"
+          ng-repeat="node in nodeGroup.values | orderBy:'name'"
+          ng-click="liClick(node, $event)"
+          ng-mouseover="hoverStart(node)"
+          ng-mouseleave="hoverEnd(node)"
+          ng-class="[{selected: node.selected, deactivated: !node.activated, hover: node.hovered}, 'g' + node.group]">
+          {{node.name}}
+          <span style="float:right">{{node.inputCurrent*100 | number:0}}k</span>
+          <canvas slider class="slider" ng-if="node.selected"
+            input-current="node.inputCurrent"
+            visible="node.selected"
+            commit-change="newVoltage(node.inputCurrent, node.index)">
+          </canvas>
+        </li>
+      </ul>
     </div>
+
+    <div class="overlay no-click connection-list" ng-hide="!getHoveredConnections().name">
+      <h4>{{getHoveredConnections().name}}</h4>
+      <ul>
+        <li ng-repeat="conn in getHoveredConnections().connections">
+          {{conn}}
+        </li>
+      </ul>
+    </div>
+
+    <div class="overlay no-click" timeline></div>
+
+    <div class="overlay opaque" ng-if="isBuffering()">
+      <div class="cover">
+        <div class="spinner" ng-show="isPaused()">
+          <h2>PAUSED</h2>
+        </div>
+        <div class="spinner" ng-hide="isPaused()">
+          <div class="rect1"></div>
+          <div class="rect2"></div>
+          <div class="rect3"></div>
+          <div class="rect4"></div>
+          <div class="rect5"></div>
+        </div>
+      </div>
+    </div>
+
+    
 
   </div>
 

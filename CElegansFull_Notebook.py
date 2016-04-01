@@ -12,7 +12,7 @@ from scipy import integrate, signal, sparse, linalg
 
 WrittenBy = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '0.6.0'
+Version = '1.1.0'
 
 # In[2]:
 

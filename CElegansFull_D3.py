@@ -17,7 +17,7 @@ from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room
 
 Author = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '1.0.1'
+Version = '1.1.0'
 
 # In[2]:
 
@@ -199,7 +199,6 @@ def EffVth_rhs(Iext, InMask):
     InputMask = np.multiply(Iext, InMask)
     b = np.subtract(bb, InputMask)
     
-    #Vth = linalg.solve(UU, linalg.solve(LL, b))
     Vth = linalg.solve_triangular(UU, linalg.solve_triangular(LL, b, lower = True, check_finite=False), check_finite=False)
     
     return Vth
@@ -303,6 +302,17 @@ app.debug = True
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 thread = None
+
+jinja_options = app.jinja_options.copy()
+jinja_options.update(dict(
+    block_start_string='<%',
+    block_end_string='%>',
+    variable_start_string='%%',
+    variable_end_string='%%',
+    comment_start_string='<#',
+    comment_end_string='#>',
+))
+app.jinja_options = jinja_options
     
 def background_thread():
     while True:
