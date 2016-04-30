@@ -1,6 +1,6 @@
 // controller for the menu
 angular.module("App")
-.controller("menuController", ["$scope", "NetworkService", "$timeout", "AnimationService", function($scope, network, $timeout, animation) {
+.controller("menuController", ["$scope", "NetworkService", "$timeout", "AnimationService", "SocketService", function($scope, network, $timeout, animation, socket) {
 
 	$scope.nodeGroups = network.nodeGroups;
 
@@ -23,6 +23,41 @@ angular.module("App")
 	$scope.reorderGroup = reorderGroup;
 
 	$scope.isPaused = animation.isPaused;
+
+	socket.on("list presets", function(list) {
+		$scope.load.list = list.filter(function(l) {
+			return l.indexOf("json") > -1;
+		}).map(function(l) {
+			return l.replace(".json", "");
+		});
+		$scope.$apply();
+	});
+
+	$scope.save = {
+		name: "",
+		submit: function(nodes) {
+			var hashmap = {}
+			network.nodes().forEach(function(node) {
+				hashmap[node.name] = {
+					activated: node.activated,
+					inputCurrent: node.inputCurrent,
+					selected: node.selected
+				};
+			});
+			socket.emit("save", this.name, JSON.stringify(hashmap));
+			this.name = "";
+		}
+	}
+
+	$scope.load = {
+		list: [],
+		submit: function(name) {
+			socket.emit("load", name);
+		},
+		delete: function(name) {
+			socket.emit("delete", name);
+		}
+	}
 
 	function refresh(){
 		$timeout(function() {

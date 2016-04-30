@@ -10,6 +10,8 @@ angular.module("App")
 
 	var debug = window.location.search.indexOf("debug");
 
+	var frameIndex = 0;
+
 	// Time between frames
 	var animationDelay = 100;
 	// Extra time padded around shifts in voltage
@@ -18,8 +20,7 @@ angular.module("App")
 	// Delays are added to pad input changes
 	var delayQueue = 0;
 
-	// Elapsed "real" time
-	var animationTime = 0;
+	var changeIndices = [];
 
 	// Buffer of voltage data
 	var buffer = [];
@@ -35,12 +36,12 @@ angular.module("App")
 			buffer.push(d);
 		});
 
-		if (buffer.length < maxBufferSize && !isPaused) {
+		if ((buffer.length - frameIndex) <= maxBufferSize && !isPaused) {
 			socket.emit("continue run");
 		} else {
 			var isTabHidden = false;
 			var checkTab = setInterval(function() {
-				if (!document.hidden && !isPaused && buffer.length < maxBufferSize) {
+				if (!document.hidden && !isPaused && (buffer.length - frameIndex) <= maxBufferSize) {
 					if (isRunning) socket.emit("continue run");
 					clearInterval(checkTab);
 				}
@@ -60,6 +61,7 @@ angular.module("App")
 	factory.resume = resume;
 	factory.reset = reset;
 	factory.stop = stop;
+	factory.getFrameIndex = function() { return frameIndex; };
 	factory.isRunning = function() { return isRunning; };
 	factory.hasStarted = function() { return hasStarted; };
 	factory.isBuffering = function() { 
@@ -68,10 +70,16 @@ angular.module("App")
 	factory.isPaused = function() {
 		return isPaused;
 	}
-	factory.animationTime = function(){ return animationTime; };
+	factory.animationTime = function(){ return frameIndex / 100; };
+	factory.setFrame = function(i) { 
+		frameIndex = i; 
+		network.updateData(buffer[frameIndex]); 
+	};
 	factory.getAnimationDelay = getAnimationDelay;
 
 	factory.getBufferSize = getBufferSize;
+
+	factory.getBufferSummary = getBufferSummary;
 
 	return factory;
 
@@ -82,13 +90,14 @@ angular.module("App")
 	}
 
 	function stop() {
-		animationTime = 0;
+		changeIndices = [];
+		frameIndex = 0;
 		isRunning = false;
 		isPaused = false;
 		hasStarted = false;
-		buffer = [];
 		socket.emit("stop");
 		network.updateData(network.nodes());
+		buffer = [];
 	}
 
 	function pause() {
@@ -100,6 +109,7 @@ angular.module("App")
 	}
 
 	function reset() {
+		buffer = [];
 		stop();
 		socket.emit("reset");
 	}
@@ -108,8 +118,29 @@ angular.module("App")
 		return buffer.length;
 	}
 
+	function getBufferSummary() {
+		return buffer.map(function(d,i) {
+			var transition = false;
+			for (var j=0; j<changeIndices.length; j++) {
+				var diff = i - changeIndices[j];
+				if (diff > 0 && diff < 15) {
+					transition = true;
+				}
+			}
+			return { 
+				active: i === frameIndex,
+				transition: transition,
+				change: changeIndices.indexOf(i) > -1
+			}
+		});
+	}
+
 	// What to do every animation frame
 	function animationTick() {
+
+		// if (buffer.length > 100) {
+			// buffer.shift();
+		// }
 
 		if ( debug > -1 ) {
 			var status = "";
@@ -121,13 +152,13 @@ angular.module("App")
 
 		// Check the buffer length
 		// if buffer is empty
-		if (buffer.length < 1 || document.hidden || isPaused) {
+		if ((buffer.length === frameIndex) || document.hidden || isPaused) {
 			isBuffering = true;
 		} else {
 			isBuffering = false;
 			hasStarted = true;
-			network.updateData(buffer.shift());
-			animationTime += 0.01;
+			network.updateData(buffer[frameIndex]);
+			frameIndex++;
 			if (delayQueue > 0) delayQueue--;
 		}
 
@@ -141,7 +172,8 @@ angular.module("App")
 	}
 
 	function onInputChange() {
-		delayQueue = buffer.length + 15;
+		changeIndices.push(buffer.length -1);
+		delayQueue = (buffer.length-frameIndex) + 15;
 	}
 
 }]);

@@ -7,6 +7,8 @@ angular.module("App")
 
 	socket.on("data loaded", initialData);
 
+	socket.on("file loaded", fileLoaded);
+
 	var Factory = {};
 
 	var nodes = [];
@@ -72,9 +74,17 @@ angular.module("App")
       .entries(nodes);
 	}
 
-	function getConnections(node) {
-		console.log(node)
-		console.log(links)
+	function fileLoaded(json) {
+		// nodes = JSON.parse(json);
+		var loaded = JSON.parse(json);
+		nodes.forEach(function(node) {
+			node.activated = loaded[node.name].activated;
+			node.selected = loaded[node.name].selected;
+			node.inputCurrent = loaded[node.name].inputCurrent;
+		});
+		socket.emit("update", nodes.map(function(d) { return d.inputCurrent; }));
+		socket.emit("modify connectome", nodes.map(function(d) { return d.activated; }));
+		$rootScope.$broadcast("new selection");
 	}
 
 	// Set input current to default, 0.05
@@ -99,13 +109,13 @@ angular.module("App")
 			nodes[node.index].inputCurrent = 0.05;
 		}
 		$timeout(function(){
-			socket.emit("update", node.index, node.inputCurrent);
+			socket.emit("update", nodes.map(function(d) { return d.inputCurrent; }));
 		});
 		$rootScope.$broadcast("new selection");
 	}
 
 	function nodeSlide(current, index) {
-		socket.emit("update", index, current);
+		socket.emit("update", nodes.map(function(d) { return d.inputCurrent; }));
 		$rootScope.$broadcast("new selection");
 	}
 
@@ -115,7 +125,8 @@ angular.module("App")
 
 	function nodeShiftClick(node) {
 		nodes[node.index].activated = !nodes[node.index].activated;
-		nodes[node.index].activated ? socket.emit("activate", node.index) : socket.emit("deactivate", node.index);
+		socket.emit("modify connectome", nodes.map(function(d) { return d.activated; }));
+		// nodes[node.index].activated ? socket.emit("activate", node.index) : socket.emit("deactivate", node.index);
 		$rootScope.$broadcast("new selection");
 	}
 

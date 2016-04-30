@@ -7,6 +7,7 @@ import numpy as np
 import scipy.io as sio
 
 import time
+import os
 import eventlet
 eventlet.monkey_patch() 
 
@@ -17,7 +18,7 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, di
 
 Author = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '1.1.0'
+Version = '1.2.0'
 
 # In[2]:
 
@@ -55,37 +56,38 @@ B = 0.125 # Width of the sigmoid (mv^-1)
 # ----------------------------------------------------------------------------------------------------------------------
 # Input_Mask/Continuous Transtion
 transit_Mat = np.zeros((2, N))
+
 t_Tracker = 0
 Iext = 100000
 
 rate = 0.025
 offset = 0.15
 
-# Connectome 3D-array
-connectome_Array = np.zeros((N, N, 2))
-connectome_Array[:, :, 0] = Gg_Static
-connectome_Array[:, :, 1] = Gs_Static
-
-Gg_Dynamic = connectome_Array[:, :, 0]
-Gs_Dynamic = connectome_Array[:, :, 1]
+# Connectome Arrays
+Gg_Dynamic = Gg_Static
+Gs_Dynamic = Gs_Static
 
 # Data matrix stack size
 stack_Size = 5
 init_data_Mat = np.zeros((stack_Size + 10, N))
 data_Mat = np.zeros((stack_Size, N))
 
+# Directory paths for presets
+default_Dir = os.getcwd()
+preset_Dir = default_Dir + '/presets'
+
 # In[3]:
 
 # Mask transition
-def transit_Mask(ind, percentage):
+def transit_Mask(input_Array):
     
     global t_Switch, oldMask, newMask, transit_End, Vth_Static
-    
+
     transit_Mat[0,:] = transit_Mat[1,:]
     
     t_Switch = t_Tracker
     
-    transit_Mat[1,ind] = np.round(percentage, 2)
+    transit_Mat[1,:] = input_Array
         
     oldMask = transit_Mat[0,:]
     newMask = transit_Mat[1,:]
@@ -100,18 +102,17 @@ def update_Mask(old, new, t, tSwitch):
     return np.multiply(old, 0.5-0.5*np.tanh((t-tSwitch)/rate)) + np.multiply(new, 0.5+0.5*np.tanh((t-tSwitch)/rate))
 
 # Ablation
-def modify_Connectome(ind):
+def modify_Connectome(ablation_Array):
     
-    global Gg_Dynamic, Gs_Dynamic, Vth_Static
-    
-    connectome_Array[:, ind, 0] = 0
-    connectome_Array[ind, :, 0] = 0
-    
-    connectome_Array[:, ind, 1] = 0
-    connectome_Array[ind, :, 1] = 0
-    
-    Gg_Dynamic = connectome_Array[:, :, 0]
-    Gs_Dynamic = connectome_Array[:, :, 1]
+    global Vth_Static, Gg_Dynamic, Gs_Dynamic
+
+    apply_Col = np.tile(ablation_Array, (N, 1))
+    apply_Row = np.transpose(apply_Col)
+
+    apply_Mat = np.multiply(apply_Col, apply_Row)
+        
+    Gg_Dynamic = np.multiply(Gg_Static, apply_Mat)
+    Gs_Dynamic = np.multiply(Gs_Static, apply_Mat)
     
     try:
         newMask
@@ -119,44 +120,30 @@ def modify_Connectome(ind):
     except NameError:
         
         EffVth(Gg_Dynamic, Gs_Dynamic)
-        print "Neuron %s Deactivated" % ind
+
+        if np.sum(ablation_Array) != N:
+            
+            print 'Neurons %s are ablated' %np.where(ablation_Array == False)[0]
+
+        else:
+
+            print "All Neurons healthy"
+
         print "EffVth Recalculated"
         
     else:
         
         EffVth(Gg_Dynamic, Gs_Dynamic)
         Vth_Static = EffVth_rhs(Iext, newMask)
-        print "Neuron %s Deactivated" % ind
-        print "EffVth Recalculated"
-        print "Vth Recalculated"
-    
-def recover_Connectome(ind):
-    
-    global Gg_Dynamic, Gs_Dynamic, Vth_Static
-    
-    connectome_Array[:, ind, 0] = Gg_Static[:, ind]
-    connectome_Array[ind, :, 0] = Gg_Static[ind, :]
-    
-    connectome_Array[:, ind, 1] = Gs_Static[:, ind]
-    connectome_Array[ind, :, 1] = Gs_Static[ind, :]
-    
-    Gg_Dynamic = connectome_Array[:, :, 0]
-    Gs_Dynamic = connectome_Array[:, :, 1]
-    
-    try:
-        newMask
-    
-    except NameError:
-        
-        EffVth(Gg_Dynamic, Gs_Dynamic)
-        print "Neuron %s Activated" % ind
-        print "EffVth Recalculated"
-        
-    else:
-        
-        EffVth(Gg_Dynamic, Gs_Dynamic)
-        Vth_Static = EffVth_rhs(Iext, newMask)
-        print "Neuron %s Activated" % ind
+
+        if np.sum(ablation_Array) != N:
+            
+            print 'Neurons %s are ablated' %np.where(ablation_Array == False)[0]
+
+        else:
+
+            print "All Neurons healthy"
+
         print "EffVth Recalculated"
         print "Vth Recalculated"
 
@@ -329,11 +316,12 @@ def index():
 @socketio.on('connect', namespace='/test')
 def test_connect():
     emit('data loaded', {'data': open("chem.json").read(), 'count': 0})
+    emit('list presets', os.listdir(preset_Dir))
 
 
 @socketio.on('disconnect', namespace='/test')
 def test_disconnect():
-    global transit_Mat, t_Tracker
+    global t_Tracker
     transit_Mat = np.zeros((2, N))
     t_Tracker = 0
     print('Client disconnected')
@@ -343,16 +331,12 @@ def startRun(t_Delta, atol):
     run_Network(t_Delta, atol)
     
 @socketio.on('update', namespace='/test')
-def update(ind, percentage):
-    transit_Mask(ind, percentage)
+def update(input_Array):
+    transit_Mask(np.asarray(input_Array))
     
-@socketio.on('activate', namespace='/test')
-def activate(ind):
-    recover_Connectome(ind)
-    
-@socketio.on('deactivate', namespace='/test')
-def deactivate(ind):
-    modify_Connectome(ind)
+@socketio.on('modify connectome', namespace='/test')
+def config_connectome(ablation_Array):
+    modify_Connectome(np.asarray(ablation_Array))
 
 @socketio.on("stop", namespace="/test")
 def stopit():
@@ -362,21 +346,59 @@ def stopit():
     
 @socketio.on("reset", namespace="/test")
 def resetit():
-    global t_Tracker, transit_Mat, Gg_Dynamic, Gs_Dynamic, Vth_Static
+    global t_Tracker, transit_Mat, Gg_Dynamic, Gs_Dynamic
     
     t_Tracker = 0
     transit_Mat = np.zeros((2, N))
-    
-    connectome_Array[:, :, 0] = Gg_Static
-    connectome_Array[:, :, 1] = Gs_Static
 
-    Gg_Dynamic = connectome_Array[:, :, 0]
-    Gs_Dynamic = connectome_Array[:, :, 1]
+    Gg_Dynamic = Gg_Static
+    Gs_Dynamic = Gs_Static
     
     EffVth(Gg_Dynamic, Gs_Dynamic)
     
     print "EffVth Recalculated"
     print "Simulation Resetted"
+
+@socketio.on("save", namespace="/test")
+def save(name, json):
+
+    os.chdir(preset_Dir)
+
+    preset_file = open(name + '.json', "w")  
+    preset_file.write(json)
+    preset_file.close()
+
+    emit('list presets', os.listdir(preset_Dir))
+
+    print "preset %s saved" %name
+
+    os.chdir(default_Dir)  
+
+@socketio.on("load", namespace="/test")
+def load(name):
+
+    os.chdir(preset_Dir)
+
+    with open(name + '.json', 'r') as preset:
+        data = preset.read()
+
+    emit('file loaded', data)
+
+    print "preset %s loaded" %name
+
+    os.chdir(default_Dir) 
+
+@socketio.on("delete", namespace="/test")
+def delete(name):
+
+    os.chdir(preset_Dir)
+
+    os.remove(name + '.json')
+    emit('list presets', os.listdir(preset_Dir))
+
+    print "preset %s deleted" %name
+
+    os.chdir(default_Dir)
 
 if __name__ == '__main__':
     socketio.run(app)

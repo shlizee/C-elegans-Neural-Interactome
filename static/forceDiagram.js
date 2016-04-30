@@ -41,8 +41,6 @@ angular.module("App")
       scaleCanvas();
 
 
-
-
       ////////////
       // SCALES
       ////////////

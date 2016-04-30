@@ -45,6 +45,11 @@ button:hover {
 /* general components */ 
 /**********************/
 
+.content-block {
+  margin-top: 42px;
+  height: 100%;
+}
+
 .navbar {
   position: fixed;
   width: 100%;
@@ -116,7 +121,7 @@ button:hover {
 }
 
 .overlay.opaque {
-  background: rgba(245,245,245,0.5);
+  /*background: rgba(245,245,245,0.5);*/
 }
 
 
@@ -144,30 +149,51 @@ button:hover {
 
 /*group 1 style*/
 .node.g1 {
-  fill: rgb(31,119,180);
+  fill: #00008b;
 }
 
 /*group 2 style*/
 .node.g2 {
-  fill: rgb(255,127,14);
+  fill: #d90000;
 }
 
 /*group 3 style*/
 .node.g3 {
-  fill: rgb(156,158,222);
+  fill: #005f30;
 }
 
 .node.g1.negative {
-  fill: #c71585;
+  fill: #8b8bff;
 }
 
 .node.g2.negative {
-  fill: #ffc200; 
+  fill: #ff7777; 
 }
 
 .node.g3.negative {
-  fill: #a7a7a7;
+  fill: #00e876;
 }
+
+.frame-square {
+  fill: #ccc;
+}
+
+.frame-square.transition {
+  fill: #aaa;
+}
+
+.frame-square.change {
+  fill: #000;
+}
+
+.frame-square.active {
+  fill: orange;
+}
+
+.frame-square:hover {
+  opacity: 0.2;
+}
+
 
 .link {
   stroke: #BBB;
@@ -225,7 +251,6 @@ button:hover {
 
 .vis-wrapper {
   height: 100%;
-  margin-top: 42px;
   margin-left: 325px;
 }
 
@@ -298,6 +323,124 @@ canvas.vis {
   padding: 15px;
 }
 
+/***********************/
+/* save menu */
+/***********************/
+
+.save-menu {
+  background: white;
+  border-bottom: 1px solid #ccc;
+  padding: 5px;
+}
+
+.save-menu input {
+  border: 1px solid white;
+  border-left: 1px solid #ddd;
+  box-sizing: border-box;
+  padding: 8px;
+  width: 100px;
+  outline: 0;
+  /*border-right: 1px solid #eee;*/
+}
+
+.save-menu input:focus {
+  border: 1px solid #64B5F6;
+}
+
+.save-menu button {
+  border: none;
+  text-transform: uppercase;
+}
+
+.save-menu button:disabled {
+  background: #eee;
+}
+
+/***********************/
+/* dropdown */
+/***********************/
+
+.dropdown {
+  display: inline-block;
+  user-select: none;
+  cursor: pointer;
+}
+
+.dropdown-header {
+  background: white;
+  display: inline-block;
+  position: relative;
+  padding-right: 12px;
+  /*pointer-events: none;*/
+  user-select: none;
+}
+
+.dropdown-header:hover {
+  background: #eee;
+}
+
+.dropdown-header:active {
+  background: #bbb;
+}
+
+.dropdown-header button {
+  background: none;
+  cursor: pointer;
+  pointer-events: none;
+  user-select: none;
+}
+
+.dropdown-header button:hover {
+  background: none;
+}
+
+.dropdown-header i {
+    position: absolute;
+    right: 3px;
+    top: 5px;
+    font-size: 18px;
+    /* background: white; */
+    /* display: inline-block; */
+    font-weight: 500;
+    /* margin-top: 5px; */
+    margin-bottom: -5px;
+}
+
+.dropdown ul.dropdown-body {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    margin-top: 2px;
+    cursor: pointer;
+}
+
+.dropdown ul.dropdown-body li {
+    min-width: 100px;
+    font-size: 13px;
+    position: relative;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: -1px;
+}
+
+.dropdown ul.dropdown-body li span {
+    padding: 7px;
+    padding-right: 20px;
+    display: block;
+}
+
+.dropdown ul.dropdown-body li:hover {
+    background: #eee;
+}
+
+.dropdown ul.dropdown-body li i {
+    font-size: 13px;
+    position: absolute;
+    right: 4px;
+    top: 8px;
+}
+
   /***********************/
   /* node list */
   /***********************/
@@ -345,38 +488,38 @@ canvas.vis {
   
   /*group 1 style*/
   .node-li.g1 {
-    color: rgb(31,119,180);
+    color: #00008b;
   }
   
   /*group 2 style*/
   .node-li.g2 {
-    color: rgb(255,127,14);
+    color: #d90000;
   }
-  
+
   /*group 3 style*/
   .node-li.g3 {
-    color: rgb(156,158,222);
+    color: #005f30;
   }
   
   .node-li.selected {
     color: white;
   }
-  
+
   .node-li.g1.selected {
-    background-color: #8CC3DB;
-    border-top: 2px solid #2179B3;
+    background-color: #8b8bff;
+    border-top: 2px solid #999;
     border-bottom: 2px solid white;
   }
   
   .node-li.g2.selected {
-    background-color: #ED9E6E;
-    border-top: 2px solid #D26331;
+    background-color: #ff7777;
+    border-top: 2px solid #999;
     border-bottom: 2px solid white;
   }
   
   .node-li.g3.selected {
-    background-color: #B4B4D8;
-    border-top: 2px solid #7D7FBA;
+    background-color: #00e876; 
+    border-top: 2px solid #999;
     border-bottom: 2px solid white;
   }
 
@@ -403,15 +546,15 @@ canvas.vis {
   /*slider bars*/
   
   .node-li.g1 canvas.slider {
-    background-color: #2179B3;
+    background-color: #00008b;
   }
   
   .node-li.g2 canvas.slider {
-    background-color: #D26331;
+    background-color: #d90000;
   }
 
   .node-li.g3 canvas.slider {
-    background-color: #7D7FBA;
+    background-color: #005f30;
   }
   
   
