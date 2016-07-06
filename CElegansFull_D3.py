@@ -29,7 +29,7 @@ N = 279
 Gc = 0.1
 #------------------------------------------------------------------------------------------------------------------------
 # Cell Membrane Capacitance
-C = 0.01
+C = 0.015
 # -----------------------------------------------------------------------------------------------------------------------
 # Gap Junctions (Electrical, 279*279)
 ggap = 1.0
@@ -46,12 +46,12 @@ Ec = -35.0
 # ----------------------------------------------------------------------------------------------------------------------
 # Directionality (279*1)
 E = sio.loadmat('Emask.mat')
-E = -45.0*E['E']
+E = -48.0*E['E']
 EMat = np.tile(np.reshape(E, N), (N, 1))
 # ----------------------------------------------------------------------------------------------------------------------
 # Synaptic Activity Parameters 
-ar = 1.0 # Synaptic activity's rise time
-ad = 5.0 # Synaptic activity's decay time
+ar = 1.0/1.5 # Synaptic activity's rise time
+ad = 5.0/1.5 # Synaptic activity's decay time
 B = 0.125 # Width of the sigmoid (mv^-1)
 # ----------------------------------------------------------------------------------------------------------------------
 # Input_Mask/Continuous Transtion
@@ -209,7 +209,7 @@ def Jimin_RHS(t, y):
     
     global InMask, Vth
     
-    if t <= transit_End:
+    if t >= t_Switch and t <= transit_End:
         
         InMask = update_Mask(oldMask, newMask, t, t_Switch + offset)
         Vth = EffVth_rhs(Iext, InMask)
@@ -249,6 +249,7 @@ def run_Network(t_Delta, atol):
     
     global oldMask, t_Switch, t_Tracker, transit_End
     
+    #oldMask = newMask
     oldMask = np.zeros(N)
     t_Switch = 0
     transit_End = 0.3

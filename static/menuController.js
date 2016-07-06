@@ -18,11 +18,11 @@ angular.module("App")
 
 	$scope.isBuffering = animation.isBuffering;
 
-	$scope.getHoveredConnections = network.getHoveredConnections;
-
 	$scope.reorderGroup = reorderGroup;
 
 	$scope.isPaused = animation.isPaused;
+
+	$scope.pauseMessage = animation.pauseMessage;
 
 	socket.on("list presets", function(list) {
 		$scope.load.list = list.filter(function(l) {
@@ -60,10 +60,13 @@ angular.module("App")
 	}
 
 	function refresh(){
+		console.log($scope.hoveredConnections())
 		$timeout(function() {
 			$scope.nodeGroups = network.nodeGroups;
 		});
 	}
+
+	$scope.hoveredConnections = network.getHoveredConnections;
 
 	function liClick(node, $event) {
 		if ($event.shiftKey) {
@@ -88,4 +91,3 @@ angular.module("App")
 	}
 
 }]);
-

@@ -8,6 +8,8 @@ angular.module("App")
 	var isBuffering = false;
 	var isPaused = false;
 
+	var pauseMessage = "";
+
 	var debug = window.location.search.indexOf("debug");
 
 	var frameIndex = 0;
@@ -30,6 +32,7 @@ angular.module("App")
 	// Then load some more
 	socket.on("new data", function(data) {
 
+		// Prevents polluting the buffer with old data
 		if (!isRunning) return;
 
 		data.forEach(function(d) {
@@ -54,6 +57,20 @@ angular.module("App")
 	$rootScope.$on("new selection", onInputChange);
 	$rootScope.$on("input changed", onInputChange);
 
+	document.onkeydown = function(e) {
+		if (buffer.length === 0) return;
+	    e = e || window.event;
+	    // console.log(e.which || e.keyCode)
+	    switch(e.which || e.keyCode) {
+	    	 case 37: // left
+        		frameIndex = Math.max(0, frameIndex-2);
+        		network.updateData(buffer[frameIndex]);
+        	 case 39: // right
+        	 	frameIndex = Math.min(buffer.length-1, frameIndex+1);
+        	 	network.updateData(buffer[frameIndex]);
+	    }
+	}
+
 	var factory = {}
 
 	factory.start = start;
@@ -77,6 +94,10 @@ angular.module("App")
 	};
 	factory.getAnimationDelay = getAnimationDelay;
 
+	factory.pauseMessage = function() {
+		return pauseMessage;
+	}
+
 	factory.getBufferSize = getBufferSize;
 
 	factory.getBufferSummary = getBufferSummary;
@@ -90,18 +111,19 @@ angular.module("App")
 	}
 
 	function stop() {
-		changeIndices = [];
 		frameIndex = 0;
 		isRunning = false;
 		isPaused = false;
 		hasStarted = false;
 		socket.emit("stop");
 		network.updateData(network.nodes());
+		changeIndices = [];
 		buffer = [];
 	}
 
-	function pause() {
+	function pause(message) {
 		isPaused = true;
+		pauseMessage = message ? "" : "Paused";
 	}
 
 	function resume() {
@@ -119,27 +141,32 @@ angular.module("App")
 	}
 
 	function getBufferSummary() {
-		return buffer.map(function(d,i) {
-			var transition = false;
-			for (var j=0; j<changeIndices.length; j++) {
-				var diff = i - changeIndices[j];
-				if (diff > 0 && diff < 15) {
-					transition = true;
-				}
-			}
-			return { 
-				active: i === frameIndex,
-				transition: transition,
-				change: changeIndices.indexOf(i) > -1
-			}
-		});
+		return {
+			changes: changeIndices,
+			nFrames: buffer.length,
+			frame: frameIndex
+		}
+		// return buffer.map(function(d,i) {
+		// 	var transition = false;
+		// 	for (var j=0; j<changeIndices.length; j++) {
+		// 		var diff = i - changeIndices[j];
+		// 		if (diff > 0 && diff < 15) {
+		// 			transition = true;
+		// 		}
+		// 	}
+		// 	return { 
+		// 		active: i === frameIndex,
+		// 		transition: transition,
+		// 		change: changeIndices.indexOf(i) > -1
+		// 	}
+		// });
 	}
 
 	// What to do every animation frame
 	function animationTick() {
 
-		// if (buffer.length > 100) {
-			// buffer.shift();
+		// if (buffer.length > 1500) {
+		// 	pause("Animation stopped after 2000 frames");
 		// }
 
 		if ( debug > -1 ) {
@@ -172,7 +199,8 @@ angular.module("App")
 	}
 
 	function onInputChange() {
-		changeIndices.push(buffer.length -1);
+		changeIndices.push(buffer.length);
+		changeIndices = _.uniq(changeIndices);
 		delayQueue = (buffer.length-frameIndex) + 15;
 	}
 

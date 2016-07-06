@@ -45,15 +45,27 @@
         <img src="%% url_for('static', filename='images/ic_stop_black_24px.svg') %%"/></li>
       <li ng-click="reset()">
         <img src="%% url_for('static', filename='images/ic_replay_black_24px.svg') %%"/></li>
+      </li>
     </ul>
     <ul class="menu">
       <!-- <li>Visualization</li> -->
-      <!-- <li>User Guide & Legend</li> -->
+      <li ng-click="legend=!legend">User Guide & Legend</li>
     </ul>
+    <div class="full-overlay" ng-show="legend" ng-click="legend = false">
+      <section class="text-content">
+
+        <h2>Legend</h2>
+        <img style="width:60%;margin:30px auto;display:block" src="%% url_for('static', filename='images/legend.svg') %%"/></li>
+
+        <h2>User Guide</h2>
+        <p>In progress.</p>
+
+      </section>
+    </div>
   </navbar>
 
   <div class="content-block" ng-show="false">
-  SOME STUFF HERE
+  <!-- SOME STUFF HERE -->
   </div>
 
   <div class="content-block" ng-show="true">
@@ -94,21 +106,22 @@
         </ul>
       </div>
 
-        
-      <div class="overlay no-click connection-list" ng-hide="!getHoveredConnections().name">
-        <h4>{{getHoveredConnections().name}}</h4>
+
+      <div class="overlay no-click connection-list" ng-hide="!hoveredConnections().name">
+        <h4 class="header" >{{hoveredConnections().name}}</h4>
+        <h5 class="subheader">{{hoveredConnections().voltage | number:4}} V</h5>
         <ul>
-          <li ng-repeat="conn in getHoveredConnections().connections">
-            {{conn}}
+          <li ng-repeat="conn in hoveredConnections().connections | orderBy : ['group', 'name']" ng-class="'g' + conn.group">
+            {{conn.name.trim()}}
           </li>
         </ul>
       </div>
 
       <div class="overlay opaque no-click" ng-if="isBuffering()">
         <div class="cover">
-          <div class="spinner" ng-show="isPaused()">
-            <h2>PAUSED</h2>
-          </div>
+      <!--     <div class="spinner" ng-show="isPaused()">
+            <h2>{{pauseMessage()}}</h2>
+          </div> -->
           <div class="spinner" ng-hide="isPaused()">
             <div class="rect1"></div>
             <div class="rect2"></div>
@@ -131,7 +144,7 @@
 
 
   </div>
-  
+
 
 </body>
 </html>

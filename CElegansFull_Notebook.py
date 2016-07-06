@@ -23,7 +23,7 @@ N = 279
 Gc = 0.1
 #------------------------------------------------------------------------------------------------------------------------
 # Cell Membrane Capacitance
-C = 0.01
+C = 0.015
 # -----------------------------------------------------------------------------------------------------------------------
 # Gap Junctions (Electrical, 279*279)
 ggap = 1.0
@@ -40,12 +40,12 @@ Ec = -35.0
 # ----------------------------------------------------------------------------------------------------------------------
 # Directionality (279*1)
 E = sio.loadmat('Emask.mat')
-E = -45.0*E['E']
+E = -48.0*E['E']
 EMat = np.tile(np.reshape(E, N), (N, 1))
 # ----------------------------------------------------------------------------------------------------------------------
 # Synaptic Activity Parameters 
-ar = 1.0 # Synaptic activity's rise time
-ad = 5.0 # Synaptic activity's decay time
+ar = 1.0/1.5 # Synaptic activity's rise time
+ad = 5.0/1.5 # Synaptic activity's decay time
 B = 0.125 # Width of the sigmoid (mv^-1)
 
 # In[3]:
@@ -138,7 +138,7 @@ def Neuron(t, y):
 
 # In[5]:
 
-def run_Network(rhs, t_Start, t_Final, t_Delta, input_Mask, input_Magnitude, atol):
+def run_Network(rhs, t_Start, t_Final, t_Delta, input_Mask, atol):
     
     # Time Range of Simulation
     t0 = t_Start
@@ -149,30 +149,11 @@ def run_Network(rhs, t_Start, t_Final, t_Delta, input_Mask, input_Magnitude, ato
     global InMask
     nsteps = np.floor((tf - t0)/dt) + 1
 
-    # Configuring the input mask
-    if input_Mask == 'PLM':
-
-        InMask = np.zeros(N)
-        InMask[276] = 1
-        InMask[278] = 1
-    
-    elif input_Mask == 'ALM':
-        
-        InMask = sio.loadmat('ExtMask3.mat')
-        InMask = np.reshape(InMask['Ext3'], N)
-        
-    elif input_Mask == 'RMD':
-        
-        InMask = sio.loadmat('ExtMask2.mat')
-        InMask = np.reshape(InMask['Ext2'], N)
-        
-    else:
-        
-        InMask = input_Mask
+    InMask = input_Mask
     
     # Input signal magnitude
     global Iext 
-    Iext = input_Magnitude
+    Iext = 100000
     
     #Calculate V_threshold
     global Vth 
@@ -236,7 +217,7 @@ def plot_Colormap(Traj):
     plt.xlabel('Time (10 ms)', fontsize = 15)
     plt.ylabel('Neuron Index Number', fontsize = 15)
     plt.title('C.Elegans Neurons Voltage Dynamics', fontsize = 25)
-    plt.savefig('CElegansWhole')
+    #plt.savefig('CElegansWhole')
 
     fig = plt.figure(figsize=(15,10))
     plt.pcolor(Motor_Vth, cmap='RdBu')
@@ -246,7 +227,7 @@ def plot_Colormap(Traj):
     plt.xlabel('Time (10 ms)', fontsize = 15)
     plt.ylabel('Motor Neuron Index Number', fontsize = 15)
     plt.title('C.Elegans Motor Neurons Voltage Dynamics', fontsize = 25)
-    plt.savefig('CElegansMotor')
+    #plt.savefig('CElegansMotor')
 
 
 # In[7]:
@@ -274,11 +255,11 @@ def plot_DominantModes(Traj, t):
     plt.title('Motor Neurons: First Two Dominant Modes Dynamics', fontsize = 15)
     plt.xlabel('Time (Seconds)')
     plt.show
-    plt.savefig('MotorNeurons')
+    #plt.savefig('MotorNeurons')
 
     fig = plt.figure(figsize=(9,6))
     plt.scatter(U[:,0], U[:,1])
     plt.title('Phase Space of Two Modes', fontsize = 15)
     plt.show
-    plt.savefig('PhaseSpace')
+    #plt.savefig('PhaseSpace')
 

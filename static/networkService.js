@@ -16,6 +16,9 @@ angular.module("App")
 	var nodeGroups = [];
 	var initialDegrees = [];
 
+	var _hovered;
+	var _isHovered;
+
 	Factory.nodeClick = nodeClick;
 	Factory.nodeShiftClick = nodeShiftClick;
 	Factory.nodeHoverStart = nodeHoverStart;
@@ -39,6 +42,7 @@ angular.module("App")
 		nodes.forEach(function(node,i) {
 			node.voltage = data[i];
 		});
+		calcHoveredConnections();
 		$rootScope.$broadcast("data updated");
 	}
 
@@ -132,33 +136,53 @@ angular.module("App")
 
 	function nodeHoverStart(node) {
 		nodes[node.index].hovered = true;
+		_isHovered = true;
+		calcHoveredConnections();
 		$rootScope.$broadcast("new hover", node.name);
 	}
 
 	function nodeHoverEnd(node) {
 		nodes[node.index].hovered = false;
+		_isHovered = false;
+		calcHoveredConnections();
 		$rootScope.$broadcast("new hover", "");
 	}
 
-	function getHoveredConnections() {
+	function calcHoveredConnections() {
+
+		if (!_isHovered) {
+			console.log("NO HOVER");
+			_hovered = {};
+			return;
+		}
 
 		var hovered = nodes.filter(function(d) {
 			return d.hovered;
-		}).map(function(d) {
-			return d.name;
 		})[0];
 
+		if (!hovered) {
+			_hovered = {};
+			return;
+		}
+
 		var connections = _.uniq(links.filter(function(d) {
-			return d.source.name == hovered || d.target.name == hovered;
+			return d.source.name == hovered.name || d.target.name == hovered.name;
 		}).map(function(d) {
-			return (d.source.name + d.target.name).replace(hovered,"");
+			test = [d.source, d.target].filter(function(d) {
+				return d.name !== hovered.name;
+			});
+			return test[0];
 		}));
 
-		return {
-			name: hovered,
-			connections: connections
+		_hovered = {
+			name: hovered.name,
+			connections: connections,
+			voltage: hovered.voltage
 		};
+	}
 
+	function getHoveredConnections() {
+		return _hovered;
 	}
 
 }]);

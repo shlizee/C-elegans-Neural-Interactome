@@ -5,76 +5,43 @@ angular.module("App")
 		restrict: "A",
     link: function(scope, element) {
 
-      var container, axisg, label;
+      var container, axisg, label, bufferGroup, changesGroup, progressGroup;
+
+      var hoverLabel, timeLabel;
+      var timeLabel;
 
       var width, height;
       var margin = 10;
 
       var frameHeight = 10;
 
-      var frameWidth = 2;
+      var frameWidth = 10;
       var nFrames;
       var framesPerRow;
       var nRows = 1;
 
-      function Layout(frameHeight, frameWidth, margin) {
-
-        var width;
-        var height;
-        var nFrames = 0;
-        var nRows = 1;
-        var framesPerRow = 1;
-
-        this.setWidth = function(_width) {
-          width = _width;
-          var availableSpace = width - (margin * 2);
-          framesPerRow = Math.floor(availableSpace / frameWidth);
-          this.setFrames(nRows);
-        }
-
-        this.setHeight = function(_height) {
-          height = _height
-        }
-
-        // Set how many frames are active, which detemines the layout
-        this.setFrames = function(n) {
-          nFrames = n;
-          nRows = Math.ceil(nFrames / framesPerRow);
-        }
-
-        this.getWidth = function() {
-          return frameWidth;
-        }
-
-        this.getHeight = function() {
-          return frameHeight;
-        }
-
-        this.getX = function(i) {
-          var prevRow = Math.floor(i / framesPerRow);
-          var xFrame = i - (prevRow * framesPerRow) ;
-          return margin + (xFrame * frameWidth)
-        }
-
-        this.getY = function(i) {
-          var row = Math.ceil((i+1) / framesPerRow);
-          return (row * (frameHeight + 1));
-        }
-
-        this.offset = function(){
-          // console.log((nRows - 1) * (frameHeight + 1))
-          return (nRows - 1) * (frameHeight + 1);
-        }
-
-      };
-
-      var layout = new Layout(10, 2, 10);
+      var secondScale = d3.scale.linear()
+        .domain([0,1]);
 
       setTimeout(function() {
 
         container = d3.select(element[0]);
 
         axisg = container.select("svg").append("g");
+        bufferGroup = axisg.append("g");
+        changesGroup = axisg.append("g");
+        progressGroup = axisg.append("g");
+
+        hoverLabel = axisg.append("text")
+          .attr("class", "hover-label")
+          .attr("text-anchor", "middle")
+          .attr("y", -9);
+
+        timeLabel = axisg.append("text")
+          .attr("class", "time-label")
+          .attr("text-anchor", "start")
+          .attr("y", -30)
+          .attr("x", 10);
 
         label = axisg.append("text")
           .attr("y", 2)
@@ -90,25 +57,21 @@ angular.module("App")
           .style("font-size","12px")
           .style("fill", "#BBB");
 
-          scope.$watch(function() {
-            return animation.getFrameIndex();
-          }, function(time) {
-            // scale.domain([time,time+1]);
-            tick();
-          });
+        scope.$watch(function() {
+          return animation.getFrameIndex();
+        }, function(time) {
+          // scale.domain([time,time+1]);
+          console.log(time);
+          tick();
+        });
 
         render();
 
       }, 0);
-      
 
-      // var axisg = container.append("svg")
-      //   .attr("class", "axis")
-      //   .append("g");
 
-     
+      var axis = d3.svg.axis().orient("top").ticks(10);
 
-      var axis = d3.svg.axis().orient("bottom").ticks(10);
 
       var scale = d3.scale.linear()
         .domain([0,1]);
@@ -120,105 +83,122 @@ angular.module("App")
         width = +container.style("width").replace("px","");
         height = +container.style("height").replace("px","");
 
-        layout.setWidth(width);
-        layout.setHeight(height);
+        axisg.attr("transform", "translate(0," + (height - 20) + ")");
 
-        scale.range([20, width-20]);
-
-        // d3.select(".axis")
-        //   .attr("width", width)
-        //   .attr('height', height);
+        secondScale.range([20, width-40]);
+        axis.scale(secondScale);
 
         tick();
 
       }
 
+      
+
       function tick() {
 
+        var data = animation.getBufferSummary();
+
+        // Comparing domains
+        var d1 = secondScale.domain();
+
+        // Update domain
+        secondScale.domain([0,Math.max(Math.ceil((data.nFrames)/100),1)]);
+
+        // Comparing domains
+        var d2 = secondScale.domain();
+
+        // Update axis scale
+        axis.scale(secondScale);
+        
+        if (d1[0] !== d2[0] || d1[1] !== d2[1] || d2[1] === 1) {
+          axisg.transition().duration(250).ease("linear").call(axis);
+        }
+        
+        timeLabel.text(data.frame/100);
+        // timeLabel.transition().duration(150).ease("linear").attr("x",secondScale(data.frame/100));
+
+        var buffer = bufferGroup.selectAll(".buffer")
+          .data([data]);
+
+        buffer
+          .enter().append("rect").attr("class","buffer")
+          .attr("y", -1)
+          .attr("height", 8)
+          .attr("x", secondScale(0))
+          .on("mousemove", function() {
+            var frame = Math.floor(secondScale.invert(d3.event.offsetX) * 100);
+            hoverLabel.text(frame/100);
+            hoverLabel.attr("x",d3.event.offsetX)
+            hoverLabel.attr("visibility", "visible")
+            tracker.attr("width", d3.event.offsetX - 20)
+          })
+          .on("mouseout", function() {
+            tracker.attr("width", 0)
+            hoverLabel.attr("visibility", "hidden")
+          })
+          .on("click", function() {
+            var frame = Math.floor(secondScale.invert(d3.event.offsetX) * 100);
+            animation.setFrame(frame);
+          })
+
+        buffer
+          .transition()
+          .duration(150)
+          .ease("linear")
+          .attr("width", secondScale(data.nFrames/100) - secondScale(0))
+
+        buffer.exit().remove();
 
 
-        var data = animation.getBufferSummary()
+        var changes = changesGroup.selectAll(".changes")
+          .data(data.changes);
 
-        layout.setFrames(data.length);
-
-        axisg.attr("transform", "translate(0," + (height - 70 - layout.offset()) + ")");
-
-        label.attr("x", layout.getX(animation.getFrameIndex()));
-
-        var squares = axisg.selectAll(".frame-square")
-          .data(data);
-
-        squares
+        changes
           .enter()
-          .append("rect")
-          .attr("height", layout.getHeight())
-          .attr("width", layout.getWidth())
-          .attr("x", function(d,i) {
-            return layout.getX(i);
+          .append("rect").attr("class", "changes")
+          .attr("y", 8)
+          .attr("height", 5)
+
+        changes
+          .attr("x", function(d) {
+            return secondScale(d/100)
           })
-          .attr("class", "frame-square")
-          .on("mouseover", function(d,i) {
-            label2.attr({
-              x: d3.select(this).attr("x"),
-              visibility: "visible"
-            })
-            .text((Math.round(i)/100) + "s");
+          .attr("width", function(d) {
+            return secondScale(d/100 + 0.15) - secondScale(d/100)
           })
-          .on("mouseout", function(d,i) {
-            label2.attr({
-              visibility: "hidden"
-            });
-          })
+
+        changes.exit().remove();
           
-          // .on("mouseover", function(d,i) {
-          //   d3.select(this).attr({
-          //     y: 0,
-          //     height: frameHeight + 4
-          //   });
-          // })
-          // .on("mouseout", function(d,i) {
-          //   d3.select(this).attr({
-          //     y: 4,
-          //     height: frameHeight
-          //   });
-          // })
-          .on("click", function(d,i) {
-            animation.setFrame(i);
-          });
-          
+        var progress = progressGroup.selectAll(".progress")
+          .data([data]);
 
-        // Add classes
-        squares
-          .attr("y", function(d,i) {
-            return layout.getY(i);
-          })
-          .classed("active", function(d) {
-            return d.active;
-          })
-          .classed("change", function(d) {
-            return d.change;
-          })
-          .classed("transition", function(d) {
-            return d.transition;
-          });
+        progress
+          .enter().append("rect").attr("class","progress")
+          .attr("y", -1)
+          .attr("height", 8)
+          .attr("x", secondScale(0));
 
-        squares.exit()
-          .remove();
+        progress
+          .transition()
+          .duration(150)
+          .ease("linear")
+          .attr("width", secondScale((data.frame)/100) - secondScale(0));
 
-        label.text((Math.round(animation.animationTime()*100)/100) + "s");
+        progress.exit().remove();
 
-        // axis.scale(scale);
-        // axisg.transition()
-        // .duration(animation.getAnimationDelay())
-        // .ease("linear")
-        // .call(axis);
 
-        // d3.selectAll("circle").remove()
 
-        // d3.selectAll(".tick")
-        //   .insert("circle",":first-child")
-        //   .attr("r", 12)
-        //   .attr("cy", 12)
+        var tracker = progressGroup.selectAll(".tracker")
+          .data([data])
+
+        tracker
+          .enter().append("rect").attr("class","tracker")
+          .attr("y", -1)
+          .attr("height", 8)
+          .attr("x", secondScale(0))
+          .attr("width", 0);
+
+        // console.log(data.changes)
 
       }
 
