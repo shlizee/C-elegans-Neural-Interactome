@@ -249,8 +249,8 @@ def run_Network(t_Delta, atol):
     
     global oldMask, t_Switch, t_Tracker, transit_End
     
-    #oldMask = newMask
-    oldMask = np.zeros(N)
+    oldMask = newMask
+    #oldMask = np.zeros(N)
     t_Switch = 0
     transit_End = 0.3
     k = 1
