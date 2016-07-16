@@ -588,7 +588,7 @@ canvas.vis {
   }
   
   .node.selected {
-    stroke: #000000;
+    stroke: #ffd700;
     stroke-width: 4px;
   }
 
