@@ -347,15 +347,19 @@ def stopit():
     
 @socketio.on("reset", namespace="/test")
 def resetit():
-    global t_Tracker, transit_Mat, Gg_Dynamic, Gs_Dynamic
+    global t_Tracker, transit_Mat, Gg_Dynamic, Gs_Dynamic, newMask, oldMask, Vth_Static
     
     t_Tracker = 0
     transit_Mat = np.zeros((2, N))
+
+    oldMask = transit_Mat[0,:]
+    newMask = transit_Mat[1,:]
 
     Gg_Dynamic = Gg_Static
     Gs_Dynamic = Gs_Static
     
     EffVth(Gg_Dynamic, Gs_Dynamic)
+    Vth_Static = EffVth_rhs(Iext, newMask)
     
     print "EffVth Recalculated"
     print "Simulation Resetted"
