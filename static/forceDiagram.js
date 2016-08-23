@@ -62,6 +62,9 @@ angular.module("App")
       scope.$on("reset", function() {
         tickSVG();
       })
+      scope.$on("change links", function() {
+        changeLinks();
+      });
       scope.$on("new hover", function(event, name) {
       	hoveredNodeName = name;
       	tickCanvas();
@@ -100,7 +103,7 @@ angular.module("App")
 		      .links(network.links())
 		      .start();
 
-        setTimeout(force.stop, 4000);
+        // setTimeout(force.stop);
 
       }
 
@@ -225,6 +228,16 @@ angular.module("App")
 					if (d.activated) network.nodeClick(d);
 				}
 			}
+
+      function changeLinks() {
+        force.links(network.links());
+        force.start();
+        force.stop();
+        tick();
+
+        // setTimeout(force.stop, 0);
+        // force.stop();
+      }
 
     }
 	}

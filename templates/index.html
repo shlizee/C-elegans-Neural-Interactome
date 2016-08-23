@@ -49,6 +49,14 @@
     </ul>
     <ul class="menu">
       <!-- <li>Visualization</li> -->
+      <li ng-click="toggleConnectome('gap')">
+        <i class="material-icons radio">radio_button_{{linkOptions.gap.active ? "" : "un"}}checked</i>
+        Gap
+      </li>
+      <li ng-click="toggleConnectome('chem')">
+        <i class="material-icons radio">radio_button_{{linkOptions.chem.active ? "" : "un"}}checked</i>
+        Chem
+      </li>
       <li ng-click="legend=!legend">User Guide & Legend</li>
     </ul>
     <div class="full-overlay" ng-show="legend" ng-click="legend = false">

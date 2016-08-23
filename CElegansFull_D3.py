@@ -316,7 +316,7 @@ def index():
 
 @socketio.on('connect', namespace='/test')
 def test_connect():
-    emit('data loaded', {'data': open("chem.json").read(), 'count': 0})
+    emit('data loaded', {'chem': open("chem.json").read(), 'gap': open("gap.json").read(), 'count': 0})
     emit('list presets', os.listdir(preset_Dir))
 
 

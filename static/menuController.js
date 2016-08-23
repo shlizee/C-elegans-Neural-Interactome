@@ -24,6 +24,11 @@ angular.module("App")
 
 	$scope.pauseMessage = animation.pauseMessage;
 
+
+
+
+
+
 	socket.on("list presets", function(list) {
 		$scope.load.list = list.filter(function(l) {
 			return l.indexOf("json") > -1;

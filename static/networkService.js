@@ -13,11 +13,36 @@ angular.module("App")
 
 	var nodes = [];
 	var links = [];
+
+	var linkOptions = {
+		gap: {
+			active: false,
+			links: []
+		},
+		chem: {
+			active: true,
+			links: []
+		}
+	};
+
 	var nodeGroups = [];
 	var initialDegrees = [];
 
 	var _hovered;
 	var _isHovered;
+
+	Factory.linkOptions = linkOptions;
+	Factory.toggleConnectome = function(option) {
+		if (linkOptions[option].active) {
+			return;
+		}
+		linkOptions.gap.active = linkOptions.chem.active = false;
+		linkOptions[option].active = true;
+
+		links = linkOptions[option].links;
+
+		$rootScope.$broadcast("change links");
+	}
 
 	Factory.nodeClick = nodeClick;
 	Factory.nodeShiftClick = nodeShiftClick;
@@ -34,6 +59,7 @@ angular.module("App")
 	Factory.nodes = function() { return nodes; };
 	Factory.links = function() { return links; };
 	Factory.nodeGroups = function() { return nodeGroups; };
+
 
 	return Factory;
 
@@ -52,20 +78,22 @@ angular.module("App")
 
 		dataLoaded = true;
 
-		data = JSON.parse(data.data);
+		nodes = JSON.parse(data.chem).nodes;
 
-		nodes = data.nodes;
-		links = data.links;
+		linkOptions.gap.links = JSON.parse(data.gap).links;
+		linkOptions.chem.links = JSON.parse(data.chem).links;
 
-    reset()
+		links = linkOptions.chem.links;
 
-    initialDegrees = nodes.map(function(d) {
-      return d.degree;
-    });
+	    reset()
 
-    nestNodes();
+	    initialDegrees = nodes.map(function(d) {
+	      return d.degree;
+	    });
 
-    $rootScope.$broadcast("data loaded");
+	    nestNodes();
+
+	    $rootScope.$broadcast("data loaded");
 
 	}
 

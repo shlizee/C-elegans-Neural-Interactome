@@ -16,6 +16,8 @@ angular.module("App")
 	$scope.isPaused = animation.isPaused;
 	$scope.isRunning = animation.isRunning;
 
+	$scope.linkOptions = network.linkOptions;
+	$scope.toggleConnectome = network.toggleConnectome;
 
 }]);
 

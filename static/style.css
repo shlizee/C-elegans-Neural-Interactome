@@ -60,6 +60,11 @@ button:hover {
   border-bottom: 1px solid #ccc;
 }
 
+.navbar li {
+  cursor: pointer;
+  user-select: none;
+}
+
 .navbar h3 {
   margin: 10px;
   display: inline-block;
@@ -75,6 +80,12 @@ button:hover {
 }
 .navbar li:active {
   background: #ccc;
+}
+
+
+.navbar li i.radio {
+  font-size: 16px;
+  vertical-align: bottom;
 }
 
 .navbar .menu {
@@ -191,7 +202,7 @@ button:hover {
 }
 
 .node.g2.negative {
-  fill: #ff7777; 
+  fill: #ff7777;
 }
 
 .node.g3.negative {
