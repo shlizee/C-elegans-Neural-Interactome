@@ -10,9 +10,9 @@ import time
 
 from scipy import integrate, signal, sparse, linalg
 
-WrittenBy = 'Jimin Kim'
+Author = 'Jimin Kim'
 Email = 'jk55@u.washington.edu'
-Version = '1.1.0'
+Version = '1.2.0'
 
 # In[2]:
 
@@ -28,12 +28,12 @@ C = 0.015
 # Gap Junctions (Electrical, 279*279)
 ggap = 1.0
 G = sio.loadmat('Gg.mat')
-Gg = G['Gg']
+Gg_Static = G['Gg']
 # -----------------------------------------------------------------------------------------------------------------------
 # Synaptic connections (Chemical, 279*279)
 gsyn = 1.0
 S = sio.loadmat('Gs.mat')
-Gs = S['Gs']
+Gs_Static = S['Gs']
 # ----------------------------------------------------------------------------------------------------------------------
 # Leakage potential (mV)
 Ec = -35.0 
@@ -48,9 +48,12 @@ ar = 1.0/1.5 # Synaptic activity's rise time
 ad = 5.0/1.5 # Synaptic activity's decay time
 B = 0.125 # Width of the sigmoid (mv^-1)
 
+Gg_Dynamic = Gg_Static
+Gs_Dynamic = Gs_Static
+
 # In[3]:
 
-def EffVth():
+def EffVth(Gg, Gs):
 
     Gcmat = np.multiply(Gc, np.eye(N))
     EcVec = np.multiply(Ec, np.ones((N, 1)))
@@ -77,9 +80,7 @@ def EffVth():
 
     M = M1 + M2 + M3 
     
-    global LL
-    global UU
-    global bb
+    global LL, UU, bb
 
     (P, LL, UU) = linalg.lu(M)
     bbb = -b1 - b3
@@ -94,7 +95,21 @@ def EffVth_rhs(Iext, InMask):
     
     return Vth
 
-EffVth()
+def modify_Connectome(ablation_Array):
+    
+    global Gg_Dynamic, Gs_Dynamic
+
+    apply_Col = np.tile(ablation_Array, (N, 1))
+    apply_Row = np.transpose(apply_Col)
+
+    apply_Mat = np.multiply(apply_Col, apply_Row)
+        
+    Gg_Dynamic = np.multiply(Gg_Static, apply_Mat)
+    Gs_Dynamic = np.multiply(Gs_Static, apply_Mat)
+        
+    EffVth(Gg_Dynamic, Gs_Dynamic)
+
+EffVth(Gg_Dynamic, Gs_Dynamic)
 
 # In[1]:
 
@@ -111,11 +126,11 @@ def Neuron(t, y):
     # Gg(Vi - Vj) Computation
     
     Vrep = np.tile(Vvec, (N, 1))
-    GapCon = np.multiply(Gg, np.subtract(np.transpose(Vrep), Vrep)).sum(axis = 1)
+    GapCon = np.multiply(Gg_Dynamic, np.subtract(np.transpose(Vrep), Vrep)).sum(axis = 1)
     
     # Gs*S*(Vi - Ej) Computation
     VsubEj = np.subtract(np.transpose(Vrep), EMat)
-    SynapCon = np.multiply(np.multiply(Gs, np.tile(SVec, (N, 1))), VsubEj).sum(axis = 1)
+    SynapCon = np.multiply(np.multiply(Gs_Dynamic, np.tile(SVec, (N, 1))), VsubEj).sum(axis = 1)
     
     # ar*(1-Si)*Sigmoid Computation
       
@@ -147,7 +162,7 @@ def run_Network(rhs, t_Start, t_Final, t_Delta, input_Mask, atol):
     
     global nsteps
     global InMask
-    nsteps = np.floor((tf - t0)/dt) + 1
+    nsteps = int(np.floor((tf - t0)/dt) + 1)
 
     InMask = input_Mask
     
@@ -217,7 +232,7 @@ def plot_Colormap(Traj):
     plt.xlabel('Time (10 ms)', fontsize = 15)
     plt.ylabel('Neuron Index Number', fontsize = 15)
     plt.title('C.Elegans Neurons Voltage Dynamics', fontsize = 25)
-    #plt.savefig('CElegansWhole')
+    plt.savefig('CElegansWhole')
 
     fig = plt.figure(figsize=(15,10))
     plt.pcolor(Motor_Vth, cmap='RdBu')
@@ -225,9 +240,9 @@ def plot_Colormap(Traj):
     plt.xlim(0, nsteps - 100)
     plt.ylim(0,len(Nplot))
     plt.xlabel('Time (10 ms)', fontsize = 15)
-    plt.ylabel('Motor Neuron Index Number', fontsize = 15)
-    plt.title('C.Elegans Motor Neurons Voltage Dynamics', fontsize = 25)
-    #plt.savefig('CElegansMotor')
+    plt.ylabel('Neuron Index Number', fontsize = 15)
+    plt.title('Voltage Dynamics: Motor Neurons', fontsize = 25)
+    plt.savefig('CElegansMotor')
 
 
 # In[7]:
@@ -252,14 +267,39 @@ def plot_DominantModes(Traj, t):
 
     fig = plt.figure(figsize=(9,6))
     plt.plot(t[100:], U[:,0], t[100:], U[:,1], lw = 2)
-    plt.title('Motor Neurons: First Two Dominant Modes Dynamics', fontsize = 15)
+    plt.title('Neural Dynamics: First Two Dominant Modes Dynamics', fontsize = 15)
     plt.xlabel('Time (Seconds)')
     plt.show
-    #plt.savefig('MotorNeurons')
+    plt.savefig('MotorNeurons')
 
     fig = plt.figure(figsize=(9,6))
     plt.scatter(U[:,0], U[:,1])
     plt.title('Phase Space of Two Modes', fontsize = 15)
     plt.show
-    #plt.savefig('PhaseSpace')
+    plt.savefig('PhaseSpace')
+
+
+def plot_Neurons_Voltage(Traj, t, index_Array):
+
+    VsubVth = np.subtract(Traj, np.tile(Vth, (nsteps, 1))).transpose()
+
+    target_Neurons = VsubVth[index_Array, :]
+
+    fig = plt.figure(figsize=(9,6))
+
+    k = 0
+
+    while k < len(index_Array):
+
+        plt.plot(t, target_Neurons[k, :], lw = 2)
+
+        k += 1
+
+    plt.title('Voltage Dynamics', fontsize = 15)
+    plt.xlabel('Time (Seconds)')
+    plt.legend(labels, bbox_to_anchor=(0., 1.02, 1., .102), loc=3)
+    plt.show
+    plt.savefig('Voltage_Dynamics')
+
+
 
