@@ -260,13 +260,15 @@ def plot_DominantModes(Traj, t):
     # Subtract 1 since python matrices have 0 index
     Nplot = np.subtract(Nplot, 1)
 
-    Motor_Vth = VsubVth[100:, Nplot]
+    #Motor_Vth = VsubVth[100:, Nplot]
+    Motor_Vth = VsubVth[50:, Nplot]
 
     # Perform SVD 
     U, s, Z = np.linalg.svd(Motor_Vth, full_matrices=True)
 
     fig = plt.figure(figsize=(9,6))
-    plt.plot(t[100:], U[:,0], t[100:], U[:,1], lw = 2)
+    #plt.plot(t[100:], U[:,0], t[100:], U[:,1], lw = 2)
+    plt.plot(t[50:], U[:,0], t[50:], U[:,1], lw = 2)
     plt.title('Neural Dynamics: First Two Dominant Modes Dynamics', fontsize = 15)
     plt.xlabel('Time (Seconds)')
     plt.show
@@ -283,7 +285,7 @@ def plot_Neurons_Voltage(Traj, t, index_Array):
 
     VsubVth = np.subtract(Traj, np.tile(Vth, (nsteps, 1))).transpose()
 
-    target_Neurons = VsubVth[index_Array, :]
+    target_Neurons = VsubVth[index_Array, 50:]
 
     fig = plt.figure(figsize=(9,6))
 
@@ -291,13 +293,15 @@ def plot_Neurons_Voltage(Traj, t, index_Array):
 
     while k < len(index_Array):
 
-        plt.plot(t, target_Neurons[k, :], lw = 2)
+        plt.plot(t[50:], target_Neurons[k, :], lw = 2)
 
         k += 1
 
+    #labels = ['VB01', 'VB02', 'VB03', 'VB04', 'VB05']
+
     plt.title('Voltage Dynamics', fontsize = 15)
     plt.xlabel('Time (Seconds)')
-    plt.legend(labels, bbox_to_anchor=(0., 1.02, 1., .102), loc=3)
+    #plt.legend(labels, bbox_to_anchor=(0., 1.02, 1., .102), loc=1)
     plt.show
     plt.savefig('Voltage_Dynamics')
 
