@@ -322,10 +322,23 @@ def test_connect():
 
 @socketio.on('disconnect', namespace='/test')
 def test_disconnect():
-    global t_Tracker
-    transit_Mat = np.zeros((2, N))
+    global t_Tracker, transit_Mat, Gg_Dynamic, Gs_Dynamic, newMask, oldMask, Vth_Static
+    
     t_Tracker = 0
-    print('Client disconnected')
+    transit_Mat = np.zeros((2, N))
+
+    oldMask = transit_Mat[0,:]
+    newMask = transit_Mat[1,:]
+
+    Gg_Dynamic = Gg_Static
+    Gs_Dynamic = Gs_Static
+    
+    EffVth(Gg_Dynamic, Gs_Dynamic)
+    Vth_Static = EffVth_rhs(Iext, newMask)
+    
+    print "EffVth Recalculated"
+    print "Simulation Resetted"
+    print "Client disconnected"
 
 @socketio.on('startRun', namespace='/test')
 def startRun(t_Delta, atol):
@@ -406,5 +419,5 @@ def delete(name):
     os.chdir(default_Dir)
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, host = '0.0.0.0')
 
