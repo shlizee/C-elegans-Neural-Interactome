@@ -1,60 +1,55 @@
 
 # coding: utf-8
 
-# In[1]:
+import time
+import os
 
 import numpy as np
 import scipy.io as sio
 
-import time
-import os
 import eventlet
-eventlet.monkey_patch() 
+eventlet.monkey_patch()
 
 from scipy import integrate, signal, sparse, linalg
 from threading import Thread
 from flask import Flask, render_template, session, request
 from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
 
-Author = 'Jimin Kim'
-Email = 'jk55@u.washington.edu'
-Version = '1.2.0'
+author = 'Jimin Kim'
+email = 'jk55@u.washington.edu'
+version = '1.2.0'
 
-# In[2]:
-
-# Number of Neurons 
+""" Number of Neurons """
 N = 279
-# ----------------------------------------------------------------------------------------------------------------------
-# Cell membrane conductance (pS)
+
+""" Cell membrane conductance (pS) """
 Gc = 0.1
-#------------------------------------------------------------------------------------------------------------------------
-# Cell Membrane Capacitance
+
+""" Cell Membrane Capacitance """
 C = 0.015
-# -----------------------------------------------------------------------------------------------------------------------
-# Gap Junctions (Electrical, 279*279)
+
+""" Gap Junctions (Electrical, 279*279) """
 ggap = 1.0
-G = sio.loadmat('Gg.mat')
-Gg_Static = G['Gg']
-# -----------------------------------------------------------------------------------------------------------------------
-# Synaptic connections (Chemical, 279*279)
+Gg_Static = np.load('Gg.npy')
+
+""" Synaptic connections (Chemical, 279*279) """
 gsyn = 1.0
-S = sio.loadmat('Gs.mat')
-Gs_Static = S['Gs']
-# ----------------------------------------------------------------------------------------------------------------------
-# Leakage potential (mV)
-Ec = -35.0 
-# ----------------------------------------------------------------------------------------------------------------------
-# Directionality (279*1)
-E = sio.loadmat('Emask.mat')
-E = -48.0*E['E']
+Gs_Static = np.load('Gs.npy')
+
+""" Leakage potential (mV) """
+Ec = -35.0
+
+""" Directionality (279*1) """
+E = np.load('emask.npy')
+E = -48.0 * E
 EMat = np.tile(np.reshape(E, N), (N, 1))
-# ----------------------------------------------------------------------------------------------------------------------
-# Synaptic Activity Parameters 
+
+""" Synaptic Activity Parameters """
 ar = 1.0/1.5 # Synaptic activity's rise time
 ad = 5.0/1.5 # Synaptic activity's decay time
 B = 0.125 # Width of the sigmoid (mv^-1)
-# ----------------------------------------------------------------------------------------------------------------------
-# Input_Mask/Continuous Transtion
+
+""" Input_Mask/Continuous Transtion """
 transit_Mat = np.zeros((2, N))
 
 t_Tracker = 0
@@ -63,66 +58,65 @@ Iext = 100000
 rate = 0.025
 offset = 0.15
 
-# Connectome Arrays
+""" Connectome Arrays """
 Gg_Dynamic = Gg_Static
 Gs_Dynamic = Gs_Static
 
-# Data matrix stack size
+""" Data matrix stack size """
 stack_Size = 5
 init_data_Mat = np.zeros((stack_Size + 10, N))
 data_Mat = np.zeros((stack_Size, N))
 
-# Directory paths for presets
+""" Directory paths for presets """
 default_Dir = os.getcwd()
 preset_Dir = default_Dir + '/presets'
 
-# In[3]:
 
-# Mask transition
+""" Mask transition """
 def transit_Mask(input_Array):
-    
+
     global t_Switch, oldMask, newMask, transit_End, Vth_Static
 
     transit_Mat[0,:] = transit_Mat[1,:]
-    
+
     t_Switch = t_Tracker
-    
+
     transit_Mat[1,:] = input_Array
-        
+
     oldMask = transit_Mat[0,:]
     newMask = transit_Mat[1,:]
-    
+
     Vth_Static = EffVth_rhs(Iext, newMask)
     transit_End = t_Switch + 0.3
-          
+
     print oldMask, newMask, t_Switch, transit_End
-    
+
 def update_Mask(old, new, t, tSwitch):
-    
+
     return np.multiply(old, 0.5-0.5*np.tanh((t-tSwitch)/rate)) + np.multiply(new, 0.5+0.5*np.tanh((t-tSwitch)/rate))
 
-# Ablation
+""" Ablation """
 def modify_Connectome(ablation_Array):
-    
+
     global Vth_Static, Gg_Dynamic, Gs_Dynamic
 
     apply_Col = np.tile(ablation_Array, (N, 1))
     apply_Row = np.transpose(apply_Col)
 
     apply_Mat = np.multiply(apply_Col, apply_Row)
-        
+
     Gg_Dynamic = np.multiply(Gg_Static, apply_Mat)
     Gs_Dynamic = np.multiply(Gs_Static, apply_Mat)
-    
+
     try:
         newMask
-    
+
     except NameError:
-        
+
         EffVth(Gg_Dynamic, Gs_Dynamic)
 
         if np.sum(ablation_Array) != N:
-            
+
             print 'Neurons %s are ablated' %np.where(ablation_Array == False)[0]
 
         else:
@@ -130,14 +124,14 @@ def modify_Connectome(ablation_Array):
             print "All Neurons healthy"
 
         print "EffVth Recalculated"
-        
+
     else:
-        
+
         EffVth(Gg_Dynamic, Gs_Dynamic)
         Vth_Static = EffVth_rhs(Iext, newMask)
 
         if np.sum(ablation_Array) != N:
-            
+
             print 'Neurons %s are ablated' %np.where(ablation_Array == False)[0]
 
         else:
@@ -147,7 +141,7 @@ def modify_Connectome(ablation_Array):
         print "EffVth Recalculated"
         print "Vth Recalculated"
 
-# Efficient V-threshold computation    
+""" Efficient V-threshold computation """
 def EffVth(Gg, Gs):
 
     Gcmat = np.multiply(Gc, np.eye(N))
@@ -158,7 +152,7 @@ def EffVth(Gg, Gs):
 
     Ggap = np.multiply(ggap, Gg)
     Ggapdiag = np.subtract(Ggap, np.diag(np.diag(Ggap)))
-    Ggapsum = Ggapdiag.sum(axis = 1) 
+    Ggapsum = Ggapdiag.sum(axis = 1)
     Ggapsummat = sparse.spdiags(Ggapsum, 0, N, N).toarray()
     M2 = -np.subtract(Ggapsummat, Ggapdiag)
 
@@ -173,8 +167,8 @@ def EffVth(Gg, Gs):
 
     b3 = np.dot(Gs_ij, np.multiply(s_eq, E))
 
-    M = M1 + M2 + M3 
-    
+    M = M1 + M2 + M3
+
     global LL, UU, bb
 
     (P, LL, UU) = linalg.lu(M)
@@ -182,81 +176,81 @@ def EffVth(Gg, Gs):
     bb = np.reshape(bbb, N)
 
 def EffVth_rhs(Iext, InMask):
-    
+
     InputMask = np.multiply(Iext, InMask)
     b = np.subtract(bb, InputMask)
-    
+
     Vth = linalg.solve_triangular(UU, linalg.solve_triangular(LL, b, lower = True, check_finite=False), check_finite=False)
-    
+
     return Vth
 
-# Right hand side
+""" Right hand side """
 def Jimin_RHS(t, y):
-    
-    # Split the incoming values
+
+    """ Split the incoming values """
     Vvec, SVec = np.split(y, 2)
-    
-    # Gc(Vi - Ec)
+
+    """ Gc(Vi - Ec) """
     VsubEc = np.multiply(Gc, (Vvec - Ec))
-    
-    # Gg(Vi - Vj) Computation
+
+    """ Gg(Vi - Vj) Computation """
     Vrep = np.tile(Vvec, (N, 1))
     GapCon = np.multiply(Gg_Dynamic, np.subtract(np.transpose(Vrep), Vrep)).sum(axis = 1)
-    
-    # Gs*S*(Vi - Ej) Computation
+
+    """ Gs*S*(Vi - Ej) Computation """
     VsubEj = np.subtract(np.transpose(Vrep), EMat)
     SynapCon = np.multiply(np.multiply(Gs_Dynamic, np.tile(SVec, (N, 1))), VsubEj).sum(axis = 1)
-    
+
     global InMask, Vth
-    
+
     if t >= t_Switch and t <= transit_End:
-        
+
         InMask = update_Mask(oldMask, newMask, t, t_Switch + offset)
         Vth = EffVth_rhs(Iext, InMask)
-        
+
     else:
-        
+
         InMask = newMask
         Vth = Vth_Static
-    
-    # ar*(1-Si)*Sigmoid Computation 
-    SynRise = np.multiply(np.multiply(ar, (np.subtract(1.0, SVec))), 
+
+    """ ar*(1-Si)*Sigmoid Computation """
+    SynRise = np.multiply(np.multiply(ar, (np.subtract(1.0, SVec))),
                           np.reciprocal(1.0 + np.exp(-B*(np.subtract(Vvec, Vth)))))
-    
-    SynDrop = np.multiply(ad, SVec)    
-    
-    # Input Mask
+
+    SynDrop = np.multiply(ad, SVec)
+
+    """ Input Mask """
     Input = np.multiply(Iext, InMask)
-    
-    # dV and dS and merge them back to dydt
+
+    """ dV and dS and merge them back to dydt """
     dV = (-(VsubEc + GapCon + SynapCon) + Input)/C
     dS = np.subtract(SynRise, SynDrop)
-    
+
     return np.concatenate((dV, dS))
 
-# Simulation initiator
+""" Simulation initiator """
 def run_Network(t_Delta, atol):
-    
+
     dt = t_Delta
-    
-    InitCond = 10**(-4)*np.random.normal(0, 0.94, 2*N)   
-         
-    # Configuring the ODE Solver
+
+    InitCond = 10**(-4)*np.random.normal(0, 0.94, 2*N)
+
+    """ Configuring the ODE Solver """
     r = integrate.ode(Jimin_RHS).set_integrator('vode', atol = atol, min_step = dt*1e-6, method = 'bdf', with_jacobian = True)
     r.set_initial_value(InitCond, 0)
-    
+
     init_data_Mat[0, :] = InitCond[:N]
-    
+
     global oldMask, t_Switch, t_Tracker, transit_End
-    
+
     oldMask = newMask
     #oldMask = np.zeros(N)
     t_Switch = 0
     transit_End = 0.3
     k = 1
-    
+
     while r.successful() and k < stack_Size + 10:
-        
+
         r.integrate(r.t + dt)
         data = np.subtract(r.y[:N], Vth)
         init_data_Mat[k, :] = data
@@ -265,25 +259,24 @@ def run_Network(t_Delta, atol):
 
     @socketio.on("continue run", namespace='/test')
     def continueRun():
-        
+
         global t_Tracker
         k = 0
-        
+
         while r.successful() and k < stack_Size:
-            
+
             r.integrate(r.t + dt)
             data = np.subtract(r.y[:N], Vth)
             data_Mat[k, :] = data
             t_Tracker = r.t
             k += 1
-        
-        emit('new data', data_Mat.tolist())  
-        
+
+        emit('new data', data_Mat.tolist())
+
     emit('new data', init_data_Mat.tolist())
-    
+
 EffVth(Gg_Static, Gs_Static)
-        
-# In[5]:
+
 
 app = Flask(__name__)
 app.debug = True
@@ -301,7 +294,7 @@ jinja_options.update(dict(
     comment_end_string='#>',
 ))
 app.jinja_options = jinja_options
-    
+
 def background_thread():
     while True:
         time.sleep(10)
@@ -323,7 +316,7 @@ def test_connect():
 @socketio.on('disconnect', namespace='/test')
 def test_disconnect():
     global t_Tracker, transit_Mat, Gg_Dynamic, Gs_Dynamic, newMask, oldMask, Vth_Static
-    
+
     t_Tracker = 0
     transit_Mat = np.zeros((2, N))
 
@@ -332,10 +325,10 @@ def test_disconnect():
 
     Gg_Dynamic = Gg_Static
     Gs_Dynamic = Gs_Static
-    
+
     EffVth(Gg_Dynamic, Gs_Dynamic)
     Vth_Static = EffVth_rhs(Iext, newMask)
-    
+
     print "EffVth Recalculated"
     print "Simulation Resetted"
     print "Client disconnected"
@@ -343,11 +336,11 @@ def test_disconnect():
 @socketio.on('startRun', namespace='/test')
 def startRun(t_Delta, atol):
     run_Network(t_Delta, atol)
-    
+
 @socketio.on('update', namespace='/test')
 def update(input_Array):
     transit_Mask(np.asarray(input_Array))
-    
+
 @socketio.on('modify connectome', namespace='/test')
 def config_connectome(ablation_Array):
     modify_Connectome(np.asarray(ablation_Array))
@@ -357,11 +350,11 @@ def stopit():
     global t_Tracker
     t_Tracker = 0
     print "Simulation stopped"
-    
+
 @socketio.on("reset", namespace="/test")
 def resetit():
     global t_Tracker, transit_Mat, Gg_Dynamic, Gs_Dynamic, newMask, oldMask, Vth_Static
-    
+
     t_Tracker = 0
     transit_Mat = np.zeros((2, N))
 
@@ -370,10 +363,10 @@ def resetit():
 
     Gg_Dynamic = Gg_Static
     Gs_Dynamic = Gs_Static
-    
+
     EffVth(Gg_Dynamic, Gs_Dynamic)
     Vth_Static = EffVth_rhs(Iext, newMask)
-    
+
     print "EffVth Recalculated"
     print "Simulation Resetted"
 
@@ -382,7 +375,7 @@ def save(name, json):
 
     os.chdir(preset_Dir)
 
-    preset_file = open(name + '.json', "w")  
+    preset_file = open(name + '.json', "w")
     preset_file.write(json)
     preset_file.close()
 
@@ -390,7 +383,7 @@ def save(name, json):
 
     print "preset %s saved" %name
 
-    os.chdir(default_Dir)  
+    os.chdir(default_Dir)
 
 @socketio.on("load", namespace="/test")
 def load(name):
@@ -404,7 +397,7 @@ def load(name):
 
     print "preset %s loaded" %name
 
-    os.chdir(default_Dir) 
+    os.chdir(default_Dir)
 
 @socketio.on("delete", namespace="/test")
 def delete(name):

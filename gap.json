@@ -23,7 +23,7 @@
 {"name":"URAVL","group":1,"degree":0,"ind":21,"voltage":0,"inputCurrent":0.05,"index":21,"x":1007,"y":350},
 {"name":"OLQVL","group":1,"degree":6,"ind":22,"voltage":0,"inputCurrent":0.05,"index":22,"x":1016,"y":493},
 {"name":"RMED","group":2,"degree":5,"ind":23,"voltage":0,"inputCurrent":0.05,"index":23,"x":953,"y":445},
-{"name":"URBR","group":1,"degree":3,"ind":24,"voltage":0,"inputCurrent":0.05,"index":24,"x":939,"y":465},
+{"name":"URBR","group":3,"degree":3,"ind":24,"voltage":0,"inputCurrent":0.05,"index":24,"x":939,"y":465},
 {"name":"OLQDR","group":1,"degree":8,"ind":25,"voltage":0,"inputCurrent":0.05,"index":25,"x":930,"y":397},
 {"name":"URYVR","group":1,"degree":2,"ind":26,"voltage":0,"inputCurrent":0.05,"index":26,"x":905,"y":451},
 {"name":"RIPR","group":3,"degree":1,"ind":27,"voltage":0,"inputCurrent":0.05,"index":27,"x":938,"y":438},
