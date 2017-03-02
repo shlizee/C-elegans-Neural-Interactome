@@ -42,7 +42,7 @@ button:hover {
 }
 
 /**********************/
-/* general components */ 
+/* general components */
 /**********************/
 
 .content-block {
@@ -120,7 +120,7 @@ button:hover {
 }
 
 .navbar .controls li.paused {
- 
+
 }
 
 .navbar .controls li.paused:hover {
@@ -514,7 +514,7 @@ canvas.vis {
   /***********************/
   /* node list */
   /***********************/
-  
+
   .node-list-wrapper {
     overflow-y: scroll;
     background-color: rgb(245,245,245);
@@ -527,7 +527,7 @@ canvas.vis {
     border-top: 1px solid #CCC;
     border-bottom: 2px solid white;
   }
-  
+
   .node-ul {
     box-sizing: border-box;
     padding: 0 5px;
@@ -536,7 +536,7 @@ canvas.vis {
     float: left;
     font-size: 12px;
   }
-  
+
   .node-li {
     cursor: pointer;
     padding: 4px;
@@ -551,16 +551,16 @@ canvas.vis {
     margin-bottom: -1px;
     text-transform: uppercase;
   }
-  
+
   .node-li.hover {
     background-color: rgb(235,235,235);
   }
-  
+
   /*group 1 style*/
   .node-li.g1 {
     color: #00008b;
   }
-  
+
   /*group 2 style*/
   .node-li.g2 {
     color: #d90000;
@@ -570,7 +570,7 @@ canvas.vis {
   .node-li.g3 {
     color: #005f30;
   }
-  
+
   .node-li.selected {
     color: white;
   }
@@ -580,15 +580,15 @@ canvas.vis {
     border-top: 2px solid #999;
     border-bottom: 2px solid white;
   }
-  
+
   .node-li.g2.selected {
     background-color: #ff7777;
     border-top: 2px solid #999;
     border-bottom: 2px solid white;
   }
-  
+
   .node-li.g3.selected {
-    background-color: #00e876; 
+    background-color: #00e876;
     border-top: 2px solid #999;
     border-bottom: 2px solid white;
   }
@@ -597,7 +597,7 @@ canvas.vis {
     color: #CCC;
     background-color: #EEE;
   }
-  
+
   .node.selected {
     stroke: #ffd700;
     stroke-width: 4px;
@@ -612,13 +612,13 @@ canvas.vis {
     height: 15px;
     margin-top: 5px;
   }
-  
+
   /*slider bars*/
-  
+
   .node-li.g1 canvas.slider {
     background-color: #00008b;
   }
-  
+
   .node-li.g2 canvas.slider {
     background-color: #d90000;
   }
@@ -626,15 +626,15 @@ canvas.vis {
   .node-li.g3 canvas.slider {
     background-color: #005f30;
   }
-  
-  
+
+
   .voltage-label {
     float: right;
     /*color: #666;*/
     font-style: italic;
   }
 
-  
+
   .node-li.selected:hover {
     background-color: default;
   }
@@ -707,7 +707,7 @@ canvas.vis {
   height: 100%;
   width: 6px;
   display: inline-block;
-  
+
   -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
   animation: sk-stretchdelay 1.2s infinite ease-in-out;
 }
@@ -733,15 +733,15 @@ canvas.vis {
 }
 
 @-webkit-keyframes sk-stretchdelay {
-  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
   20% { -webkit-transform: scaleY(1.0) }
 }
 
 @keyframes sk-stretchdelay {
-  0%, 40%, 100% { 
+  0%, 40%, 100% {
     transform: scaleY(0.4);
     -webkit-transform: scaleY(0.4);
-  }  20% { 
+  }  20% {
     transform: scaleY(1.0);
     -webkit-transform: scaleY(1.0);
   }
