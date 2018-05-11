@@ -10,9 +10,9 @@ C.elegans Neural Interactome is an interactive simulation platform for the neuro
 
 We recommend you to install [Windows Anaconda for Python 2.7](https://www.anaconda.com/download/#windows) as it comes with most of the packages that are necessary for Neural Interactome. Once you install Anaconda, you will have to install following additional packages through Anaconda Prompt.
 
-pip install flask
-pip install flask-socketio
-pip install eventlet
+* pip install flask
+* pip install flask-socketio
+* pip install eventlet
 
 Once you have installed all the dependencies, unzip the cloned zip file to your desired location. Navigate inside the Neural Interactome folder (Where CElegansFull_D3.py is located) in Anaconda prompt, and simply type **python CElegansFull_D3.py**, which will set up the local Neural Interactome server. Once the server is up, go to the browser and enter your localhost address (127.0.0.1:5000) to access the Neural Interactome. 
 
