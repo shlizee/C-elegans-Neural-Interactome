@@ -1,10 +1,16 @@
 # C. elegans Neural Interactome Beta
 
-### Beta Warning: The current release of C.elegans Neural Interactome is in Beta, meaning that it is subject to restructuring, renaming, and overall general changes. We thus recommend the users to check the repository and clone frequently whenever there is an update.
+### Beta Version: The current release of C. elegans Neural Interactome is in Beta, meaning that it is subject to restructuring, renaming, and overall general changes. We thus recommend to check the repository and clone frequently whenever there is an update.
 
 # Introduction
 
-C.elegans Neural Interactome is an interactive simulation platform for the neuronal network of Caenorhabditis elegans worm. It incorporates both static connectome and dynamic biophysical processes to simulate/visualize the network dynamics and allow users to interact with the network in real-time via stimuli injection/network modification. For more detailed information about the software, please refer to the [pre-print of our paper in BioRxiv](https://www.biorxiv.org/content/early/2017/11/26/209155).
+C. elegans Neural Interactome is an interactive simulation platform for the neuronal network of Caenorhabditis elegans worm. It incorporates both static connectome and dynamic biophysical processes to simulate/visualize the network dynamics and allow users to interact with the network in real-time via stimuli injection/network modification. For more detailed information about the software, please refer to the [pre-print of our paper in BioRxiv](https://www.biorxiv.org/content/early/2017/11/26/209155).
+
+# Web Interface
+Web service running the latest version of Neural Interactome is available at: 
+
+> http://neuralcode.amath.washington.edu/neuralinteractome
+
 
 # Installation (Windows)
 
@@ -27,3 +33,14 @@ For the Linux/Mac,  if you have Python 2.7 installed, you just need to ensure th
 * eventlet
 * flask
 * flask-socketio
+
+# For further information refer to:
+Neural Interactome: Interactive Simulation of a Neuronal System
+
+Jimin Kim, William Leahy, Eli Shlizerman
+
+Preprint: BioRxiv https://doi.org/10.1101/209155. 
+
+In review.
+
+### The paper has to be cited in any use or modification of the dataset or the code.
