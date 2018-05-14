@@ -1,4 +1,4 @@
-# C.elegans Neural Interactome Beta
+# C. elegans Neural Interactome Beta
 
 ### Beta Warning: The current release of C.elegans Neural Interactome is in Beta, meaning that it is subject to restructuring, renaming, and overall general changes. We thus recommend the users to check the repository and clone frequently whenever there is an update.
 
