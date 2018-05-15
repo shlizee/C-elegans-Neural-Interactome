@@ -2,6 +2,8 @@
 
 ### Beta Version: The current release of C. elegans Neural Interactome is in Beta, meaning that it is subject to restructuring, renaming, and overall general changes. We thus recommend to check the repository and clone frequently whenever there is an update.
 
+![alt text](https://github.com/shlizee/C-elegans-Neural-Interactome/tree/master/images/fig1.png)
+
 # Introduction
 
 C. elegans Neural Interactome is an interactive simulation platform for the neuronal network of Caenorhabditis elegans worm. It incorporates both static connectome and dynamic biophysical processes to simulate/visualize the network dynamics and allow users to interact with the network in real-time via stimuli injection/network modification. For more detailed information about the software, please refer to the [pre-print of our paper in BioRxiv](https://www.biorxiv.org/content/early/2017/11/26/209155).
