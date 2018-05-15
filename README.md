@@ -1,8 +1,8 @@
 # C. elegans Neural Interactome Beta
 
-### Beta Version: The current release of C. elegans Neural Interactome is in Beta, meaning that it is subject to restructuring, renaming, and overall general changes. We thus recommend to check the repository and clone frequently whenever there is an update.
-
 ![alt text](images/fig1.png)
+
+### Beta Version: The current release of C. elegans Neural Interactome is in Beta, meaning that it is subject to restructuring, renaming, and overall general changes. We thus recommend to check the repository and clone frequently whenever there is an update.
 
 # Introduction
 
