@@ -58,16 +58,22 @@
         <i class="material-icons radio">radio_button_{{linkOptions.chem.active ? "" : "un"}}checked</i>
         Chem
       </li>
-      <li ng-click="legend=!legend">User Guide & Legend</li>
+      <li ng-click="legend=!legend">User Guide and Legend</li>
     </ul>
     <div class="full-overlay" ng-show="legend" ng-click="legend = false">
       <section class="text-content">
 
         <h2>Legend</h2>
-        <img style="width:60%;margin:30px auto;display:block" src="%% url_for('static', filename='images/legend.svg') %%"/></li>
+        <img style="width:50%;margin:30px auto;display:block" src="%% url_for('static', filename='images/legend.svg') %%"/></li>
 
         <h2>User Guide</h2>
-        <p>In progress.</p>
+        <p>To inject/change the stimuli into neurons, use the left panel to locate the neurons and adjust the scrollable bar to set the input magnitude</p>
+        <p><b>Play</b> button initiates the simulation with user provided stimuli/ablation configurations. You can pause the stimulation anytime by clicking the pause button</p>
+        <p><b>Stop</b> button stops the simulation and resets the graph, but preserves the input stimuli parameters as well as any ablated neurons</p>
+        <p><b>Reset</b> button completely resets all the parameters as well as the graph. Use this to start a fresh new simulation</p>
+        <p>To ablate particular neuron, click on either the neuron label on the left panel or the node on the graph while holding down the <b>Shift</b> key</p>
+        <p>Use the clickable time bar during the simulation to freely review the dynamics</p>
+        <p>You can save particular stimulation/ablation configuration on the left panel by entering the name and pressing <b>SAVE</b> button. The saved presets can then be loaded from <b>LOAD</b> drop-down menu</p>
 
       </section>
     </div>

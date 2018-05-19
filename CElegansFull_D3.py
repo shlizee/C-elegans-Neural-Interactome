@@ -17,7 +17,7 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, di
 
 author = 'Jimin Kim'
 email = 'jk55@u.washington.edu'
-version = '1.2.0'
+version = '2.0.0-Beta'
 
 """ Number of Neurons """
 N = 279
@@ -59,8 +59,8 @@ rate = 0.025
 offset = 0.15
 
 """ Connectome Arrays """
-Gg_Dynamic = Gg_Static
-Gs_Dynamic = Gs_Static
+Gg_Dynamic = Gg_Static.copy()
+Gs_Dynamic = Gs_Static.copy()
 
 """ Data matrix stack size """
 stack_Size = 5
