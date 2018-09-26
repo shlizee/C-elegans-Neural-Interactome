@@ -5,10 +5,10 @@
       "group": 1, 
       "name": "IL2DL", 
       "degree": 0.0, 
-      "y": 390, 
+      "ind": 0, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 0, 
+      "y": 390, 
       "x": 972
     }, 
     {
@@ -16,10 +16,10 @@
       "group": 1, 
       "name": "IL2VL", 
       "degree": 1.0, 
-      "y": 441, 
+      "ind": 1, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 1, 
+      "y": 441, 
       "x": 1042
     }, 
     {
@@ -27,10 +27,10 @@
       "group": 1, 
       "name": "IL2L", 
       "degree": 5.0, 
-      "y": 429, 
+      "ind": 2, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 2, 
+      "y": 429, 
       "x": 953
     }, 
     {
@@ -38,10 +38,10 @@
       "group": 1, 
       "name": "URADL", 
       "degree": 7.0, 
-      "y": 362, 
+      "ind": 3, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 3, 
+      "y": 362, 
       "x": 877
     }, 
     {
@@ -49,10 +49,10 @@
       "group": 1, 
       "name": "IL1VL", 
       "degree": 15.0, 
-      "y": 369, 
+      "ind": 4, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 4, 
+      "y": 369, 
       "x": 956
     }, 
     {
@@ -60,10 +60,10 @@
       "group": 1, 
       "name": "IL2DR", 
       "degree": 0.0, 
-      "y": 351, 
+      "ind": 5, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 5, 
+      "y": 351, 
       "x": 982
     }, 
     {
@@ -71,10 +71,10 @@
       "group": 1, 
       "name": "IL1DL", 
       "degree": 15.0, 
-      "y": 379, 
+      "ind": 6, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 6, 
+      "y": 379, 
       "x": 912
     }, 
     {
@@ -82,10 +82,10 @@
       "group": 1, 
       "name": "OLLL", 
       "degree": 9.0, 
-      "y": 436, 
+      "ind": 7, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 7, 
+      "y": 436, 
       "x": 968
     }, 
     {
@@ -93,10 +93,10 @@
       "group": 1, 
       "name": "IL1L", 
       "degree": 4.0, 
-      "y": 406, 
+      "ind": 8, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 8, 
+      "y": 406, 
       "x": 950
     }, 
     {
@@ -104,10 +104,10 @@
       "group": 1, 
       "name": "URYDL", 
       "degree": 5.0, 
-      "y": 469, 
+      "ind": 9, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 9, 
+      "y": 469, 
       "x": 948
     }, 
     {
@@ -115,10 +115,10 @@
       "group": 1, 
       "name": "OLQDL", 
       "degree": 19.0, 
-      "y": 356, 
+      "ind": 10, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 10, 
+      "y": 356, 
       "x": 940
     }, 
     {
@@ -126,10 +126,10 @@
       "group": 1, 
       "name": "URYDR", 
       "degree": 2.0, 
-      "y": 443, 
+      "ind": 11, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 11, 
+      "y": 443, 
       "x": 915
     }, 
     {
@@ -137,10 +137,10 @@
       "group": 1, 
       "name": "IL2R", 
       "degree": 3.0, 
-      "y": 401, 
+      "ind": 12, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 12, 
+      "y": 401, 
       "x": 991
     }, 
     {
@@ -148,10 +148,10 @@
       "group": 1, 
       "name": "URYVL", 
       "degree": 1.0, 
-      "y": 444, 
+      "ind": 13, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 13, 
+      "y": 444, 
       "x": 896
     }, 
     {
@@ -159,10 +159,10 @@
       "group": 3, 
       "name": "RIPL", 
       "degree": 48.0, 
-      "y": 462, 
+      "ind": 14, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 14, 
+      "y": 462, 
       "x": 917
     }, 
     {
@@ -170,10 +170,10 @@
       "group": 1, 
       "name": "OLLR", 
       "degree": 25.0, 
-      "y": 460, 
+      "ind": 15, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 15, 
+      "y": 460, 
       "x": 928
     }, 
     {
@@ -181,10 +181,10 @@
       "group": 3, 
       "name": "URBL", 
       "degree": 8.0, 
-      "y": 515, 
+      "ind": 16, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 16, 
+      "y": 515, 
       "x": 937
     }, 
     {
@@ -192,10 +192,10 @@
       "group": 1, 
       "name": "IL2VR", 
       "degree": 3.0, 
-      "y": 458, 
+      "ind": 17, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 17, 
+      "y": 458, 
       "x": 1055
     }, 
     {
@@ -203,10 +203,10 @@
       "group": 1, 
       "name": "IL1DR", 
       "degree": 17.0, 
-      "y": 344, 
+      "ind": 18, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 18, 
+      "y": 344, 
       "x": 898
     }, 
     {
@@ -214,10 +214,10 @@
       "group": 1, 
       "name": "URADR", 
       "degree": 5.0, 
-      "y": 348, 
+      "ind": 19, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 19, 
+      "y": 348, 
       "x": 930
     }, 
     {
@@ -225,10 +225,10 @@
       "group": 1, 
       "name": "IL1R", 
       "degree": 8.0, 
-      "y": 429, 
+      "ind": 20, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 20, 
+      "y": 429, 
       "x": 932
     }, 
     {
@@ -236,10 +236,10 @@
       "group": 1, 
       "name": "URAVL", 
       "degree": 5.0, 
-      "y": 350, 
+      "ind": 21, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 21, 
+      "y": 350, 
       "x": 1007
     }, 
     {
@@ -247,10 +247,10 @@
       "group": 1, 
       "name": "OLQVL", 
       "degree": 18.0, 
-      "y": 493, 
+      "ind": 22, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 22, 
+      "y": 493, 
       "x": 1016
     }, 
     {
@@ -258,10 +258,10 @@
       "group": 2, 
       "name": "RMED", 
       "degree": 9.0, 
-      "y": 445, 
+      "ind": 23, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 23, 
+      "y": 445, 
       "x": 953
     }, 
     {
@@ -269,10 +269,10 @@
       "group": 3, 
       "name": "URBR", 
       "degree": 3.0, 
-      "y": 465, 
+      "ind": 24, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 24, 
+      "y": 465, 
       "x": 939
     }, 
     {
@@ -280,10 +280,10 @@
       "group": 1, 
       "name": "OLQDR", 
       "degree": 12.0, 
-      "y": 397, 
+      "ind": 25, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 25, 
+      "y": 397, 
       "x": 930
     }, 
     {
@@ -291,10 +291,10 @@
       "group": 1, 
       "name": "URYVR", 
       "degree": 2.0, 
-      "y": 451, 
+      "ind": 26, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 26, 
+      "y": 451, 
       "x": 905
     }, 
     {
@@ -302,10 +302,10 @@
       "group": 3, 
       "name": "RIPR", 
       "degree": 60.0, 
-      "y": 438, 
+      "ind": 27, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 27, 
+      "y": 438, 
       "x": 938
     }, 
     {
@@ -313,10 +313,10 @@
       "group": 2, 
       "name": "RMEL", 
       "degree": 19.0, 
-      "y": 345, 
+      "ind": 28, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 28, 
+      "y": 345, 
       "x": 1043
     }, 
     {
@@ -324,10 +324,10 @@
       "group": 1, 
       "name": "BAGL", 
       "degree": 7.0, 
-      "y": 601, 
+      "ind": 29, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 29, 
+      "y": 601, 
       "x": 866
     }, 
     {
@@ -335,10 +335,10 @@
       "group": 1, 
       "name": "CEPVL", 
       "degree": 10.0, 
-      "y": 423, 
+      "ind": 30, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 30, 
+      "y": 423, 
       "x": 916
     }, 
     {
@@ -346,10 +346,10 @@
       "group": 1, 
       "name": "BAGR", 
       "degree": 11.0, 
-      "y": 585, 
+      "ind": 31, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 31, 
+      "y": 585, 
       "x": 931
     }, 
     {
@@ -357,10 +357,10 @@
       "group": 1, 
       "name": "OLQVR", 
       "degree": 19.0, 
-      "y": 425, 
+      "ind": 32, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 32, 
+      "y": 425, 
       "x": 1025
     }, 
     {
@@ -368,10 +368,10 @@
       "group": 1, 
       "name": "URAVR", 
       "degree": 5.0, 
-      "y": 383, 
+      "ind": 33, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 33, 
+      "y": 383, 
       "x": 1028
     }, 
     {
@@ -379,10 +379,10 @@
       "group": 2, 
       "name": "RMER", 
       "degree": 26.0, 
-      "y": 391, 
+      "ind": 34, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 34, 
+      "y": 391, 
       "x": 1047
     }, 
     {
@@ -390,10 +390,10 @@
       "group": 1, 
       "name": "IL1VR", 
       "degree": 12.0, 
-      "y": 379, 
+      "ind": 35, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 35, 
+      "y": 379, 
       "x": 980
     }, 
     {
@@ -401,10 +401,10 @@
       "group": 2, 
       "name": "RID", 
       "degree": 13.0, 
-      "y": 582, 
+      "ind": 36, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 36, 
+      "y": 582, 
       "x": 729
     }, 
     {
@@ -412,10 +412,10 @@
       "group": 1, 
       "name": "CEPVR", 
       "degree": 12.0, 
-      "y": 513, 
+      "ind": 37, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 37, 
+      "y": 513, 
       "x": 979
     }, 
     {
@@ -423,10 +423,10 @@
       "group": 2, 
       "name": "RMEV", 
       "degree": 23.0, 
-      "y": 484, 
+      "ind": 38, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 38, 
+      "y": 484, 
       "x": 1007
     }, 
     {
@@ -434,10 +434,10 @@
       "group": 1, 
       "name": "CEPDL", 
       "degree": 10.0, 
-      "y": 424, 
+      "ind": 39, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 39, 
+      "y": 424, 
       "x": 899
     }, 
     {
@@ -445,10 +445,10 @@
       "group": 2, 
       "name": "RMDVL", 
       "degree": 64.0, 
-      "y": 474, 
+      "ind": 40, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 40, 
+      "y": 474, 
       "x": 1014
     }, 
     {
@@ -456,10 +456,10 @@
       "group": 3, 
       "name": "SAAVL", 
       "degree": 13.0, 
-      "y": 548, 
+      "ind": 41, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 41, 
+      "y": 548, 
       "x": 926
     }, 
     {
@@ -467,10 +467,10 @@
       "group": 2, 
       "name": "SMDVL", 
       "degree": 34.0, 
-      "y": 504, 
+      "ind": 42, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 42, 
+      "y": 504, 
       "x": 956
     }, 
     {
@@ -478,10 +478,10 @@
       "group": 1, 
       "name": "URXL", 
       "degree": 13.0, 
-      "y": 578, 
+      "ind": 43, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 43, 
+      "y": 578, 
       "x": 895
     }, 
     {
@@ -489,10 +489,10 @@
       "group": 3, 
       "name": "ALA", 
       "degree": 3.0, 
-      "y": 437, 
+      "ind": 44, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 44, 
+      "y": 437, 
       "x": 831
     }, 
     {
@@ -500,10 +500,10 @@
       "group": 2, 
       "name": "RMDVR", 
       "degree": 62.0, 
-      "y": 428, 
+      "ind": 45, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 45, 
+      "y": 428, 
       "x": 983
     }, 
     {
@@ -511,10 +511,10 @@
       "group": 1, 
       "name": "CEPDR", 
       "degree": 8.0, 
-      "y": 415, 
+      "ind": 46, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 46, 
+      "y": 415, 
       "x": 884
     }, 
     {
@@ -522,10 +522,10 @@
       "group": 3, 
       "name": "AVAL", 
       "degree": 237.0, 
-      "y": 536, 
+      "ind": 47, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 47, 
+      "y": 536, 
       "x": 776
     }, 
     {
@@ -533,10 +533,10 @@
       "group": 3, 
       "name": "RIAL", 
       "degree": 112.0, 
-      "y": 554, 
+      "ind": 48, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 48, 
+      "y": 554, 
       "x": 949
     }, 
     {
@@ -544,10 +544,10 @@
       "group": 1, 
       "name": "ASKL", 
       "degree": 19.0, 
-      "y": 755, 
+      "ind": 49, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 49, 
+      "y": 755, 
       "x": 846
     }, 
     {
@@ -555,10 +555,10 @@
       "group": 3, 
       "name": "SAAVR", 
       "degree": 11.0, 
-      "y": 506, 
+      "ind": 50, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 50, 
+      "y": 506, 
       "x": 899
     }, 
     {
@@ -566,10 +566,10 @@
       "group": 2, 
       "name": "RMDL", 
       "degree": 45.0, 
-      "y": 504, 
+      "ind": 51, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 51, 
+      "y": 504, 
       "x": 985
     }, 
     {
@@ -577,10 +577,10 @@
       "group": 1, 
       "name": "URXR", 
       "degree": 14.0, 
-      "y": 533, 
+      "ind": 52, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 52, 
+      "y": 533, 
       "x": 926
     }, 
     {
@@ -588,10 +588,10 @@
       "group": 2, 
       "name": "SMDVR", 
       "degree": 40.0, 
-      "y": 490, 
+      "ind": 53, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 53, 
+      "y": 490, 
       "x": 976
     }, 
     {
@@ -599,10 +599,10 @@
       "group": 1, 
       "name": "AFDL", 
       "degree": 11.0, 
-      "y": 801, 
+      "ind": 54, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 54, 
+      "y": 801, 
       "x": 960
     }, 
     {
@@ -610,10 +610,10 @@
       "group": 3, 
       "name": "AVAR", 
       "degree": 240.0, 
-      "y": 514, 
+      "ind": 55, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 55, 
+      "y": 514, 
       "x": 766
     }, 
     {
@@ -621,10 +621,10 @@
       "group": 3, 
       "name": "RIAR", 
       "degree": 97.0, 
-      "y": 574, 
+      "ind": 56, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 56, 
+      "y": 574, 
       "x": 972
     }, 
     {
@@ -632,10 +632,10 @@
       "group": 1, 
       "name": "ASKR", 
       "degree": 11.0, 
-      "y": 722, 
+      "ind": 57, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 57, 
+      "y": 722, 
       "x": 871
     }, 
     {
@@ -643,10 +643,10 @@
       "group": 3, 
       "name": "AVEL", 
       "degree": 105.0, 
-      "y": 522, 
+      "ind": 58, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 58, 
+      "y": 522, 
       "x": 811
     }, 
     {
@@ -654,10 +654,10 @@
       "group": 1, 
       "name": "ADLL", 
       "degree": 3.0, 
-      "y": 575, 
+      "ind": 59, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 59, 
+      "y": 575, 
       "x": 849
     }, 
     {
@@ -665,10 +665,10 @@
       "group": 1, 
       "name": "ADFL", 
       "degree": 12.0, 
-      "y": 607, 
+      "ind": 60, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 60, 
+      "y": 607, 
       "x": 969
     }, 
     {
@@ -676,10 +676,10 @@
       "group": 2, 
       "name": "RMDR", 
       "degree": 45.0, 
-      "y": 500, 
+      "ind": 61, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 61, 
+      "y": 500, 
       "x": 937
     }, 
     {
@@ -687,10 +687,10 @@
       "group": 1, 
       "name": "AFDR", 
       "degree": 16.0, 
-      "y": 763, 
+      "ind": 62, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 62, 
+      "y": 763, 
       "x": 970
     }, 
     {
@@ -698,10 +698,10 @@
       "group": 3, 
       "name": "SIBDL", 
       "degree": 3.0, 
-      "y": 439, 
+      "ind": 63, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 63, 
+      "y": 439, 
       "x": 1169
     }, 
     {
@@ -709,10 +709,10 @@
       "group": 3, 
       "name": "RIH", 
       "degree": 28.0, 
-      "y": 491, 
+      "ind": 64, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 64, 
+      "y": 491, 
       "x": 957
     }, 
     {
@@ -720,10 +720,10 @@
       "group": 1, 
       "name": "AWBL", 
       "degree": 6.0, 
-      "y": 675, 
+      "ind": 65, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 65, 
+      "y": 675, 
       "x": 886
     }, 
     {
@@ -731,10 +731,10 @@
       "group": 3, 
       "name": "AVER", 
       "degree": 104.0, 
-      "y": 527, 
+      "ind": 66, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 66, 
+      "y": 527, 
       "x": 819
     }, 
     {
@@ -742,10 +742,10 @@
       "group": 2, 
       "name": "RMDDL", 
       "degree": 67.0, 
-      "y": 461, 
+      "ind": 67, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 67, 
+      "y": 461, 
       "x": 1000
     }, 
     {
@@ -753,10 +753,10 @@
       "group": 1, 
       "name": "AWCL", 
       "degree": 15.0, 
-      "y": 659, 
+      "ind": 68, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 68, 
+      "y": 659, 
       "x": 945
     }, 
     {
@@ -764,10 +764,10 @@
       "group": 1, 
       "name": "ADFR", 
       "degree": 16.0, 
-      "y": 636, 
+      "ind": 69, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 69, 
+      "y": 636, 
       "x": 937
     }, 
     {
@@ -775,10 +775,10 @@
       "group": 1, 
       "name": "ASGL", 
       "degree": 4.0, 
-      "y": 777, 
+      "ind": 70, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 70, 
+      "y": 777, 
       "x": 898
     }, 
     {
@@ -786,10 +786,10 @@
       "group": 3, 
       "name": "SAADL", 
       "degree": 24.0, 
-      "y": 631, 
+      "ind": 71, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 71, 
+      "y": 631, 
       "x": 927
     }, 
     {
@@ -797,10 +797,10 @@
       "group": 1, 
       "name": "ADLR", 
       "degree": 4.0, 
-      "y": 593, 
+      "ind": 72, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 72, 
+      "y": 593, 
       "x": 844
     }, 
     {
@@ -808,10 +808,10 @@
       "group": 1, 
       "name": "AWAL", 
       "degree": 3.0, 
-      "y": 734, 
+      "ind": 73, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 73, 
+      "y": 734, 
       "x": 960
     }, 
     {
@@ -819,10 +819,10 @@
       "group": 1, 
       "name": "AWBR", 
       "degree": 6.0, 
-      "y": 683, 
+      "ind": 74, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 74, 
+      "y": 683, 
       "x": 906
     }, 
     {
@@ -830,10 +830,10 @@
       "group": 1, 
       "name": "ASIL", 
       "degree": 0.0, 
-      "y": 710, 
+      "ind": 75, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 75, 
+      "y": 710, 
       "x": 962
     }, 
     {
@@ -841,10 +841,10 @@
       "group": 1, 
       "name": "ASHL", 
       "degree": 8.0, 
-      "y": 620, 
+      "ind": 76, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 76, 
+      "y": 620, 
       "x": 849
     }, 
     {
@@ -852,10 +852,10 @@
       "group": 3, 
       "name": "SIBDR", 
       "degree": 7.0, 
-      "y": 342, 
+      "ind": 77, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 77, 
+      "y": 342, 
       "x": 968
     }, 
     {
@@ -863,10 +863,10 @@
       "group": 1, 
       "name": "ASGR", 
       "degree": 8.0, 
-      "y": 676, 
+      "ind": 78, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 78, 
+      "y": 676, 
       "x": 984
     }, 
     {
@@ -874,10 +874,10 @@
       "group": 3, 
       "name": "AIBL", 
       "degree": 72.0, 
-      "y": 648, 
+      "ind": 79, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 79, 
+      "y": 648, 
       "x": 873
     }, 
     {
@@ -885,10 +885,10 @@
       "group": 1, 
       "name": "ASHR", 
       "degree": 13.0, 
-      "y": 631, 
+      "ind": 80, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 80, 
+      "y": 631, 
       "x": 849
     }, 
     {
@@ -896,10 +896,10 @@
       "group": 1, 
       "name": "AWCR", 
       "degree": 15.0, 
-      "y": 749, 
+      "ind": 81, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 81, 
+      "y": 749, 
       "x": 947
     }, 
     {
@@ -907,10 +907,10 @@
       "group": 1, 
       "name": "AWAR", 
       "degree": 6.0, 
-      "y": 721, 
+      "ind": 82, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 82, 
+      "y": 721, 
       "x": 921
     }, 
     {
@@ -918,10 +918,10 @@
       "group": 3, 
       "name": "SIBVL", 
       "degree": 9.0, 
-      "y": 400, 
+      "ind": 83, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 83, 
+      "y": 400, 
       "x": 819
     }, 
     {
@@ -929,10 +929,10 @@
       "group": 2, 
       "name": "RIVL", 
       "degree": 6.0, 
-      "y": 551, 
+      "ind": 84, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 84, 
+      "y": 551, 
       "x": 1040
     }, 
     {
@@ -940,10 +940,10 @@
       "group": 2, 
       "name": "SMDDL", 
       "degree": 47.0, 
-      "y": 530, 
+      "ind": 85, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 85, 
+      "y": 530, 
       "x": 997
     }, 
     {
@@ -951,10 +951,10 @@
       "group": 3, 
       "name": "SAADR", 
       "degree": 21.0, 
-      "y": 562, 
+      "ind": 86, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 86, 
+      "y": 562, 
       "x": 923
     }, 
     {
@@ -962,10 +962,10 @@
       "group": 2, 
       "name": "RMHL", 
       "degree": 13.0, 
-      "y": 457, 
+      "ind": 87, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 87, 
+      "y": 457, 
       "x": 982
     }, 
     {
@@ -973,10 +973,10 @@
       "group": 2, 
       "name": "RMDDR", 
       "degree": 67.0, 
-      "y": 433, 
+      "ind": 88, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 88, 
+      "y": 433, 
       "x": 999
     }, 
     {
@@ -984,10 +984,10 @@
       "group": 1, 
       "name": "ASIR", 
       "degree": 0.0, 
-      "y": 755, 
+      "ind": 89, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 89, 
+      "y": 755, 
       "x": 915
     }, 
     {
@@ -995,10 +995,10 @@
       "group": 3, 
       "name": "AVHL", 
       "degree": 17.0, 
-      "y": 659, 
+      "ind": 90, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 90, 
+      "y": 659, 
       "x": 810
     }, 
     {
@@ -1006,10 +1006,10 @@
       "group": 3, 
       "name": "AVHR", 
       "degree": 13.0, 
-      "y": 626, 
+      "ind": 91, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 91, 
+      "y": 626, 
       "x": 777
     }, 
     {
@@ -1017,10 +1017,10 @@
       "group": 2, 
       "name": "RIVR", 
       "degree": 8.0, 
-      "y": 536, 
+      "ind": 92, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 92, 
+      "y": 536, 
       "x": 1024
     }, 
     {
@@ -1028,10 +1028,10 @@
       "group": 3, 
       "name": "AIBR", 
       "degree": 80.0, 
-      "y": 626, 
+      "ind": 93, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 93, 
+      "y": 626, 
       "x": 880
     }, 
     {
@@ -1039,10 +1039,10 @@
       "group": 3, 
       "name": "RIBL", 
       "degree": 52.0, 
-      "y": 544, 
+      "ind": 94, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 94, 
+      "y": 544, 
       "x": 895
     }, 
     {
@@ -1050,10 +1050,10 @@
       "group": 2, 
       "name": "RMFL", 
       "degree": 12.0, 
-      "y": 622, 
+      "ind": 95, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 95, 
+      "y": 622, 
       "x": 900
     }, 
     {
@@ -1061,10 +1061,10 @@
       "group": 3, 
       "name": "AVBL", 
       "degree": 111.0, 
-      "y": 602, 
+      "ind": 96, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 96, 
+      "y": 602, 
       "x": 784
     }, 
     {
@@ -1072,10 +1072,10 @@
       "group": 3, 
       "name": "SIBVR", 
       "degree": 7.0, 
-      "y": 384, 
+      "ind": 97, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 97, 
+      "y": 384, 
       "x": 851
     }, 
     {
@@ -1083,10 +1083,10 @@
       "group": 1, 
       "name": "ASEL", 
       "degree": 14.0, 
-      "y": 697, 
+      "ind": 98, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 98, 
+      "y": 697, 
       "x": 994
     }, 
     {
@@ -1094,10 +1094,10 @@
       "group": 3, 
       "name": "AVJR", 
       "degree": 35.0, 
-      "y": 591, 
+      "ind": 99, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 99, 
+      "y": 591, 
       "x": 757
     }, 
     {
@@ -1105,10 +1105,10 @@
       "group": 3, 
       "name": "AUAL", 
       "degree": 14.0, 
-      "y": 500, 
+      "ind": 100, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 100, 
+      "y": 500, 
       "x": 869
     }, 
     {
@@ -1116,10 +1116,10 @@
       "group": 3, 
       "name": "SIADL", 
       "degree": 5.0, 
-      "y": 449, 
+      "ind": 101, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 101, 
+      "y": 449, 
       "x": 1004
     }, 
     {
@@ -1127,10 +1127,10 @@
       "group": 2, 
       "name": "RMHR", 
       "degree": 14.0, 
-      "y": 459, 
+      "ind": 102, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 102, 
+      "y": 459, 
       "x": 964
     }, 
     {
@@ -1138,10 +1138,10 @@
       "group": 3, 
       "name": "AVJL", 
       "degree": 39.0, 
-      "y": 580, 
+      "ind": 103, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 103, 
+      "y": 580, 
       "x": 777
     }, 
     {
@@ -1149,10 +1149,10 @@
       "group": 1, 
       "name": "ASER", 
       "degree": 16.0, 
-      "y": 745, 
+      "ind": 104, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 104, 
+      "y": 745, 
       "x": 878
     }, 
     {
@@ -1160,10 +1160,10 @@
       "group": 3, 
       "name": "AVBR", 
       "degree": 132.0, 
-      "y": 563, 
+      "ind": 105, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 105, 
+      "y": 563, 
       "x": 794
     }, 
     {
@@ -1171,10 +1171,10 @@
       "group": 3, 
       "name": "RIBR", 
       "degree": 54.0, 
-      "y": 538, 
+      "ind": 106, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 106, 
+      "y": 538, 
       "x": 905
     }, 
     {
@@ -1182,10 +1182,10 @@
       "group": 2, 
       "name": "RMFR", 
       "degree": 13.0, 
-      "y": 601, 
+      "ind": 107, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 107, 
+      "y": 601, 
       "x": 940
     }, 
     {
@@ -1193,10 +1193,10 @@
       "group": 2, 
       "name": "SMDDR", 
       "degree": 64.0, 
-      "y": 527, 
+      "ind": 108, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 108, 
+      "y": 527, 
       "x": 974
     }, 
     {
@@ -1204,10 +1204,10 @@
       "group": 3, 
       "name": "AIAL", 
       "degree": 58.0, 
-      "y": 696, 
+      "ind": 109, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 109, 
+      "y": 696, 
       "x": 895
     }, 
     {
@@ -1215,10 +1215,10 @@
       "group": 3, 
       "name": "RIR", 
       "degree": 23.0, 
-      "y": 633, 
+      "ind": 110, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 110, 
+      "y": 633, 
       "x": 874
     }, 
     {
@@ -1226,10 +1226,10 @@
       "group": 2, 
       "name": "SMBDL", 
       "degree": 20.0, 
-      "y": 559, 
+      "ind": 111, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 111, 
+      "y": 559, 
       "x": 878
     }, 
     {
@@ -1237,10 +1237,10 @@
       "group": 2, 
       "name": "RIML", 
       "degree": 54.0, 
-      "y": 584, 
+      "ind": 112, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 112, 
+      "y": 584, 
       "x": 881
     }, 
     {
@@ -1248,10 +1248,10 @@
       "group": 1, 
       "name": "ASJL", 
       "degree": 2.0, 
-      "y": 784, 
+      "ind": 113, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 113, 
+      "y": 784, 
       "x": 769
     }, 
     {
@@ -1259,10 +1259,10 @@
       "group": 2, 
       "name": "RIMR", 
       "degree": 67.0, 
-      "y": 573, 
+      "ind": 114, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 114, 
+      "y": 573, 
       "x": 871
     }, 
     {
@@ -1270,10 +1270,10 @@
       "group": 3, 
       "name": "AUAR", 
       "degree": 13.0, 
-      "y": 602, 
+      "ind": 115, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 115, 
+      "y": 602, 
       "x": 896
     }, 
     {
@@ -1281,10 +1281,10 @@
       "group": 3, 
       "name": "AVDR", 
       "degree": 73.0, 
-      "y": 563, 
+      "ind": 116, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 116, 
+      "y": 563, 
       "x": 763
     }, 
     {
@@ -1292,10 +1292,10 @@
       "group": 2, 
       "name": "SMBVR", 
       "degree": 16.0, 
-      "y": 625, 
+      "ind": 117, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 117, 
+      "y": 625, 
       "x": 970
     }, 
     {
@@ -1303,10 +1303,10 @@
       "group": 3, 
       "name": "AVDL", 
       "degree": 70.0, 
-      "y": 575, 
+      "ind": 118, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 118, 
+      "y": 575, 
       "x": 744
     }, 
     {
@@ -1314,10 +1314,10 @@
       "group": 3, 
       "name": "AINL", 
       "degree": 0.0, 
-      "y": 629, 
+      "ind": 119, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 119, 
+      "y": 629, 
       "x": 994
     }, 
     {
@@ -1325,10 +1325,10 @@
       "group": 2, 
       "name": "SMBVL", 
       "degree": 22.0, 
-      "y": 599, 
+      "ind": 120, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 120, 
+      "y": 599, 
       "x": 928
     }, 
     {
@@ -1336,10 +1336,10 @@
       "group": 1, 
       "name": "ASJR", 
       "degree": 3.0, 
-      "y": 777, 
+      "ind": 121, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 121, 
+      "y": 777, 
       "x": 804
     }, 
     {
@@ -1347,10 +1347,10 @@
       "group": 3, 
       "name": "AINR", 
       "degree": 2.0, 
-      "y": 694, 
+      "ind": 122, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 122, 
+      "y": 694, 
       "x": 934
     }, 
     {
@@ -1358,10 +1358,10 @@
       "group": 3, 
       "name": "SIADR", 
       "degree": 4.0, 
-      "y": 454, 
+      "ind": 123, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 123, 
+      "y": 454, 
       "x": 1026
     }, 
     {
@@ -1369,10 +1369,10 @@
       "group": 2, 
       "name": "AVL", 
       "degree": 27.0, 
-      "y": 586, 
+      "ind": 124, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 124, 
+      "y": 586, 
       "x": 739
     }, 
     {
@@ -1380,10 +1380,10 @@
       "group": 3, 
       "name": "RICL", 
       "degree": 23.0, 
-      "y": 496, 
+      "ind": 125, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 125, 
+      "y": 496, 
       "x": 903
     }, 
     {
@@ -1391,10 +1391,10 @@
       "group": 3, 
       "name": "AIAR", 
       "degree": 66.0, 
-      "y": 694, 
+      "ind": 126, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 126, 
+      "y": 694, 
       "x": 886
     }, 
     {
@@ -1402,10 +1402,10 @@
       "group": 2, 
       "name": "SMBDR", 
       "degree": 17.0, 
-      "y": 536, 
+      "ind": 127, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 127, 
+      "y": 536, 
       "x": 879
     }, 
     {
@@ -1413,10 +1413,10 @@
       "group": 3, 
       "name": "AIZR", 
       "degree": 41.0, 
-      "y": 609, 
+      "ind": 128, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 128, 
+      "y": 609, 
       "x": 909
     }, 
     {
@@ -1424,10 +1424,10 @@
       "group": 3, 
       "name": "SIAVL", 
       "degree": 7.0, 
-      "y": 483, 
+      "ind": 129, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 129, 
+      "y": 483, 
       "x": 1035
     }, 
     {
@@ -1435,10 +1435,10 @@
       "group": 3, 
       "name": "SIAVR", 
       "degree": 8.0, 
-      "y": 500, 
+      "ind": 130, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 130, 
+      "y": 500, 
       "x": 1042
     }, 
     {
@@ -1446,10 +1446,10 @@
       "group": 3, 
       "name": "RICR", 
       "degree": 25.0, 
-      "y": 470, 
+      "ind": 131, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 131, 
+      "y": 470, 
       "x": 889
     }, 
     {
@@ -1457,10 +1457,10 @@
       "group": 3, 
       "name": "AIZL", 
       "degree": 62.0, 
-      "y": 634, 
+      "ind": 132, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 132, 
+      "y": 634, 
       "x": 906
     }, 
     {
@@ -1468,10 +1468,10 @@
       "group": 3, 
       "name": "AIYR", 
       "degree": 47.0, 
-      "y": 685, 
+      "ind": 133, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 133, 
+      "y": 685, 
       "x": 958
     }, 
     {
@@ -1479,10 +1479,10 @@
       "group": 3, 
       "name": "AIMR", 
       "degree": 2.0, 
-      "y": 645, 
+      "ind": 134, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 134, 
+      "y": 645, 
       "x": 838
     }, 
     {
@@ -1490,10 +1490,10 @@
       "group": 3, 
       "name": "AIML", 
       "degree": 4.0, 
-      "y": 653, 
+      "ind": 135, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 135, 
+      "y": 653, 
       "x": 825
     }, 
     {
@@ -1501,10 +1501,10 @@
       "group": 3, 
       "name": "RIS", 
       "degree": 11.0, 
-      "y": 484, 
+      "ind": 136, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 136, 
+      "y": 484, 
       "x": 866
     }, 
     {
@@ -1512,21 +1512,21 @@
       "group": 3, 
       "name": "AIYL", 
       "degree": 43.0, 
-      "y": 693, 
+      "ind": 137, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 137, 
+      "y": 693, 
       "x": 918
     }, 
     {
       "index": 138, 
       "group": 2, 
       "name": "VB02", 
-      "degree": 0.0, 
-      "y": 703, 
+      "degree": 4.0, 
+      "ind": 138, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 138, 
+      "y": 703, 
       "x": 721
     }, 
     {
@@ -1534,10 +1534,10 @@
       "group": 3, 
       "name": "AVKR", 
       "degree": 24.0, 
-      "y": 571, 
+      "ind": 139, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 139, 
+      "y": 571, 
       "x": 930
     }, 
     {
@@ -1545,10 +1545,10 @@
       "group": 3, 
       "name": "AVKL", 
       "degree": 59.0, 
-      "y": 520, 
+      "ind": 140, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 140, 
+      "y": 520, 
       "x": 861
     }, 
     {
@@ -1556,10 +1556,10 @@
       "group": 3, 
       "name": "AVFR", 
       "degree": 19.0, 
-      "y": 687, 
+      "ind": 141, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 141, 
+      "y": 687, 
       "x": 751
     }, 
     {
@@ -1567,10 +1567,10 @@
       "group": 3, 
       "name": "SABVL", 
       "degree": 24.0, 
-      "y": 631, 
+      "ind": 142, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 142, 
+      "y": 631, 
       "x": 786
     }, 
     {
@@ -1578,10 +1578,10 @@
       "group": 1, 
       "name": "FLPL", 
       "degree": 8.0, 
-      "y": 551, 
+      "ind": 143, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 143, 
+      "y": 551, 
       "x": 837
     }, 
     {
@@ -1589,10 +1589,10 @@
       "group": 1, 
       "name": "FLPR", 
       "degree": 3.0, 
-      "y": 599, 
+      "ind": 144, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 144, 
+      "y": 599, 
       "x": 816
     }, 
     {
@@ -1600,10 +1600,10 @@
       "group": 3, 
       "name": "SABVR", 
       "degree": 12.0, 
-      "y": 645, 
+      "ind": 145, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 145, 
+      "y": 645, 
       "x": 742
     }, 
     {
@@ -1611,10 +1611,10 @@
       "group": 3, 
       "name": "AVFL", 
       "degree": 25.0, 
-      "y": 667, 
+      "ind": 146, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 146, 
+      "y": 667, 
       "x": 737
     }, 
     {
@@ -1622,10 +1622,10 @@
       "group": 1, 
       "name": "AQR", 
       "degree": 10.0, 
-      "y": 530, 
+      "ind": 147, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 147, 
+      "y": 530, 
       "x": 839
     }, 
     {
@@ -1633,10 +1633,10 @@
       "group": 3, 
       "name": "RIFR", 
       "degree": 12.0, 
-      "y": 617, 
+      "ind": 148, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 148, 
+      "y": 617, 
       "x": 824
     }, 
     {
@@ -1644,21 +1644,21 @@
       "group": 1, 
       "name": "ADEL", 
       "degree": 10.0, 
-      "y": 489, 
+      "ind": 149, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 149, 
+      "y": 489, 
       "x": 887
     }, 
     {
       "index": 150, 
       "group": 2, 
       "name": "VB01", 
-      "degree": 5.8, 
-      "y": 662, 
+      "degree": 9.8, 
+      "ind": 150, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 150, 
+      "y": 662, 
       "x": 797
     }, 
     {
@@ -1666,10 +1666,10 @@
       "group": 1, 
       "name": "ADER", 
       "degree": 12.0, 
-      "y": 488, 
+      "ind": 151, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 151, 
+      "y": 488, 
       "x": 845
     }, 
     {
@@ -1677,10 +1677,10 @@
       "group": 2, 
       "name": "DB02", 
       "degree": 7.0, 
-      "y": 521, 
+      "ind": 152, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 152, 
+      "y": 521, 
       "x": 649
     }, 
     {
@@ -1688,10 +1688,10 @@
       "group": 3, 
       "name": "ADAR", 
       "degree": 10.0, 
-      "y": 560, 
+      "ind": 153, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 153, 
+      "y": 560, 
       "x": 899
     }, 
     {
@@ -1699,10 +1699,10 @@
       "group": 3, 
       "name": "ADAL", 
       "degree": 8.0, 
-      "y": 561, 
+      "ind": 154, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 154, 
+      "y": 561, 
       "x": 853
     }, 
     {
@@ -1710,10 +1710,10 @@
       "group": 3, 
       "name": "RIGR", 
       "degree": 32.0, 
-      "y": 589, 
+      "ind": 155, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 155, 
+      "y": 589, 
       "x": 906
     }, 
     {
@@ -1721,10 +1721,10 @@
       "group": 2, 
       "name": "RMGL", 
       "degree": 12.0, 
-      "y": 527, 
+      "ind": 156, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 156, 
+      "y": 527, 
       "x": 888
     }, 
     {
@@ -1732,10 +1732,10 @@
       "group": 2, 
       "name": "RMGR", 
       "degree": 10.0, 
-      "y": 547, 
+      "ind": 157, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 157, 
+      "y": 547, 
       "x": 862
     }, 
     {
@@ -1743,10 +1743,10 @@
       "group": 3, 
       "name": "RIFL", 
       "degree": 8.0, 
-      "y": 599, 
+      "ind": 158, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 158, 
+      "y": 599, 
       "x": 833
     }, 
     {
@@ -1754,21 +1754,21 @@
       "group": 3, 
       "name": "AVG", 
       "degree": 12.0, 
-      "y": 612, 
+      "ind": 159, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 159, 
+      "y": 612, 
       "x": 737
     }, 
     {
       "index": 160, 
       "group": 2, 
       "name": "VA01", 
-      "degree": 8.399999999999999, 
-      "y": 631, 
+      "degree": 13.6, 
+      "ind": 160, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 160, 
+      "y": 631, 
       "x": 743
     }, 
     {
@@ -1776,10 +1776,10 @@
       "group": 3, 
       "name": "SABD", 
       "degree": 21.0, 
-      "y": 601, 
+      "ind": 161, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 161, 
+      "y": 601, 
       "x": 796
     }, 
     {
@@ -1787,10 +1787,10 @@
       "group": 3, 
       "name": "RIGL", 
       "degree": 35.0, 
-      "y": 563, 
+      "ind": 162, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 162, 
+      "y": 563, 
       "x": 862
     }, 
     {
@@ -1798,10 +1798,10 @@
       "group": 2, 
       "name": "DD01", 
       "degree": 100.4, 
-      "y": 675, 
+      "ind": 163, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 163, 
+      "y": 675, 
       "x": 666
     }, 
     {
@@ -1809,10 +1809,10 @@
       "group": 2, 
       "name": "DB01", 
       "degree": 1.0, 
-      "y": 670, 
+      "ind": 164, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 164, 
+      "y": 670, 
       "x": 597
     }, 
     {
@@ -1820,21 +1820,21 @@
       "group": 2, 
       "name": "AS01", 
       "degree": 9.0, 
-      "y": 603, 
+      "ind": 165, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 165, 
+      "y": 603, 
       "x": 698
     }, 
     {
       "index": 166, 
       "group": 2, 
       "name": "VD01", 
-      "degree": 51.3, 
-      "y": 719, 
+      "degree": 53.3, 
+      "ind": 166, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 166, 
+      "y": 719, 
       "x": 701
     }, 
     {
@@ -1842,10 +1842,10 @@
       "group": 2, 
       "name": "DA01", 
       "degree": 19.5, 
-      "y": 567, 
+      "ind": 167, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 167, 
+      "y": 567, 
       "x": 700
     }, 
     {
@@ -1853,32 +1853,32 @@
       "group": 2, 
       "name": "VD02", 
       "degree": 58.2, 
-      "y": 637, 
+      "ind": 168, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 168, 
+      "y": 637, 
       "x": 651
     }, 
     {
       "index": 169, 
       "group": 2, 
       "name": "VA02", 
-      "degree": 5.4, 
-      "y": 624, 
+      "degree": 10.6, 
+      "ind": 169, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 169, 
+      "y": 624, 
       "x": 730
     }, 
     {
       "index": 170, 
       "group": 2, 
       "name": "VB03", 
-      "degree": 0.8, 
-      "y": 503, 
+      "degree": 4.8, 
+      "ind": 170, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 170, 
+      "y": 503, 
       "x": 584
     }, 
     {
@@ -1886,10 +1886,10 @@
       "group": 2, 
       "name": "AS02", 
       "degree": 8.0, 
-      "y": 577, 
+      "ind": 171, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 171, 
+      "y": 577, 
       "x": 667
     }, 
     {
@@ -1897,10 +1897,10 @@
       "group": 2, 
       "name": "DB03", 
       "degree": 13.0, 
-      "y": 558, 
+      "ind": 172, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 172, 
+      "y": 558, 
       "x": 694
     }, 
     {
@@ -1908,21 +1908,21 @@
       "group": 2, 
       "name": "DA02", 
       "degree": 13.5, 
-      "y": 585, 
+      "ind": 173, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 173, 
+      "y": 585, 
       "x": 695
     }, 
     {
       "index": 174, 
       "group": 2, 
       "name": "VD03", 
-      "degree": 46.3, 
-      "y": 634, 
+      "degree": 48.3, 
+      "ind": 174, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 174, 
+      "y": 634, 
       "x": 674
     }, 
     {
@@ -1930,10 +1930,10 @@
       "group": 3, 
       "name": "BDUR", 
       "degree": 17.0, 
-      "y": 532, 
+      "ind": 175, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 175, 
+      "y": 532, 
       "x": 799
     }, 
     {
@@ -1941,21 +1941,21 @@
       "group": 3, 
       "name": "BDUL", 
       "degree": 14.0, 
-      "y": 564, 
+      "ind": 176, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 176, 
+      "y": 564, 
       "x": 815
     }, 
     {
       "index": 177, 
       "group": 2, 
       "name": "VA03", 
-      "degree": 14.4, 
-      "y": 577, 
+      "degree": 19.6, 
+      "ind": 177, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 177, 
+      "y": 577, 
       "x": 713
     }, 
     {
@@ -1963,21 +1963,21 @@
       "group": 3, 
       "name": "SDQR", 
       "degree": 0.0, 
-      "y": 510, 
+      "ind": 178, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 178, 
+      "y": 510, 
       "x": 853
     }, 
     {
       "index": 179, 
       "group": 2, 
       "name": "VB04", 
-      "degree": 2.0, 
-      "y": 527, 
+      "degree": 6.0, 
+      "ind": 179, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 179, 
+      "y": 527, 
       "x": 594
     }, 
     {
@@ -1985,10 +1985,10 @@
       "group": 2, 
       "name": "VC01", 
       "degree": 7.0, 
-      "y": 698, 
+      "ind": 180, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 180, 
+      "y": 698, 
       "x": 652
     }, 
     {
@@ -1996,10 +1996,10 @@
       "group": 2, 
       "name": "DD02", 
       "degree": 112.4, 
-      "y": 607, 
+      "ind": 181, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 181, 
+      "y": 607, 
       "x": 634
     }, 
     {
@@ -2007,10 +2007,10 @@
       "group": 2, 
       "name": "AS03", 
       "degree": 6.0, 
-      "y": 590, 
+      "ind": 182, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 182, 
+      "y": 590, 
       "x": 707
     }, 
     {
@@ -2018,10 +2018,10 @@
       "group": 2, 
       "name": "VD04", 
       "degree": 64.2, 
-      "y": 637, 
+      "ind": 183, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 183, 
+      "y": 637, 
       "x": 626
     }, 
     {
@@ -2029,32 +2029,32 @@
       "group": 2, 
       "name": "DA03", 
       "degree": 20.5, 
-      "y": 531, 
+      "ind": 184, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 184, 
+      "y": 531, 
       "x": 701
     }, 
     {
       "index": 185, 
       "group": 2, 
       "name": "VA04", 
-      "degree": 3.4, 
-      "y": 524, 
+      "degree": 8.6, 
+      "ind": 185, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 185, 
+      "y": 524, 
       "x": 683
     }, 
     {
       "index": 186, 
       "group": 2, 
       "name": "VB05", 
-      "degree": 0.7999999999999998, 
-      "y": 577, 
+      "degree": 4.8, 
+      "ind": 186, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 186, 
+      "y": 577, 
       "x": 556
     }, 
     {
@@ -2062,10 +2062,10 @@
       "group": 2, 
       "name": "VC02", 
       "degree": 10.0, 
-      "y": 644, 
+      "ind": 187, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 187, 
+      "y": 644, 
       "x": 694
     }, 
     {
@@ -2073,10 +2073,10 @@
       "group": 2, 
       "name": "DB04", 
       "degree": 11.0, 
-      "y": 557, 
+      "ind": 188, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 188, 
+      "y": 557, 
       "x": 651
     }, 
     {
@@ -2084,32 +2084,32 @@
       "group": 2, 
       "name": "AS04", 
       "degree": 6.0, 
-      "y": 573, 
+      "ind": 189, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 189, 
+      "y": 573, 
       "x": 673
     }, 
     {
       "index": 190, 
       "group": 2, 
       "name": "VD05", 
-      "degree": 58.3, 
-      "y": 599, 
+      "degree": 60.3, 
+      "ind": 190, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 190, 
+      "y": 599, 
       "x": 619
     }, 
     {
       "index": 191, 
       "group": 2, 
       "name": "VA05", 
-      "degree": 7.4, 
-      "y": 534, 
+      "degree": 12.6, 
+      "ind": 191, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 191, 
+      "y": 534, 
       "x": 670
     }, 
     {
@@ -2117,21 +2117,21 @@
       "group": 1, 
       "name": "AVM", 
       "degree": 2.0, 
-      "y": 496, 
+      "ind": 192, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 192, 
+      "y": 496, 
       "x": 767
     }, 
     {
       "index": 193, 
       "group": 2, 
       "name": "VB06", 
-      "degree": 2.0, 
-      "y": 519, 
+      "degree": 6.0, 
+      "ind": 193, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 193, 
+      "y": 519, 
       "x": 577
     }, 
     {
@@ -2139,10 +2139,10 @@
       "group": 2, 
       "name": "DA04", 
       "degree": 19.5, 
-      "y": 516, 
+      "ind": 194, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 194, 
+      "y": 516, 
       "x": 665
     }, 
     {
@@ -2150,10 +2150,10 @@
       "group": 2, 
       "name": "DD03", 
       "degree": 117.4, 
-      "y": 636, 
+      "ind": 195, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 195, 
+      "y": 636, 
       "x": 603
     }, 
     {
@@ -2161,10 +2161,10 @@
       "group": 1, 
       "name": "ALML", 
       "degree": 5.0, 
-      "y": 475, 
+      "ind": 196, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 196, 
+      "y": 475, 
       "x": 828
     }, 
     {
@@ -2172,10 +2172,10 @@
       "group": 1, 
       "name": "ALMR", 
       "degree": 1.0, 
-      "y": 443, 
+      "ind": 197, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 197, 
+      "y": 443, 
       "x": 861
     }, 
     {
@@ -2183,10 +2183,10 @@
       "group": 2, 
       "name": "VC03", 
       "degree": 13.0, 
-      "y": 682, 
+      "ind": 198, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 198, 
+      "y": 682, 
       "x": 700
     }, 
     {
@@ -2194,10 +2194,10 @@
       "group": 2, 
       "name": "AS05", 
       "degree": 10.0, 
-      "y": 628, 
+      "ind": 199, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 199, 
+      "y": 628, 
       "x": 708
     }, 
     {
@@ -2205,32 +2205,32 @@
       "group": 2, 
       "name": "VD06", 
       "degree": 60.2, 
-      "y": 617, 
+      "ind": 200, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 200, 
+      "y": 617, 
       "x": 616
     }, 
     {
       "index": 201, 
       "group": 2, 
       "name": "VA06", 
-      "degree": 6.4, 
-      "y": 617, 
+      "degree": 11.6, 
+      "ind": 201, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 201, 
+      "y": 617, 
       "x": 679
     }, 
     {
       "index": 202, 
       "group": 2, 
       "name": "VB07", 
-      "degree": 2.8, 
-      "y": 451, 
+      "degree": 6.8, 
+      "ind": 202, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 202, 
+      "y": 451, 
       "x": 550
     }, 
     {
@@ -2238,10 +2238,10 @@
       "group": 2, 
       "name": "DB05", 
       "degree": 8.0, 
-      "y": 432, 
+      "ind": 203, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 203, 
+      "y": 432, 
       "x": 761
     }, 
     {
@@ -2249,21 +2249,21 @@
       "group": 2, 
       "name": "AS06", 
       "degree": 7.0, 
-      "y": 519, 
+      "ind": 204, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 204, 
+      "y": 519, 
       "x": 699
     }, 
     {
       "index": 205, 
       "group": 2, 
       "name": "VD07", 
-      "degree": 48.3, 
-      "y": 614, 
+      "degree": 50.3, 
+      "ind": 205, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 205, 
+      "y": 614, 
       "x": 570
     }, 
     {
@@ -2271,10 +2271,10 @@
       "group": 2, 
       "name": "VC04", 
       "degree": 1.0, 
-      "y": 730, 
+      "ind": 206, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 206, 
+      "y": 730, 
       "x": 751
     }, 
     {
@@ -2282,10 +2282,10 @@
       "group": 2, 
       "name": "DA05", 
       "degree": 16.5, 
-      "y": 611, 
+      "ind": 207, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 207, 
+      "y": 611, 
       "x": 696
     }, 
     {
@@ -2293,10 +2293,10 @@
       "group": 2, 
       "name": "VC05", 
       "degree": 4.0, 
-      "y": 657, 
+      "ind": 208, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 208, 
+      "y": 657, 
       "x": 838
     }, 
     {
@@ -2304,10 +2304,10 @@
       "group": 2, 
       "name": "HSNR", 
       "degree": 22.0, 
-      "y": 654, 
+      "ind": 209, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 209, 
+      "y": 654, 
       "x": 781
     }, 
     {
@@ -2315,32 +2315,32 @@
       "group": 2, 
       "name": "HSNL", 
       "degree": 12.0, 
-      "y": 694, 
+      "ind": 210, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 210, 
+      "y": 694, 
       "x": 828
     }, 
     {
       "index": 211, 
       "group": 2, 
       "name": "VA07", 
-      "degree": 1.4, 
-      "y": 687, 
+      "degree": 6.6, 
+      "ind": 211, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 211, 
+      "y": 687, 
       "x": 587
     }, 
     {
       "index": 212, 
       "group": 2, 
       "name": "VB08", 
-      "degree": 0.0, 
-      "y": 387, 
+      "degree": 4.0, 
+      "ind": 212, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 212, 
+      "y": 387, 
       "x": 620
     }, 
     {
@@ -2348,10 +2348,10 @@
       "group": 2, 
       "name": "AS07", 
       "degree": 13.0, 
-      "y": 418, 
+      "ind": 213, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 213, 
+      "y": 418, 
       "x": 767
     }, 
     {
@@ -2359,10 +2359,10 @@
       "group": 2, 
       "name": "DD04", 
       "degree": 105.4, 
-      "y": 565, 
+      "ind": 214, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 214, 
+      "y": 565, 
       "x": 544
     }, 
     {
@@ -2370,32 +2370,32 @@
       "group": 2, 
       "name": "VD08", 
       "degree": 53.2, 
-      "y": 465, 
+      "ind": 215, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 215, 
+      "y": 465, 
       "x": 490
     }, 
     {
       "index": 216, 
       "group": 2, 
       "name": "VA08", 
-      "degree": 18.4, 
-      "y": 474, 
+      "degree": 23.6, 
+      "ind": 216, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 216, 
+      "y": 474, 
       "x": 612
     }, 
     {
       "index": 217, 
       "group": 2, 
       "name": "VB09", 
-      "degree": -0.19999999999999996, 
-      "y": 291, 
+      "degree": 3.8, 
+      "ind": 217, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 217, 
+      "y": 291, 
       "x": 529
     }, 
     {
@@ -2403,10 +2403,10 @@
       "group": 2, 
       "name": "DB06", 
       "degree": 13.0, 
-      "y": 428, 
+      "ind": 218, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 218, 
+      "y": 428, 
       "x": 748
     }, 
     {
@@ -2414,10 +2414,10 @@
       "group": 2, 
       "name": "AS08", 
       "degree": 12.0, 
-      "y": 382, 
+      "ind": 219, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 219, 
+      "y": 382, 
       "x": 738
     }, 
     {
@@ -2425,21 +2425,21 @@
       "group": 1, 
       "name": "PDEL", 
       "degree": 18.0, 
-      "y": 465, 
+      "ind": 220, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 220, 
+      "y": 465, 
       "x": 758
     }, 
     {
       "index": 221, 
       "group": 2, 
       "name": "VD09", 
-      "degree": 42.3, 
-      "y": 359, 
+      "degree": 44.3, 
+      "ind": 221, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 221, 
+      "y": 359, 
       "x": 535
     }, 
     {
@@ -2447,10 +2447,10 @@
       "group": 1, 
       "name": "PDER", 
       "degree": 16.0, 
-      "y": 544, 
+      "ind": 222, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 222, 
+      "y": 544, 
       "x": 760
     }, 
     {
@@ -2458,10 +2458,10 @@
       "group": 3, 
       "name": "SDQL", 
       "degree": 2.0, 
-      "y": 531, 
+      "ind": 223, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 223, 
+      "y": 531, 
       "x": 868
     }, 
     {
@@ -2469,10 +2469,10 @@
       "group": 2, 
       "name": "DA06", 
       "degree": 28.5, 
-      "y": 602, 
+      "ind": 224, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 224, 
+      "y": 602, 
       "x": 676
     }, 
     {
@@ -2480,10 +2480,10 @@
       "group": 1, 
       "name": "PVDL", 
       "degree": 2.0, 
-      "y": 410, 
+      "ind": 225, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 225, 
+      "y": 410, 
       "x": 681
     }, 
     {
@@ -2491,10 +2491,10 @@
       "group": 1, 
       "name": "PVDR", 
       "degree": 0.0, 
-      "y": 430, 
+      "ind": 226, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 226, 
+      "y": 430, 
       "x": 736
     }, 
     {
@@ -2502,32 +2502,32 @@
       "group": 1, 
       "name": "PVM", 
       "degree": 3.0, 
-      "y": 429, 
+      "ind": 227, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 227, 
+      "y": 429, 
       "x": 794
     }, 
     {
       "index": 228, 
       "group": 2, 
       "name": "VA09", 
-      "degree": 16.4, 
-      "y": 465, 
+      "degree": 21.6, 
+      "ind": 228, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 228, 
+      "y": 465, 
       "x": 674
     }, 
     {
       "index": 229, 
       "group": 2, 
       "name": "VB10", 
-      "degree": 2.0, 
-      "y": 477, 
+      "degree": 6.0, 
+      "ind": 229, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 229, 
+      "y": 477, 
       "x": 633
     }, 
     {
@@ -2535,10 +2535,10 @@
       "group": 2, 
       "name": "AS09", 
       "degree": 15.0, 
-      "y": 453, 
+      "ind": 230, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 230, 
+      "y": 453, 
       "x": 725
     }, 
     {
@@ -2546,10 +2546,10 @@
       "group": 2, 
       "name": "DD05", 
       "degree": 94.4, 
-      "y": 327, 
+      "ind": 231, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 231, 
+      "y": 327, 
       "x": 582
     }, 
     {
@@ -2557,32 +2557,32 @@
       "group": 2, 
       "name": "VD10", 
       "degree": 54.2, 
-      "y": 269, 
+      "ind": 232, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 232, 
+      "y": 269, 
       "x": 594
     }, 
     {
       "index": 233, 
       "group": 2, 
       "name": "VA10", 
-      "degree": 7.4, 
-      "y": 463, 
+      "degree": 12.6, 
+      "ind": 233, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 233, 
+      "y": 463, 
       "x": 712
     }, 
     {
       "index": 234, 
       "group": 2, 
       "name": "VB11", 
-      "degree": 2.0, 
-      "y": 446, 
+      "degree": 6.0, 
+      "ind": 234, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 234, 
+      "y": 446, 
       "x": 646
     }, 
     {
@@ -2590,10 +2590,10 @@
       "group": 2, 
       "name": "DB07", 
       "degree": 10.0, 
-      "y": 410, 
+      "ind": 235, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 235, 
+      "y": 410, 
       "x": 715
     }, 
     {
@@ -2601,10 +2601,10 @@
       "group": 2, 
       "name": "AS10", 
       "degree": 8.0, 
-      "y": 496, 
+      "ind": 236, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 236, 
+      "y": 496, 
       "x": 716
     }, 
     {
@@ -2612,32 +2612,32 @@
       "group": 2, 
       "name": "DA07", 
       "degree": 5.0, 
-      "y": 386, 
+      "ind": 237, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 237, 
+      "y": 386, 
       "x": 718
     }, 
     {
       "index": 238, 
       "group": 2, 
       "name": "VD11", 
-      "degree": 44.3, 
-      "y": 559, 
+      "degree": 46.3, 
+      "ind": 238, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 238, 
+      "y": 559, 
       "x": 627
     }, 
     {
       "index": 239, 
       "group": 2, 
       "name": "VA11", 
-      "degree": 19.1, 
-      "y": 534, 
+      "degree": 24.3, 
+      "ind": 239, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 239, 
+      "y": 534, 
       "x": 658
     }, 
     {
@@ -2645,10 +2645,10 @@
       "group": 2, 
       "name": "AS11", 
       "degree": 16.0, 
-      "y": 449, 
+      "ind": 240, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 240, 
+      "y": 449, 
       "x": 672
     }, 
     {
@@ -2656,10 +2656,10 @@
       "group": 2, 
       "name": "VD12", 
       "degree": 14.0, 
-      "y": 545, 
+      "ind": 241, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 241, 
+      "y": 545, 
       "x": 588
     }, 
     {
@@ -2667,10 +2667,10 @@
       "group": 3, 
       "name": "PVPR", 
       "degree": 11.0, 
-      "y": 594, 
+      "ind": 242, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 242, 
+      "y": 594, 
       "x": 807
     }, 
     {
@@ -2678,10 +2678,10 @@
       "group": 3, 
       "name": "PVT", 
       "degree": 18.0, 
-      "y": 578, 
+      "ind": 243, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 243, 
+      "y": 578, 
       "x": 804
     }, 
     {
@@ -2689,10 +2689,10 @@
       "group": 2, 
       "name": "VA12", 
       "degree": 15.0, 
-      "y": 484, 
+      "ind": 244, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 244, 
+      "y": 484, 
       "x": 648
     }, 
     {
@@ -2700,10 +2700,10 @@
       "group": 2, 
       "name": "DD06", 
       "degree": 71.5, 
-      "y": 495, 
+      "ind": 245, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 245, 
+      "y": 495, 
       "x": 571
     }, 
     {
@@ -2711,10 +2711,10 @@
       "group": 3, 
       "name": "PVPL", 
       "degree": 10.0, 
-      "y": 502, 
+      "ind": 246, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 246, 
+      "y": 502, 
       "x": 795
     }, 
     {
@@ -2722,10 +2722,10 @@
       "group": 2, 
       "name": "DA08", 
       "degree": 24.0, 
-      "y": 547, 
+      "ind": 247, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 247, 
+      "y": 547, 
       "x": 673
     }, 
     {
@@ -2733,10 +2733,10 @@
       "group": 2, 
       "name": "DA09", 
       "degree": 23.0, 
-      "y": 465, 
+      "ind": 248, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 248, 
+      "y": 465, 
       "x": 687
     }, 
     {
@@ -2744,10 +2744,10 @@
       "group": 2, 
       "name": "PDB", 
       "degree": 1.0, 
-      "y": 325, 
+      "ind": 249, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 249, 
+      "y": 325, 
       "x": 607
     }, 
     {
@@ -2755,10 +2755,10 @@
       "group": 2, 
       "name": "VD13", 
       "degree": 26.0, 
-      "y": 424, 
+      "ind": 250, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 250, 
+      "y": 424, 
       "x": 676
     }, 
     {
@@ -2766,10 +2766,10 @@
       "group": 2, 
       "name": "PDA", 
       "degree": 2.0, 
-      "y": 450, 
+      "ind": 251, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 251, 
+      "y": 450, 
       "x": 591
     }, 
     {
@@ -2777,10 +2777,10 @@
       "group": 2, 
       "name": "DVB", 
       "degree": 0.0, 
-      "y": 496, 
+      "ind": 252, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 252, 
+      "y": 496, 
       "x": 665
     }, 
     {
@@ -2788,10 +2788,10 @@
       "group": 3, 
       "name": "DVA", 
       "degree": 105.0, 
-      "y": 556, 
+      "ind": 253, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 253, 
+      "y": 556, 
       "x": 805
     }, 
     {
@@ -2799,10 +2799,10 @@
       "group": 3, 
       "name": "DVC", 
       "degree": 15.0, 
-      "y": 628, 
+      "ind": 254, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 254, 
+      "y": 628, 
       "x": 808
     }, 
     {
@@ -2810,10 +2810,10 @@
       "group": 3, 
       "name": "PVQR", 
       "degree": 25.0, 
-      "y": 705, 
+      "ind": 255, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 255, 
+      "y": 705, 
       "x": 781
     }, 
     {
@@ -2821,10 +2821,10 @@
       "group": 1, 
       "name": "PHAL", 
       "degree": 8.0, 
-      "y": 679, 
+      "ind": 256, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 256, 
+      "y": 679, 
       "x": 717
     }, 
     {
@@ -2832,10 +2832,10 @@
       "group": 1, 
       "name": "PHAR", 
       "degree": 5.0, 
-      "y": 660, 
+      "ind": 257, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 257, 
+      "y": 660, 
       "x": 677
     }, 
     {
@@ -2843,10 +2843,10 @@
       "group": 3, 
       "name": "PVQL", 
       "degree": 23.0, 
-      "y": 716, 
+      "ind": 258, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 258, 
+      "y": 716, 
       "x": 810
     }, 
     {
@@ -2854,10 +2854,10 @@
       "group": 1, 
       "name": "PLNR", 
       "degree": 0.0, 
-      "y": 628, 
+      "ind": 259, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 259, 
+      "y": 628, 
       "x": 1077
     }, 
     {
@@ -2865,10 +2865,10 @@
       "group": 3, 
       "name": "LUAL", 
       "degree": 8.0, 
-      "y": 499, 
+      "ind": 260, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 260, 
+      "y": 499, 
       "x": 701
     }, 
     {
@@ -2876,10 +2876,10 @@
       "group": 3, 
       "name": "PVCL", 
       "degree": 92.0, 
-      "y": 520, 
+      "ind": 261, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 261, 
+      "y": 520, 
       "x": 720
     }, 
     {
@@ -2887,10 +2887,10 @@
       "group": 1, 
       "name": "PHBR", 
       "degree": 11.0, 
-      "y": 586, 
+      "ind": 262, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 262, 
+      "y": 586, 
       "x": 676
     }, 
     {
@@ -2898,10 +2898,10 @@
       "group": 1, 
       "name": "ALNL", 
       "degree": 3.0, 
-      "y": 572, 
+      "ind": 263, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 263, 
+      "y": 572, 
       "x": 999
     }, 
     {
@@ -2909,10 +2909,10 @@
       "group": 1, 
       "name": "PHBL", 
       "degree": 8.0, 
-      "y": 548, 
+      "ind": 264, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 264, 
+      "y": 548, 
       "x": 642
     }, 
     {
@@ -2920,10 +2920,10 @@
       "group": 3, 
       "name": "LUAR", 
       "degree": 6.0, 
-      "y": 492, 
+      "ind": 265, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 265, 
+      "y": 492, 
       "x": 688
     }, 
     {
@@ -2931,10 +2931,10 @@
       "group": 1, 
       "name": "ALNR", 
       "degree": 2.0, 
-      "y": 558, 
+      "ind": 266, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 266, 
+      "y": 558, 
       "x": 983
     }, 
     {
@@ -2942,10 +2942,10 @@
       "group": 3, 
       "name": "PVCR", 
       "degree": 83.0, 
-      "y": 493, 
+      "ind": 267, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 267, 
+      "y": 493, 
       "x": 734
     }, 
     {
@@ -2953,10 +2953,10 @@
       "group": 1, 
       "name": "PQR", 
       "degree": 5.0, 
-      "y": 553, 
+      "ind": 268, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 268, 
+      "y": 553, 
       "x": 664
     }, 
     {
@@ -2964,10 +2964,10 @@
       "group": 3, 
       "name": "PVR", 
       "degree": 14.0, 
-      "y": 471, 
+      "ind": 269, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 269, 
+      "y": 471, 
       "x": 811
     }, 
     {
@@ -2975,10 +2975,10 @@
       "group": 3, 
       "name": "PVWL", 
       "degree": 6.0, 
-      "y": 566, 
+      "ind": 270, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 270, 
+      "y": 566, 
       "x": 647
     }, 
     {
@@ -2986,10 +2986,10 @@
       "group": 3, 
       "name": "PVWR", 
       "degree": 2.0, 
-      "y": 455, 
+      "ind": 271, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 271, 
+      "y": 455, 
       "x": 695
     }, 
     {
@@ -2997,10 +2997,10 @@
       "group": 1, 
       "name": "PLNL", 
       "degree": 1.0, 
-      "y": 666, 
+      "ind": 272, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 272, 
+      "y": 666, 
       "x": 1036
     }, 
     {
@@ -3008,10 +3008,10 @@
       "group": 1, 
       "name": "PHCR", 
       "degree": 0.0, 
-      "y": 454, 
+      "ind": 273, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 273, 
+      "y": 454, 
       "x": 746
     }, 
     {
@@ -3019,10 +3019,10 @@
       "group": 1, 
       "name": "PHCL", 
       "degree": 2.0, 
-      "y": 427, 
+      "ind": 274, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 274, 
+      "y": 427, 
       "x": 708
     }, 
     {
@@ -3030,10 +3030,10 @@
       "group": 3, 
       "name": "PVNR", 
       "degree": 19.0, 
-      "y": 608, 
+      "ind": 275, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 275, 
+      "y": 608, 
       "x": 711
     }, 
     {
@@ -3041,10 +3041,10 @@
       "group": 1, 
       "name": "PLMR", 
       "degree": 2.0, 
-      "y": 596, 
+      "ind": 276, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 276, 
+      "y": 596, 
       "x": 712
     }, 
     {
@@ -3052,10 +3052,10 @@
       "group": 3, 
       "name": "PVNL", 
       "degree": 13.0, 
-      "y": 559, 
+      "ind": 277, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 277, 
+      "y": 559, 
       "x": 715
     }, 
     {
@@ -3063,10 +3063,10 @@
       "group": 1, 
       "name": "PLML", 
       "degree": 0.0, 
-      "y": 857, 
+      "ind": 278, 
       "voltage": 0, 
       "inputCurrent": 0.05, 
-      "ind": 278, 
+      "y": 857, 
       "x": 815
     }
   ], 
@@ -10379,7 +10379,7 @@
     {
       "source": 163, 
       "target": 166, 
-      "value": -1.0
+      "value": 1.0
     }, 
     {
       "source": 164, 
@@ -10429,12 +10429,12 @@
     {
       "source": 166, 
       "target": 150, 
-      "value": -2.0
+      "value": 2.0
     }, 
     {
       "source": 166, 
       "target": 160, 
-      "value": -2.6
+      "value": 2.6
     }, 
     {
       "source": 167, 
@@ -10459,12 +10459,12 @@
     {
       "source": 168, 
       "target": 138, 
-      "value": -2.0
+      "value": 2.0
     }, 
     {
       "source": 168, 
       "target": 169, 
-      "value": -2.6
+      "value": 2.6
     }, 
     {
       "source": 169, 
@@ -10564,12 +10564,12 @@
     {
       "source": 174, 
       "target": 170, 
-      "value": -2.0
+      "value": 2.0
     }, 
     {
       "source": 174, 
       "target": 177, 
-      "value": -2.6
+      "value": 2.6
     }, 
     {
       "source": 175, 
@@ -10814,7 +10814,7 @@
     {
       "source": 181, 
       "target": 174, 
-      "value": -1.0
+      "value": 1.0
     }, 
     {
       "source": 182, 
@@ -10834,12 +10834,12 @@
     {
       "source": 183, 
       "target": 179, 
-      "value": -2.0
+      "value": 2.0
     }, 
     {
       "source": 183, 
       "target": 185, 
-      "value": -2.6
+      "value": 2.6
     }, 
     {
       "source": 184, 
@@ -11019,12 +11019,12 @@
     {
       "source": 190, 
       "target": 186, 
-      "value": -2.0
+      "value": 2.0
     }, 
     {
       "source": 190, 
       "target": 191, 
-      "value": -2.6
+      "value": 2.6
     }, 
     {
       "source": 191, 
@@ -11149,7 +11149,7 @@
     {
       "source": 195, 
       "target": 190, 
-      "value": -1.0
+      "value": 1.0
     }, 
     {
       "source": 196, 
@@ -11349,12 +11349,12 @@
     {
       "source": 200, 
       "target": 193, 
-      "value": -2.0
+      "value": 2.0
     }, 
     {
       "source": 200, 
       "target": 201, 
-      "value": -2.6
+      "value": 2.6
     }, 
     {
       "source": 201, 
@@ -11429,12 +11429,12 @@
     {
       "source": 205, 
       "target": 202, 
-      "value": -2.0
+      "value": 2.0
     }, 
     {
       "source": 205, 
       "target": 211, 
-      "value": -2.6
+      "value": 2.6
     }, 
     {
       "source": 206, 
@@ -11784,17 +11784,17 @@
     {
       "source": 214, 
       "target": 205, 
-      "value": -1.0
+      "value": 1.0
     }, 
     {
       "source": 215, 
       "target": 212, 
-      "value": -2.0
+      "value": 2.0
     }, 
     {
       "source": 215, 
       "target": 216, 
-      "value": -2.6
+      "value": 2.6
     }, 
     {
       "source": 216, 
@@ -11889,12 +11889,12 @@
     {
       "source": 221, 
       "target": 217, 
-      "value": -2.0
+      "value": 2.0
     }, 
     {
       "source": 221, 
       "target": 228, 
-      "value": -2.6
+      "value": 2.6
     }, 
     {
       "source": 222, 
@@ -12144,17 +12144,17 @@
     {
       "source": 231, 
       "target": 221, 
-      "value": -1.0
+      "value": 1.0
     }, 
     {
       "source": 232, 
       "target": 229, 
-      "value": -2.0
+      "value": 2.0
     }, 
     {
       "source": 232, 
       "target": 233, 
-      "value": -2.6
+      "value": 2.6
     }, 
     {
       "source": 233, 
@@ -12219,12 +12219,12 @@
     {
       "source": 238, 
       "target": 234, 
-      "value": -2.0
+      "value": 2.0
     }, 
     {
       "source": 238, 
       "target": 239, 
-      "value": -2.6
+      "value": 2.6
     }, 
     {
       "source": 239, 
@@ -12514,7 +12514,7 @@
     {
       "source": 245, 
       "target": 238, 
-      "value": -1.0
+      "value": 1.0
     }, 
     {
       "source": 246, 
