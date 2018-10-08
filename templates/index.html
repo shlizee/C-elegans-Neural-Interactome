@@ -34,7 +34,7 @@
 <body ng-app="App">
 
   <navbar class="navbar" ng-controller="navController">
-    <h3>C.elegans Neural Interactome <small>V2.0.0</small></h3>
+    <h3>C.elegans Neural Interactome <small>V2.1.0</small></h3>
     <ul class="controls" >
       <li ng-click="start()" ng-hide="isPaused() || isRunning()">
         <img src="%% url_for('static', filename='images/ic_play_arrow_black_24px.svg') %%"/></li>
@@ -111,7 +111,7 @@
             ng-mouseleave="hoverEnd(node)"
             ng-class="[{selected: node.selected, deactivated: !node.activated, hover: node.hovered}, 'g' + node.group]">
             {{node.name}}
-            <span style="float:right">{{node.inputCurrent*100 | number:0}}k</span>
+            <span style="float:right">{{node.inputCurrent*10 | number:1}} nA</span>
             <canvas slider class="slider" ng-if="node.selected"
               input-current="node.inputCurrent"
               visible="node.selected"
@@ -124,7 +124,7 @@
 
       <div class="overlay no-click connection-list" ng-hide="!hoveredConnections().name">
         <h4 class="header" >{{hoveredConnections().name}}</h4>
-        <h5 class="subheader">{{hoveredConnections().voltage | number:4}} V</h5>
+        <h5 class="subheader">{{hoveredConnections().voltage | number:4}} mV</h5>
         <ul>
           <li ng-repeat="conn in hoveredConnections().connections | orderBy : ['group', 'name']" ng-class="'g' + conn.group">
             {{conn.name.trim()}}

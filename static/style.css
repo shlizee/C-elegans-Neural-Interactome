@@ -549,7 +549,7 @@ canvas.vis {
     border-top: 1px solid rgb(232,232,232);
     border-bottom: 1px solid rgb(232,232,232);
     margin-bottom: -1px;
-    text-transform: uppercase;
+    text-transform: none;
   }
 
   .node-li.hover {

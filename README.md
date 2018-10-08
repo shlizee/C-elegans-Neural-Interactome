@@ -20,11 +20,11 @@ We recommend you to install [Windows Anaconda for Python 2.7](https://www.anacon
 * pip install flask-socketio
 * pip install eventlet
 
-Once you have installed all the dependencies, unzip the cloned zip file to your desired location. Navigate inside the Neural Interactome folder (Where CElegansFull_D3.py is located) in Anaconda prompt, and simply type **python CElegansFull_D3.py**, which will set up the local Neural Interactome server. Once the server is up, go to the browser and enter your localhost address (127.0.0.1:5000) to access the Neural Interactome. 
+Once you have installed all the dependencies, unzip the cloned zip file to your desired location. Navigate inside the Neural Interactome folder (Where initialize.py is located) in Anaconda prompt, and simply type **python initialize.py**, which will set up the local Neural Interactome server. Once the server is up, go to the browser and enter your localhost address (127.0.0.1:5000) to access the Neural Interactome. 
 
 # Installation (Linux/Mac)
 
-For the Linux/Mac,  if you have Python 2.7 installed, you just need to ensure that you have installed all the depenedencies below. Once all the dependencies have been installed, navigate inside the Neural Interactome folder (Where CElegansFull_D3.py is located) in terminal, and type **python CElegansFull_D3.py**, which will set up the local Neural Interactome web server. Once the server is up, go to the browser and enter your localhost address (127.0.0.1:5000) to access the Neural Interactome. 
+For the Linux/Mac,  if you have Python 2.7 installed, you just need to ensure that you have installed all the depenedencies below. Once all the dependencies have been installed, navigate inside the Neural Interactome folder (Where initialize.py is located) in terminal, and type **python initialize.py**, which will set up the local Neural Interactome web server. Once the server is up, go to the browser and enter your localhost address (127.0.0.1:5000) to access the Neural Interactome. 
 
 # Dependencies
 

@@ -17,7 +17,7 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, di
 
 author = 'Jimin Kim'
 email = 'jk55@u.washington.edu'
-version = '2.0.0-Beta'
+version = '2.1.0-Beta'
 
 """ Number of Neurons """
 N = 279
@@ -64,13 +64,13 @@ Gs_Dynamic = Gs_Static.copy()
 
 """ Data matrix stack size """
 stack_Size = 5
-init_data_Mat = np.zeros((stack_Size + 10, N))
+init_data_Mat = np.zeros((stack_Size + 50, N))
 data_Mat = np.zeros((stack_Size, N))
 
 """ Directory paths for presets """
 default_Dir = os.getcwd()
 preset_Dir = default_Dir + '/presets'
-
+save_Dir = default_Dir + '/saved_dynamics'
 
 """ Mask transition """
 def transit_Mask(input_Array):
@@ -241,15 +241,16 @@ def run_Network(t_Delta, atol):
 
     init_data_Mat[0, :] = InitCond[:N]
 
-    global oldMask, t_Switch, t_Tracker, transit_End
+    global session_Data, oldMask, t_Switch, t_Tracker, transit_End
 
-    oldMask = newMask
+    session_Data = []
+    oldMask = newMask.copy()
     #oldMask = np.zeros(N)
     t_Switch = 0
     transit_End = 0.3
     k = 1
 
-    while r.successful() and k < stack_Size + 10:
+    while r.successful() and k < stack_Size + 50:
 
         r.integrate(r.t + dt)
         data = np.subtract(r.y[:N], Vth)
@@ -272,8 +273,10 @@ def run_Network(t_Delta, atol):
             k += 1
 
         emit('new data', data_Mat.tolist())
+        session_Data.append(data_Mat)
 
-    emit('new data', init_data_Mat.tolist())
+    emit('new data', init_data_Mat[50:, :].tolist())
+    session_Data.append(init_data_Mat[50:, :])
 
 EffVth(Gg_Static, Gs_Static)
 
@@ -323,15 +326,22 @@ def test_disconnect():
     oldMask = transit_Mat[0,:]
     newMask = transit_Mat[1,:]
 
-    Gg_Dynamic = Gg_Static
-    Gs_Dynamic = Gs_Static
+    Gg_Dynamic = Gg_Static.copy()
+    Gs_Dynamic = Gs_Static.copy()
 
     EffVth(Gg_Dynamic, Gs_Dynamic)
     Vth_Static = EffVth_rhs(Iext, newMask)
 
+    os.chdir(save_Dir)
+
+    np.save('saved_dynamics.npy', np.vstack(session_Data))
+
+    os.chdir(default_Dir)
+
     print "EffVth Recalculated"
     print "Simulation Resetted"
     print "Client disconnected"
+    print "Session Voltage Dynamics Saved"
 
 @socketio.on('startRun', namespace='/test')
 def startRun(t_Delta, atol):
@@ -361,14 +371,21 @@ def resetit():
     oldMask = transit_Mat[0,:]
     newMask = transit_Mat[1,:]
 
-    Gg_Dynamic = Gg_Static
-    Gs_Dynamic = Gs_Static
+    Gg_Dynamic = Gg_Static.copy()
+    Gs_Dynamic = Gs_Static.copy()
 
     EffVth(Gg_Dynamic, Gs_Dynamic)
     Vth_Static = EffVth_rhs(Iext, newMask)
 
+    os.chdir(save_Dir)
+
+    np.save('saved_dynamics.npy', np.vstack(session_Data))
+
+    os.chdir(default_Dir)
+
     print "EffVth Recalculated"
     print "Simulation Resetted"
+    print "Session Voltage Dynamics Saved"
 
 @socketio.on("save", namespace="/test")
 def save(name, json):
