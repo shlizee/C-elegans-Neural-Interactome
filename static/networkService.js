@@ -119,7 +119,7 @@ angular.module("App")
 		$rootScope.$broadcast("new selection");
 	}
 
-	// Set input current to default, 0.05
+	// Set input current to default, 0.45
 	// Set default selected and activated properties
 	function reset() {
 		nodes.forEach(function(d) {
@@ -138,7 +138,7 @@ angular.module("App")
 		if (!nodes[node.index].selected) {
 			nodes[node.index].inputCurrent = 0;
 		} else {
-			nodes[node.index].inputCurrent = 0.05;
+			nodes[node.index].inputCurrent = 0.5;
 		}
 		$timeout(function(){
 			socket.emit("update", nodes.map(function(d) { return d.inputCurrent; }));

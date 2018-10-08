@@ -332,16 +332,19 @@ def test_disconnect():
     EffVth(Gg_Dynamic, Gs_Dynamic)
     Vth_Static = EffVth_rhs(Iext, newMask)
 
-    os.chdir(save_Dir)
+    if 'session_Data' in globals():
 
-    np.save('saved_dynamics.npy', np.vstack(session_Data))
+        os.chdir(save_Dir)
 
-    os.chdir(default_Dir)
+        np.save('saved_dynamics.npy', np.vstack(session_Data))
+
+        os.chdir(default_Dir)
+
+        print "Session Voltage Dynamics Saved"
 
     print "EffVth Recalculated"
     print "Simulation Resetted"
     print "Client disconnected"
-    print "Session Voltage Dynamics Saved"
 
 @socketio.on('startRun', namespace='/test')
 def startRun(t_Delta, atol):
@@ -377,15 +380,18 @@ def resetit():
     EffVth(Gg_Dynamic, Gs_Dynamic)
     Vth_Static = EffVth_rhs(Iext, newMask)
 
-    os.chdir(save_Dir)
+    if 'session_Data' in globals():
 
-    np.save('saved_dynamics.npy', np.vstack(session_Data))
+        os.chdir(save_Dir)
 
-    os.chdir(default_Dir)
+        np.save('saved_dynamics.npy', np.vstack(session_Data))
+
+        os.chdir(default_Dir)
+
+        print "Session Voltage Dynamics Saved"
 
     print "EffVth Recalculated"
     print "Simulation Resetted"
-    print "Session Voltage Dynamics Saved"
 
 @socketio.on("save", namespace="/test")
 def save(name, json):
