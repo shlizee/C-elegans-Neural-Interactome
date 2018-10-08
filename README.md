@@ -1,6 +1,6 @@
 # C. elegans Neural Interactome Beta
 
-![alt text](images/intro_image.png)
+![alt text](images/fig1.png)
 
 # Introduction
 
