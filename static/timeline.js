@@ -114,7 +114,7 @@ angular.module("App")
           axisg.transition().duration(250).ease("linear").call(axis);
         }
         
-        timeLabel.text(data.frame/100);
+        timeLabel.text(data.frame/100 + 's');
         // timeLabel.transition().duration(150).ease("linear").attr("x",secondScale(data.frame/100));
 
         var buffer = bufferGroup.selectAll(".buffer")
