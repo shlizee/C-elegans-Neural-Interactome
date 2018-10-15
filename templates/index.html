@@ -19,6 +19,7 @@
   <!-- // script src="https://cdn.socket.io/socket.io-1.4.5.js"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.6.1/lodash.min.js"></script>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
   <script type="text/javascript" src="%% url_for('static', filename='app.js') %%"></script>
   <script type="text/javascript" src="%% url_for('static', filename='networkService.js') %%"></script>
@@ -28,6 +29,7 @@
   <script type="text/javascript" src="%% url_for('static', filename='slider.js') %%"></script>
   <script type="text/javascript" src="%% url_for('static', filename='forceDiagram.js') %%"></script>
   <script type="text/javascript" src="%% url_for('static', filename='timeline.js') %%"></script>
+  <script type="text/javascript" src="%% url_for('static', filename='dynPlot.js') %%"></script>
   <!-- // <script type="text/javascript" src="%% url_for('static', filename='script.js') %%"></script> -->
 
 </head>
@@ -130,6 +132,9 @@
             {{conn.name.trim()}}
           </li>
         </ul>
+      </div>
+
+      <div class="popup no-click" id="chartContainer" ng-hide="!hoveredConnections().name"; dyn-plot>
       </div>
 
       <div class="overlay opaque no-click" ng-if="isBuffering()">

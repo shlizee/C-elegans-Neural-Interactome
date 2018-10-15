@@ -140,6 +140,17 @@ button:hover {
     margin-left: 325px;
 }
 
+.popup{  
+  position:fixed;
+  z-index:1;
+  left:1150px;
+  right:20px;
+  top:20px; 
+  bottom:600px;
+  
+  padding:20px;  
+}
+
 .full-overlay {
     position: fixed;
     top: 42px;

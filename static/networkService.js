@@ -60,7 +60,6 @@ angular.module("App")
 	Factory.links = function() { return links; };
 	Factory.nodeGroups = function() { return nodeGroups; };
 
-
 	return Factory;
 
 	// add a new dataset
