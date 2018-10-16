@@ -184,6 +184,12 @@ def EffVth_rhs(Iext, InMask):
 
     return Vth
 
+def voltage_filter(v_vec, vmax, scaler):
+    
+    filtered = vmax * np.tanh(scaler * np.divide(v_vec, vmax))
+    
+    return filtered
+
 """ Right hand side """
 def Jimin_RHS(t, y):
 
@@ -254,7 +260,7 @@ def run_Network(t_Delta, atol):
 
         r.integrate(r.t + dt)
         data = np.subtract(r.y[:N], Vth)
-        init_data_Mat[k, :] = data
+        init_data_Mat[k, :] = voltage_filter(data, 500, 1)
         t_Tracker = r.t
         k += 1
 
@@ -268,7 +274,7 @@ def run_Network(t_Delta, atol):
 
             r.integrate(r.t + dt)
             data = np.subtract(r.y[:N], Vth)
-            data_Mat[k, :] = data
+            data_Mat[k, :] = voltage_filter(data, 500, 1)
             t_Tracker = r.t
             k += 1
 

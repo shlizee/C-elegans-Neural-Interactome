@@ -23,6 +23,7 @@ return {
         },      
         data: [{
             type: "line",
+            lineThickness: 3,
             dataPoints: dps
         }]
     });
@@ -34,22 +35,27 @@ return {
 
     var updateChart = function (count) {
         count = count || 1;
-        if (scope.hoveredConnections()){
-        for (var j = 0; j < count; j++) {
-            xVal = animation.getFrameIndex() / 100;
-            yVal = scope.hoveredConnections().voltage;
-            dps.push({
-                x: xVal,
-                y: yVal
-            });
-        }
+        if (scope.hoveredConnections() && !angular.equals({}, scope.hoveredConnections())){
+            for (var j = 0; j < count; j++) {
+                xVal = animation.getFrameIndex() / 100;
+                yVal = scope.hoveredConnections().voltage;
+                dps.push({
+                    x: xVal,
+                    y: yVal
+                });
+            }
 
-        if (dps.length > dataLength) {
-            dps.shift();
-        }
+            if (dps.length > dataLength) {
+                dps.shift();
+            }
 
-        chart.render();
+            chart.render();
+
+      } else if (angular.equals({}, scope.hoveredConnections())){
+
+            dps.length = 0;
     }
+    //console.log(angular.equals({}, scope.hoveredConnections()));
     };
 
     updateChart(dataLength);
