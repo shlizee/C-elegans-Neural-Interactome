@@ -141,14 +141,12 @@ button:hover {
 }
 
 .popup{  
-  position:fixed;
-  z-index:1;
-  left:1150px;
-  right:20px;
-  top:20px; 
-  bottom:600px;
-  
-  padding:20px;  
+  position: fixed;
+  width: 25%;
+  height: 25%;
+  top: 42px;
+  bottom: 0;
+  right: 0;
 }
 
 .full-overlay {
