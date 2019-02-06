@@ -34,6 +34,10 @@ For the Linux/Mac,  if you have Python 2.7 installed, you just need to ensure th
 * flask
 * flask-socketio
 
+# How to save neural dynamics data
+
+For each simulation session, you can save the simulated data for all neurons by either clicking the reset button or exiting the localhost web page. The saved dynamics is in .npy format and can be found within installation path/saved_dynamics folder. The file can be loaded directly by Python numpy pakcage with command np.load('saved_dynamics.npy'). 
+
 # For further information refer to:
 Neural Interactome: Interactive Simulation of a Neuronal System
 
