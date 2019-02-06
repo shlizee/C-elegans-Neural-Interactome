@@ -250,8 +250,18 @@ def run_Network(t_Delta, atol):
     global session_Data, oldMask, t_Switch, t_Tracker, transit_End
 
     session_Data = []
-    oldMask = newMask.copy()
-    #oldMask = np.zeros(N)
+
+    try:
+        newMask
+
+    except NameError:
+
+        transit_Mask(np.zeros(N))
+
+    else:
+
+        oldMask = newMask.copy()
+
     t_Switch = 0
     transit_End = 0.3
     k = 1
