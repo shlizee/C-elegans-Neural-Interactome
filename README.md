@@ -22,7 +22,7 @@ We recommend to install [Windows Anaconda for Python 2.7](https://www.anaconda.c
 
 Once you have installed these dependencies, unzip the cloned zip file to your desired location. Navigate to the Neural Interactome folder (location of initialize.py) in Anaconda prompt, and type 
 
-**python initialize.py**, 
+> python initialize.py 
 
 This will set up the local Neural Interactome server. Once the server is up, go to the browser and enter your localhost address (127.0.0.1:5000) to access the Neural Interactome. 
 
@@ -30,7 +30,7 @@ This will set up the local Neural Interactome server. Once the server is up, go 
 
 For Linux/Mac, if you have Python 2.7 installed, you just make sure that you have all the depenedencies below installed. Once all the dependencies have been installed, navigate inside the Neural Interactome folder (where initialize.py is located) in terminal, and type 
 
-**python initialize.py**
+> python initialize.py
 
 This will set up the local Neural Interactome server. Once the server is up, go to the browser and enter your localhost address (127.0.0.1:5000) to access the Neural Interactome. 
 
