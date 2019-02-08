@@ -42,7 +42,8 @@ For each simulation session, you can save the simulated data for all neurons by 
 Neural Interactome: Interactive Simulation of a Neuronal System
 Jimin Kim, William Leahy, Eli Shlizerman
 
-Preprint: BioRxiv https://doi.org/10.1101/209155. 
+Preprint: BioRxiv https://doi.org/10.1101/209155
+
 To appear: Front. Comput. Neurosci. https://www.frontiersin.org/articles/10.3389/fncom.2019.00008/
 
 ### The paper has to be cited in any use or modification of the dataset or the code.
