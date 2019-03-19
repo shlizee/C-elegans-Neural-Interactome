@@ -4,7 +4,7 @@
 
 # Introduction
 
-C. elegans Neural Interactome is an interactive simulation platform for the neuronal network of Caenorhabditis elegans worm. It incorporates both static connectome and dynamic biophysical processes to simulate/visualize the network dynamics and allow users to interact with the network in real-time via stimuli injection/network modification. For more detailed information about the software, please refer to the [pre-print of our paper in BioRxiv](https://www.biorxiv.org/content/early/2017/11/26/209155).
+C. elegans Neural Interactome is an interactive simulation platform for the neuronal network of Caenorhabditis elegans worm. It incorporates both static connectome and dynamic biophysical processes to simulate/visualize the network dynamics and allow users to interact with the network in real-time via stimuli injection/network modification. For more detailed information about the software, please refer to the [published paper in Front. Compute. Neurosci](https://www.frontiersin.org/articles/10.3389/fncom.2019.00008/full).
 
 # Web Interface
 Web service running the latest version of Neural Interactome is available at: 
@@ -24,7 +24,7 @@ Once you have installed all the dependencies, unzip the cloned zip file to your 
 
 # Installation (Linux/Mac)
 
-For the Linux/Mac,  if you have Python 2.7 installed, you just need to ensure that you have installed all the depenedencies below. Once all the dependencies have been installed, navigate inside the Neural Interactome folder (Where initialize.py is located) in terminal, and type **python initialize.py**, which will set up the local Neural Interactome web server. Once the server is up, go to the browser and enter your localhost address (127.0.0.1:5000) to access the Neural Interactome. 
+For the Linux/Mac, if you have Python 2.7 installed, you just need to ensure that you have installed all the depenedencies below. Once all the dependencies have been installed, navigate inside the Neural Interactome folder (Where initialize.py is located) in terminal, and type **python initialize.py**, which will set up the local Neural Interactome web server. Once the server is up, go to the browser and enter your localhost address (127.0.0.1:5000) to access the Neural Interactome. 
 
 # Dependencies
 
@@ -43,7 +43,7 @@ Neural Interactome: Interactive Simulation of a Neuronal System
 
 Jimin Kim, William Leahy, Eli Shlizerman
 
-Preprint: BioRxiv https://doi.org/10.1101/209155. 
+Published paper: Frontiers in Computational Neuroscience https://www.frontiersin.org/articles/10.3389/fncom.2019.00008/full
 
 In review.
 
