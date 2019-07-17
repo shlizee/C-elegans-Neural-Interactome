@@ -15,9 +15,9 @@ from threading import Thread
 from flask import Flask, render_template, session, request
 from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
 
-author = 'Jimin Kim'
-email = 'jk55@u.washington.edu'
-version = '2.1.0-Beta'
+__author__ = 'Jimin Kim'
+__authoremail__ = 'jk55@u.washington.edu'
+__version__ = '2.1.0-Beta'
 
 """ Number of Neurons """
 N = 279
@@ -191,7 +191,7 @@ def voltage_filter(v_vec, vmax, scaler):
     return filtered
 
 """ Right hand side """
-def Jimin_RHS(t, y):
+def membrane_voltageRHS(t, y):
 
     """ Split the incoming values """
     Vvec, SVec = np.split(y, 2)
@@ -242,7 +242,7 @@ def run_Network(t_Delta, atol):
     InitCond = 10**(-4)*np.random.normal(0, 0.94, 2*N)
 
     """ Configuring the ODE Solver """
-    r = integrate.ode(Jimin_RHS).set_integrator('vode', atol = atol, min_step = dt*1e-6, method = 'bdf', with_jacobian = True)
+    r = integrate.ode(membrane_voltageRHS).set_integrator('vode', atol = atol, min_step = dt*1e-6, method = 'bdf', with_jacobian = True)
     r.set_initial_value(InitCond, 0)
 
     init_data_Mat[0, :] = InitCond[:N]
@@ -289,10 +289,10 @@ def run_Network(t_Delta, atol):
             k += 1
 
         emit('new data', data_Mat.tolist())
-        session_Data.append(data_Mat)
+        session_Data.append(np.asarray(data_Mat.tolist()))
 
     emit('new data', init_data_Mat[50:, :].tolist())
-    session_Data.append(init_data_Mat[50:, :])
+    session_Data.append(np.asarray(init_data_Mat[50:, :].tolist()))
 
 EffVth(Gg_Static, Gs_Static)
 
