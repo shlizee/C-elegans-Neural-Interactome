@@ -14,11 +14,11 @@ Web service running the latest version of Neural Interactome is available at:
 
 # Installation (Windows)
 
-We recommend to install [Windows Anaconda for Python 2.7](https://www.anaconda.com/download/#windows) (Python 3 version coming soon) since it has most of the package necessary for Neural Interactome. Once you install Anaconda, you will have to install the following additional packages through Anaconda prompt:
+We recommend to install [Windows Anaconda for Python 3.7](https://www.anaconda.com/download/#windows) since it has most of the package necessary for Neural Interactome. Once you install Anaconda, you will have to install the following additional packages through Anaconda prompt:
 
-* pip install flask==0.12.4 (The official 1.0 version doesn't work with current Neural Interactome)
+* pip install flask
 * pip install flask-socketio
-* pip install eventlet
+* pip install eventlet=0.26.0 (Latest version has bugs)
 
 Once you have installed these dependencies, unzip the cloned zip file to your desired location. Navigate to the Neural Interactome folder (location of initialize.py) in Anaconda prompt, and type 
 
