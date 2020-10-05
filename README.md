@@ -1,4 +1,4 @@
-# C. elegans Neural Interactome Beta
+# C. elegans Neural Interactome Beta (Python 3.8)
 
 ![alt text](images/fig1.png)
 
@@ -14,11 +14,11 @@ Web service running the latest version of Neural Interactome is available at:
 
 # Installation (Windows)
 
-We recommend to install [Windows Anaconda for Python 3.7](https://www.anaconda.com/download/#windows) since it has most of the package necessary for Neural Interactome. Once you install Anaconda, you will have to install the following additional packages through Anaconda prompt:
+We recommend to install [Windows Anaconda for Python 3.8](https://www.anaconda.com/download/#windows) since it has most of the package necessary for Neural Interactome. Once you install Anaconda, you will have to install the following additional packages through Anaconda prompt:
 
 * pip install flask
 * pip install flask-socketio
-* pip install eventlet=0.26.0 (Latest version has bugs)
+* pip install eventlet=0.26.0 (Latest version has issues regarding monkey patch in Windows)
 
 Once you have installed these dependencies, unzip the cloned zip file to your desired location. Navigate to the Neural Interactome folder (location of initialize.py) in Anaconda prompt, and type 
 
@@ -28,7 +28,7 @@ This will set up the local Neural Interactome server. Once the server is up, go 
 
 # Installation (Linux/Mac)
 
-For Linux/Mac, if you have Python 2.7 installed, you just make sure that you have all the depenedencies below installed. Once all the dependencies have been installed, navigate inside the Neural Interactome folder (where initialize.py is located) in terminal, and type 
+For Linux/Mac, if you have Python 3.8 installed, you just make sure that you have all the depenedencies below installed. Once all the dependencies have been installed, navigate inside the Neural Interactome folder (where initialize.py is located) in terminal, and type 
 
 > python initialize.py
 

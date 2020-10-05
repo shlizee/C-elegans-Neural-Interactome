@@ -89,7 +89,7 @@ def transit_Mask(input_Array):
     Vth_Static = EffVth_rhs(Iext, newMask)
     transit_End = t_Switch + 0.3
 
-    print("oldMask, newMask, t_Switch, transit_End")
+    print(oldMask, newMask, t_Switch, transit_End)
 
 def update_Mask(old, new, t, tSwitch):
 
@@ -494,5 +494,5 @@ def delete(name):
     os.chdir(default_Dir)
 
 if __name__ == '__main__':
-    socketio.run(app, host = '0.0.0.0', port = 5000)
+    socketio.run(app, host = '0.0.0.0', port = 5000, use_reloader = False)
 
