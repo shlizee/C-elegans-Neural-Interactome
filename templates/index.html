@@ -2,6 +2,16 @@
 <html>
 <head>
 
+   <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108870928-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-108870928-1');
+  </script>
+
   <link href='https://fonts.googleapis.com/css?family=Raleway:300,500,500italic,700,700italic,300italic|Roboto+Condensed:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -36,7 +46,7 @@
 <body ng-app="App">
 
   <navbar class="navbar" ng-controller="navController">
-    <h3>C.elegans Neural Interactome <small>V2.1.0</small></h3>
+    <h3>C.elegans Neural Interactome <small>V3.0.0-beta</small></h3>
     <ul class="controls" >
       <li ng-click="start()" ng-hide="isPaused() || isRunning()">
         <img src="%% url_for('static', filename='images/ic_play_arrow_black_24px.svg') %%"/></li>

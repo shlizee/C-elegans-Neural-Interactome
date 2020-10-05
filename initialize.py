@@ -7,7 +7,7 @@ import os
 import numpy as np
 import scipy.io as sio
 
-import eventlet
+import eventlet #0.26.0
 eventlet.monkey_patch()
 
 from scipy import integrate, signal, sparse, linalg
@@ -17,7 +17,7 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, di
 
 __author__ = 'Jimin Kim'
 __authoremail__ = 'jk55@u.washington.edu'
-__version__ = '2.1.0-Beta'
+__version__ = '3.0.0-beta'
 
 """ Number of Neurons """
 N = 279
@@ -89,7 +89,7 @@ def transit_Mask(input_Array):
     Vth_Static = EffVth_rhs(Iext, newMask)
     transit_End = t_Switch + 0.3
 
-    print oldMask, newMask, t_Switch, transit_End
+    print("oldMask, newMask, t_Switch, transit_End")
 
 def update_Mask(old, new, t, tSwitch):
 
@@ -117,13 +117,13 @@ def modify_Connectome(ablation_Array):
 
         if np.sum(ablation_Array) != N:
 
-            print 'Neurons %s are ablated' %np.where(ablation_Array == False)[0]
+            print("Neurons %s are ablated") %np.where(ablation_Array == False)[0]
 
         else:
 
-            print "All Neurons healthy"
+            print("All Neurons healthy")
 
-        print "EffVth Recalculated"
+        print("EffVth Recalculated")
 
     else:
 
@@ -132,14 +132,14 @@ def modify_Connectome(ablation_Array):
 
         if np.sum(ablation_Array) != N:
 
-            print 'Neurons %s are ablated' %np.where(ablation_Array == False)[0]
+            print("Neurons %s are ablated") %np.where(ablation_Array == False)[0]
 
         else:
 
-            print "All Neurons healthy"
+            print("All Neurons healthy")
 
-        print "EffVth Recalculated"
-        print "Vth Recalculated"
+        print("EffVth Recalculated")
+        print("Vth Recalculated")
 
 """ Efficient V-threshold computation """
 def EffVth(Gg, Gs):
@@ -234,6 +234,49 @@ def membrane_voltageRHS(t, y):
 
     return np.concatenate((dV, dS))
 
+def compute_jacobian(t, y):
+
+    Vvec, SVec = np.split(y, 2)
+    Vrep = np.tile(Vvec, (N, 1))
+
+    J1_M1 = -np.multiply(Gc, np.eye(N))
+    Ggap = np.multiply(ggap, Gg_Dynamic)
+    Ggapsumdiag = -np.diag(Ggap.sum(axis = 1))
+    J1_M2 = np.add(Ggap, Ggapsumdiag) 
+    Gsyn = np.multiply(gsyn, Gs_Dynamic)
+    J1_M3 = np.diag(np.dot(-Gsyn, SVec))
+
+    J1 = (J1_M1 + J1_M2 + J1_M3) / C
+
+    J2_M4_2 = np.subtract(EMat, np.transpose(Vrep))
+    J2 = np.multiply(Gsyn, J2_M4_2) / C
+
+    global InMask, Vth
+
+    if t >= t_Switch and t <= transit_End:
+
+        InMask = update_Mask(oldMask, newMask, t, t_Switch + offset)
+        Vth = EffVth_rhs(Iext, InMask)
+
+    else:
+
+        InMask = newMask
+        Vth = Vth_Static
+
+    sigmoid_V = np.reciprocal(1.0 + np.exp(-B*(np.subtract(Vvec, Vth))))
+    J3_1 = np.multiply(ar, 1 - SVec)
+    J3_2 = np.multiply(B, sigmoid_V)
+    J3_3 = 1 - sigmoid_V
+    J3 = np.diag(np.multiply(np.multiply(J3_1, J3_2), J3_3))
+
+    J4 = np.diag(np.subtract(np.multiply(-ar, sigmoid_V), ad))
+
+    J_row1 = np.hstack((J1, J2))
+    J_row2 = np.hstack((J3, J4))
+    J = np.vstack((J_row1, J_row2))
+
+    return J
+
 """ Simulation initiator """
 def run_Network(t_Delta, atol):
 
@@ -242,7 +285,7 @@ def run_Network(t_Delta, atol):
     InitCond = 10**(-4)*np.random.normal(0, 0.94, 2*N)
 
     """ Configuring the ODE Solver """
-    r = integrate.ode(membrane_voltageRHS).set_integrator('vode', atol = atol, min_step = dt*1e-6, method = 'bdf', with_jacobian = True)
+    r = integrate.ode(membrane_voltageRHS, compute_jacobian).set_integrator('vode', atol = atol, min_step = dt*1e-6, method = 'bdf')
     r.set_initial_value(InitCond, 0)
 
     init_data_Mat[0, :] = InitCond[:N]
@@ -296,23 +339,23 @@ def run_Network(t_Delta, atol):
 
 EffVth(Gg_Static, Gs_Static)
 
+class CustomFlask(Flask):
 
-app = Flask(__name__)
+    jinja_options = Flask.jinja_options.copy()
+    jinja_options.update(dict(
+        block_start_string='<%',
+        block_end_string='%>',
+        variable_start_string='%%',
+        variable_end_string='%%',
+        comment_start_string='<#',
+        comment_end_string='#>',
+    ))
+
+app = CustomFlask(__name__)
 app.debug = True
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 thread = None
-
-jinja_options = app.jinja_options.copy()
-jinja_options.update(dict(
-    block_start_string='<%',
-    block_end_string='%>',
-    variable_start_string='%%',
-    variable_end_string='%%',
-    comment_start_string='<#',
-    comment_end_string='#>',
-))
-app.jinja_options = jinja_options
 
 def background_thread():
     while True:
@@ -356,11 +399,11 @@ def test_disconnect():
 
         os.chdir(default_Dir)
 
-        print "Session Voltage Dynamics Saved"
+        print("Session Voltage Dynamics Saved")
 
-    print "EffVth Recalculated"
-    print "Simulation Resetted"
-    print "Client disconnected"
+    print("EffVth Recalculated")
+    print("Simulation Resetted")
+    print("Client disconnected")
 
 @socketio.on('startRun', namespace='/test')
 def startRun(t_Delta, atol):
@@ -378,7 +421,7 @@ def config_connectome(ablation_Array):
 def stopit():
     global t_Tracker
     t_Tracker = 0
-    print "Simulation stopped"
+    print("Simulation stopped")
 
 @socketio.on("reset", namespace="/test")
 def resetit():
@@ -404,10 +447,10 @@ def resetit():
 
         os.chdir(default_Dir)
 
-        print "Session Voltage Dynamics Saved"
+        print("Session Voltage Dynamics Saved")
 
-    print "EffVth Recalculated"
-    print "Simulation Resetted"
+    print("EffVth Recalculated")
+    print("Simulation Resetted")
 
 @socketio.on("save", namespace="/test")
 def save(name, json):
@@ -420,7 +463,7 @@ def save(name, json):
 
     emit('list presets', os.listdir(preset_Dir))
 
-    print "preset %s saved" %name
+    print("preset %s saved") %name
 
     os.chdir(default_Dir)
 
@@ -434,7 +477,7 @@ def load(name):
 
     emit('file loaded', data)
 
-    print "preset %s loaded" %name
+    print("preset " + str(name) + " " + "loaded")
 
     os.chdir(default_Dir)
 
@@ -446,10 +489,10 @@ def delete(name):
     os.remove(name + '.json')
     emit('list presets', os.listdir(preset_Dir))
 
-    print "preset %s deleted" %name
+    print("preset " + str(name) + " " + "deleted") 
 
     os.chdir(default_Dir)
 
 if __name__ == '__main__':
-    socketio.run(app, host = '0.0.0.0')
+    socketio.run(app, host = '0.0.0.0', port = 5000)
 
