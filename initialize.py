@@ -117,7 +117,7 @@ def modify_Connectome(ablation_Array):
 
         if np.sum(ablation_Array) != N:
 
-            print("Neurons %s are ablated") %np.where(ablation_Array == False)[0]
+            print("Neurons " + str(np.where(ablation_Array == False)[0]) + " are ablated")
 
         else:
 
@@ -132,7 +132,7 @@ def modify_Connectome(ablation_Array):
 
         if np.sum(ablation_Array) != N:
 
-            print("Neurons %s are ablated") %np.where(ablation_Array == False)[0]
+            print("Neurons " + str(np.where(ablation_Array == False)[0]) + " are ablated") 
 
         else:
 
@@ -463,7 +463,7 @@ def save(name, json):
 
     emit('list presets', os.listdir(preset_Dir))
 
-    print("preset %s saved") %name
+    print("preset " + str(name) + " saved") 
 
     os.chdir(default_Dir)
 
@@ -477,7 +477,7 @@ def load(name):
 
     emit('file loaded', data)
 
-    print("preset " + str(name) + " " + "loaded")
+    print("preset " + str(name) + " loaded")
 
     os.chdir(default_Dir)
 
@@ -489,7 +489,7 @@ def delete(name):
     os.remove(name + '.json')
     emit('list presets', os.listdir(preset_Dir))
 
-    print("preset " + str(name) + " " + "deleted") 
+    print("preset " + str(name) + " deleted") 
 
     os.chdir(default_Dir)
 
